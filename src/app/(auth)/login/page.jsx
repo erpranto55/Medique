@@ -1,186 +1,239 @@
-// "use client";
+"use client";
 
-// import React, { useState } from "react";
-// import {
-//     Button,
-//     Description,
-//     FieldError,
-//     Form,
-//     Input,
-//     InputGroup,
-//     Label,
-//     TextField,
-// } from "@heroui/react";
-// import Link from "next/link";
-// import { useForm } from "react-hook-form";
-// import { authClient } from "@/lib/auth-client";
-// import { FaEye, FaEyeSlash } from "react-icons/fa";
-// import { ToastContainer, toast } from "react-toastify";
-// import "react-toastify/dist/ReactToastify.css";
-// import { useRouter } from "next/navigation";
+import React, { useState } from "react";
 
-// const LoginPage = () => {
+import {
+    Button,
+    FieldError,
+    Form,
+    Input,
+    InputGroup,
+    Label,
+    TextField,
+} from "@heroui/react";
 
-//     const router = useRouter();
-//     const {
-//         register,
-//         handleSubmit,
-//         watch,
-//         formState: { errors },
-//     } = useForm()
+import Link from "next/link";
 
-//     const [isShowPassword, setIsShowPassword] = useState(false);
+import { useForm } from "react-hook-form";
 
-//     const handleLogInFunc = async (data) => {
+import {
+    FaEye,
+    FaEyeSlash,
+} from "react-icons/fa";
 
-//         const { email, password } = data;
+import { FcGoogle } from "react-icons/fc";
 
-//         const { data: res, error } = await authClient.signIn.email({
-//             email,
-//             password,
-//             rememberMe: true,
-//             callbackURL: "/",
-//         });
+import {
+    ToastContainer,
+    toast,
+} from "react-toastify";
 
-//         // SUCCESS 
-//         if (res) {
-//             toast.success("Login successful!");
+import "react-toastify/dist/ReactToastify.css";
 
-//             setTimeout(() => {
-//                 router.push("/");
-//             }, 1500);
-//         }
+import { useRouter } from "next/navigation";
 
-//         // ERROR
-//         if (error) {
+const LoginPage = () => {
 
-//             if (
-//                 error.message?.toLowerCase().includes("invalid") ||
-//                 error.message?.toLowerCase().includes("credential")
-//             ) {
-//                 toast.error("Invalid email or password!");
-//             } else {
-//                 toast.error(error.message || "Login failed");
-//             }
+    const router = useRouter();
 
-//             return;
-//         }
-//     };
-//     // console.log(watch("email"));
+    const {
+        register,
+        handleSubmit,
+    } = useForm();
 
-//     return (
-//         <div className="container mx-auto min-h-screen flex items-center justify-center px-4">
-//             <div className="w-full max-w-md bg-white p-8 rounded-3xl shadow-xl min-h-[60vh]">
+    const [isShowPassword, setIsShowPassword] =
+        useState(false);
 
-//                 <h2 className="text-3xl font-bold text-center mb-6 text-gray-800">
-//                     Login Your Account
-//                 </h2>
+    // LOGIN
+    const handleLogInFunc = async (data) => {
 
-//                 <hr className="text-slate-300 my-6" />
+        console.log(data);
 
-//                 <Form className="flex flex-col gap-5" onSubmit={handleSubmit(handleLogInFunc)}>
+        toast.success("Login successful!");
 
-//                     {/* Email Field */}
-//                     <TextField
-//                         isRequired
-//                         name="email"
-//                         type="email"
-//                         validate={(value) => {
-//                             if (
-//                                 !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(value)
-//                             ) {
-//                                 return "Please enter a valid email address";
-//                             }
+        setTimeout(() => {
+            router.push("/");
+        }, 1500);
+    };
 
-//                             return null;
-//                         }}
-//                     >
-//                         <Label>Email address</Label>
+    // GOOGLE LOGIN
+    const handleGoogleLogin = () => {
 
-//                         <Input
-//                             placeholder="Your Email"
-//                             className="mt-1"
-//                             {...register("email")}
-//                         />
+        toast.success(
+            "Google Login Clicked"
+        );
+    };
 
-//                         <FieldError />
-//                     </TextField>
+    return (
+        <div className="container mx-auto min-h-screen flex items-center justify-center px-4 py-16">
 
-//                     {/* Password Field */}
-//                     <TextField
-//                         isRequired
-//                         minLength={8}
-//                         name="password"
-//                         type={isShowPassword ? "text" : "password"}
-//                         validate={(value) => {
+            <div className="w-full max-w-lg bg-base-100 p-8 rounded-3xl shadow-2xl border border-base-300">
 
-//                             if (value.length === 0) {
-//                                 return "Password field is Required";
-//                             }
-//                             if (value.length < 8) {
-//                                 return "Password must be at least 8 characters";
-//                             }
+                {/* Heading */}
+                <div className="text-center mb-8">
 
-//                             if (!/[A-Z]/.test(value)) {
-//                                 return "Password must contain at least one uppercase letter";
-//                             }
+                    <h2 className="text-4xl font-bold text-base-content">
+                        Login Your Account
+                    </h2>
 
-//                             if (!/[0-9]/.test(value)) {
-//                                 return "Password must contain at least one number";
-//                             }
+                    <p className="text-base-content/70 mt-3">
+                        Welcome back to MediQueue
+                    </p>
 
-//                             return null;
-//                         }}
-//                     >
-//                         <Label>Password</Label>
+                </div>
 
-//                         <InputGroup>
-//                             <InputGroup.Input
-//                                 className="w-full"
-//                                 placeholder="Your Password"
-//                                 type={isShowPassword ? "text" : "password"}
-//                                 {...register("password")}
-//                             />
-//                             <InputGroup.Suffix className="pr-0">
-//                                 <Button
-//                                     isIconOnly
-//                                     aria-label={isShowPassword ? "Hide password" : "Show password"}
-//                                     size="sm"
-//                                     variant="ghost"
-//                                     onPress={() => setIsShowPassword(!isShowPassword)}
-//                                 >
-//                                     {isShowPassword ? <FaEye className="size-4" /> : <FaEyeSlash className="size-4" />}
-//                                 </Button>
-//                             </InputGroup.Suffix>
-//                         </InputGroup>
+                <hr className="border-base-300 mb-8" />
 
-//                         <FieldError />
-//                     </TextField>
+                {/* Form */}
+                <Form
+                    className="flex flex-col gap-5"
+                    onSubmit={handleSubmit(handleLogInFunc)}
+                >
 
-//                     {/* Buttons */}
-//                     <div className="flex gap-3 pt-2">
+                    {/* Email */}
+                    <TextField
+                        isRequired
+                        name="email"
+                        type="email"
+                    >
 
-//                         <Button
-//                             type="submit"
-//                             className="w-full bg-purple-500 text-white hover:bg-purple-600 transition-all duration-300"
-//                         >
-//                             Login
-//                         </Button>
+                        <Label>
+                            Email Address
+                        </Label>
 
+                        <Input
+                            placeholder="Enter your email"
+                            className="mt-1 w-full"
+                            {...register("email")}
+                        />
 
-//                     </div>
-//                 </Form>
-//                 <div className="flex gap-2 items-center justify-center mt-5">
-//                     <h2 className="text-sm text-slate-700">Don&apos;t Have An Account ? </h2>
-//                     <Link href="/register">
-//                         <h2 className="text-red-600 font-bold">
-//                             Register
-//                         </h2 >
-//                     </Link >
-//                 </div>
-//             </div>
-//         </div >
-//     );
-// };
+                        <FieldError />
 
-// export default LoginPage;
+                    </TextField>
+
+                    {/* Password */}
+                    <TextField
+                        isRequired
+                        name="password"
+                        type={
+                            isShowPassword
+                                ? "text"
+                                : "password"
+                        }
+                    >
+
+                        <Label>
+                            Password
+                        </Label>
+
+                        <InputGroup>
+
+                            <InputGroup.Input
+                                className="w-full"
+                                placeholder="Enter your password"
+                                type={
+                                    isShowPassword
+                                        ? "text"
+                                        : "password"
+                                }
+                                {...register("password")}
+                            />
+
+                            <InputGroup.Suffix>
+
+                                <Button
+                                    isIconOnly
+                                    size="sm"
+                                    variant="light"
+                                    onPress={() =>
+                                        setIsShowPassword(
+                                            !isShowPassword
+                                        )
+                                    }
+                                >
+
+                                    {
+                                        isShowPassword
+                                            ? (
+                                                <FaEye className="size-4" />
+                                            ) : (
+                                                <FaEyeSlash className="size-4" />
+                                            )
+                                    }
+
+                                </Button>
+
+                            </InputGroup.Suffix>
+
+                        </InputGroup>
+
+                        <FieldError />
+
+                    </TextField>
+
+                    {/* Forgot Password */}
+                    <div className="w-full text-right">
+
+                        <button
+                            type="button"
+                            className="text-sm text-primary hover:underline"
+                        >
+                            Forgot Password?
+                        </button>
+
+                    </div>
+
+                    {/* Login Button */}
+                    <Button
+                        type="submit"
+                        className="w-full btn btn-primary text-white"
+                    >
+                        Login
+                    </Button>
+
+                </Form>
+
+                {/* Divider */}
+                <div className="divider my-8">
+                    OR
+                </div>
+
+                {/* Google */}
+                <Button
+                    onPress={handleGoogleLogin}
+                    className="w-full"
+                    variant="bordered"
+                >
+
+                    <FcGoogle className="text-xl" />
+
+                    Continue with Google
+
+                </Button>
+
+                {/* Register */}
+                <div className="flex gap-2 items-center justify-center mt-8 text-sm">
+
+                    <p className="text-base-content/70">
+                        Don&apos;t have an account?
+                    </p>
+
+                    <Link
+                        href="/register"
+                        className="text-primary font-semibold hover:underline"
+                    >
+                        Register
+                    </Link>
+
+                </div>
+            </div>
+
+            {/* Toast */}
+            <ToastContainer
+                position="top-center"
+            />
+        </div>
+    );
+};
+
+export default LoginPage;
