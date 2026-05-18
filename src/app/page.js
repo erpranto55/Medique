@@ -1,7 +1,10 @@
-import Image from "next/image";
+import Hero from "@/compoents/Hero";
+
 
 export default function Home() {
-  return <div>
-    <h1>Medique</h1>
-  </div>;
+  return (
+    <div>
+      <Hero />
+    </div>
+  );
 }
