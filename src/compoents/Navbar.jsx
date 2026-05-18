@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { FaUserCircle } from "react-icons/fa";
 import ThemeToggle from "./ThemeToggle";
+import { GiHamburgerMenu } from "react-icons/gi";
 
 const Navbar = () => {
 
@@ -60,7 +61,7 @@ const Navbar = () => {
                             role="button"
                             className="btn btn-ghost lg:hidden"
                         >
-                            ☰
+                            <GiHamburgerMenu />
                         </div>
 
                         <ul
