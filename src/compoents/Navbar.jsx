@@ -2,8 +2,14 @@
 
 import Link from "next/link";
 import { FaUserCircle } from "react-icons/fa";
+import ThemeToggle from "./ThemeToggle";
 
 const Navbar = () => {
+
+    // temporary auth state
+    const user = true;
+    // later replace with firebase/auth context
+
     const navLinks = (
         <>
             <li>
@@ -14,26 +20,40 @@ const Navbar = () => {
                 <Link href="/tutors">Tutors</Link>
             </li>
 
-            <li>
-                <Link href="/add-tutor">Add Tutor</Link>
-            </li>
+            {
+                user && (
+                    <>
+                        <li>
+                            <Link href="/add-tutor">
+                                Add Tutor
+                            </Link>
+                        </li>
 
-            <li>
-                <Link href="/my-tutors">My Tutors</Link>
-            </li>
+                        <li>
+                            <Link href="/my-tutors">
+                                My Tutors
+                            </Link>
+                        </li>
 
-            <li>
-                <Link href="/my-bookings">My Booked Sessions</Link>
-            </li>
+                        <li>
+                            <Link href="/my-bookings">
+                                My Booked Sessions
+                            </Link>
+                        </li>
+                    </>
+                )
+            }
         </>
     );
 
     return (
         <div className="bg-base-100 shadow-md sticky top-0 z-50">
             <div className="navbar container mx-auto px-4">
-                {/* Left */}
+
+                {/* LEFT */}
                 <div className="navbar-start">
-                    {/* Mobile Menu */}
+
+                    {/* MOBILE MENU */}
                     <div className="dropdown">
                         <div
                             tabIndex={0}
@@ -45,52 +65,86 @@ const Navbar = () => {
 
                         <ul
                             tabIndex={0}
-                            className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow"
+                            className="menu menu-sm dropdown-content mt-3 z-1 p-2 shadow bg-base-100 rounded-box w-52"
                         >
                             {navLinks}
                         </ul>
                     </div>
 
-                    {/* Logo */}
+                    {/* LOGO */}
                     <Link
                         href="/"
-                        className="text-4xl font-bold text-primary"
+                        className="text-3xl md:text-4xl font-bold text-primary"
                     >
                         MediQueue
                     </Link>
                 </div>
 
-                {/* Center */}
+                {/* CENTER */}
                 <div className="navbar-center hidden lg:flex">
                     <ul className="menu menu-horizontal px-1 gap-2 font-medium">
                         {navLinks}
                     </ul>
                 </div>
 
-                {/* Right */}
+                {/* RIGHT */}
                 <div className="navbar-end gap-3">
-                    <button className="btn btn-primary btn-sm">
-                        Login
-                    </button>
 
-                    <div className="dropdown dropdown-end">
-                        <div tabIndex={0} role="button">
-                            <FaUserCircle className="text-3xl cursor-pointer" />
-                        </div>
+                    {/* THEME TOGGLE */}
+                    <ThemeToggle />
 
-                        <ul
-                            tabIndex={0}
-                            className="menu menu-sm dropdown-content mt-3 z-1 p-2 shadow bg-base-100 rounded-box w-52"
-                        >
-                            <li>
-                                <Link href="/profile">Profile</Link>
-                            </li>
+                    {
+                        user ? (
+                            <div className="dropdown dropdown-end">
 
-                            <li>
-                                <button>Logout</button>
-                            </li>
-                        </ul>
-                    </div>
+                                <div
+                                    tabIndex={0}
+                                    role="button"
+                                    className="avatar placeholder"
+                                >
+                                    <div className="bg-neutral text-neutral-content rounded-full w-10">
+                                        <FaUserCircle className="text-3xl" />
+                                    </div>
+                                </div>
+
+                                <ul
+                                    tabIndex={0}
+                                    className="menu menu-sm dropdown-content mt-3 z-1 p-2 shadow bg-base-100 rounded-box w-52"
+                                >
+                                    <li>
+                                        <Link href="/profile">
+                                            Profile
+                                        </Link>
+                                    </li>
+
+                                    <li>
+                                        <button>
+                                            Logout
+                                        </button>
+                                    </li>
+                                </ul>
+                            </div>
+                        ) : (
+                            <div className="flex gap-2">
+
+                                <Link
+                                    href="/login"
+                                    className="btn btn-primary btn-sm"
+                                >
+                                    Login
+                                </Link>
+
+                                <Link
+                                    href="/register"
+                                    className="btn btn-outline btn-primary btn-sm"
+                                >
+                                    Register
+                                </Link>
+
+                            </div>
+                        )
+                    }
+
                 </div>
             </div>
         </div>

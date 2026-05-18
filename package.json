@@ -11,6 +11,8 @@
   "dependencies": {
     "@heroui/react": "^3.0.5",
     "@heroui/styles": "^3.0.5",
+    "@heroui/switch": "^2.2.27",
+    "@heroui/system": "^2.4.28",
     "axios": "^1.16.1",
     "firebase": "^12.13.0",
     "framer-motion": "^12.39.0",
