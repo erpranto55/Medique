@@ -16,15 +16,16 @@ const TutorCard = ({ tutor }) => {
   return (
     <div className="card bg-base-100 shadow-xl hover:shadow-2xl transition-all duration-300">
 
-      <figure className="h-64 overflow-hidden">
+      <figure className="h-100 bg-base-200 overflow-hidden">
 
         <Image
           src={image}
           alt={name}
           height={300}
           width={300}
-          className="w-full h-full object-cover hover:scale-105 transition duration-500"
+          className="w-full h-full object-contain hover:scale-105 transition duration-500"
         />
+
       </figure>
 
       <div className="card-body">
@@ -71,7 +72,7 @@ const TutorCard = ({ tutor }) => {
             href={`/tutors/${id}`}
             className="btn btn-primary w-full"
           >
-            Book Session
+            View Details
           </Link>
 
         </div>
