@@ -1,235 +1,298 @@
 "use client";
 
-import React, { useState } from "react";
-
-import {
-    Button,
-    FieldError,
-    Form,
-    Input,
-    InputGroup,
-    Label,
-    TextField,
-} from "@heroui/react";
-
 import Link from "next/link";
 
-import { useForm } from "react-hook-form";
+import {
+    useContext,
+    useState,
+} from "react";
 
 import {
-    ToastContainer,
-    toast,
-} from "react-toastify";
+    useRouter,
+} from "next/navigation";
 
-import "react-toastify/dist/ReactToastify.css";
+import {
+    useForm,
+} from "react-hook-form";
 
-import { useRouter } from "next/navigation";
+import {
+    AuthContext,
+} from "@/providers/AuthProvider";
 
 import {
     FaEye,
     FaEyeSlash,
 } from "react-icons/fa";
 
-import { FcGoogle } from "react-icons/fc";
+import {
+    FcGoogle,
+} from "react-icons/fc";
 
 const RegisterPage = () => {
 
-    const [isShowPassword, setIsShowPassword] =
+    const {
+        createUser,
+        googleLogin,
+        updateUserProfile,
+    } = useContext(AuthContext);
+
+    const router = useRouter();
+
+    const [showPassword, setShowPassword] =
         useState(false);
 
     const {
         register,
         handleSubmit,
+        formState: { errors },
     } = useForm();
 
-    const router = useRouter();
-
     // REGISTER
-    const handleRegisterFunc = async (data) => {
+    const onSubmit = async (data) => {
 
-        console.log(data);
+        try {
 
-        toast.success(
-            "Registration successful!"
-        );
+            // CREATE USER
+            const result =
+                await createUser(
+                    data.email,
+                    data.password
+                );
 
-        setTimeout(() => {
+            // UPDATE PROFILE
+            await updateUserProfile({
+
+                displayName: data.name,
+
+                photoURL: data.photo,
+            });
+
+            console.log(result.user);
+
             router.push("/");
-        }, 1500);
+
+        } catch (error) {
+
+            console.log(error.message);
+        }
     };
 
     // GOOGLE LOGIN
-    const handleGoogleLogin = () => {
+    const handleGoogleLogin =
+        async () => {
 
-        toast.success(
-            "Google Login Clicked"
-        );
-    };
+            try {
+
+                await googleLogin();
+
+                router.push("/");
+
+            } catch (error) {
+
+                console.log(error.message);
+            }
+        };
 
     return (
-        <div className="container mx-auto min-h-screen flex items-center justify-center px-4 py-16">
+        <div className="min-h-screen flex items-center justify-center px-4 py-16">
 
-            <div className="w-full max-w-lg bg-base-100 p-8 rounded-3xl shadow-2xl border border-base-300">
+            <div className="w-full max-w-xl bg-base-100 shadow-2xl rounded-3xl p-8 md:p-12 border border-base-300">
 
                 {/* Heading */}
-                <div className="text-center mb-8">
+                <div className="text-center mb-10">
 
-                    <h2 className="text-4xl font-bold text-base-content">
-                        Register Your Account
-                    </h2>
+                    <h1 className="text-4xl font-bold">
+                        Create Account
+                    </h1>
 
                     <p className="text-base-content/70 mt-3">
-                        Create your MediQueue account
+                        Register and start your
+                        tutoring journey with
+                        MediQueue.
                     </p>
 
                 </div>
 
-                <hr className="border-base-300 mb-8" />
-
-                {/* Form */}
-                <Form
-                    className="flex flex-col gap-5"
-                    onSubmit={handleSubmit(handleRegisterFunc)}
+                {/* FORM */}
+                <form
+                    onSubmit={handleSubmit(onSubmit)}
+                    className="space-y-6"
                 >
 
                     {/* Name */}
-                    <TextField isRequired>
+                    <div>
 
-                        <Label>
-                            Name
-                        </Label>
+                        <label className="label font-semibold">
+                            Full Name
+                        </label>
 
-                        <Input
+                        <input
+                            type="text"
                             placeholder="Your Name"
-                            className="mt-1 w-full"
-                            {...register("name")}
+                            className="input input-bordered w-full"
+                            {...register("name", {
+                                required:
+                                    "Name is required",
+                            })}
                         />
 
-                        <FieldError />
+                        {
+                            errors.name && (
+                                <p className="text-error text-sm mt-1">
+                                    {errors.name.message}
+                                </p>
+                            )
+                        }
 
-                    </TextField>
+                    </div>
 
-                    {/* Photo URL */}
-                    <TextField isRequired>
+                    {/* Photo */}
+                    <div>
 
-                        <Label>
+                        <label className="label font-semibold">
                             Photo URL
-                        </Label>
+                        </label>
 
-                        <Input
+                        <input
+                            type="text"
                             placeholder="Photo URL"
-                            className="mt-1 w-full"
-                            {...register("photoURL")}
+                            className="input input-bordered w-full"
+                            {...register("photo", {
+                                required:
+                                    "Photo URL is required",
+                            })}
                         />
 
-                        <FieldError />
+                        {
+                            errors.photo && (
+                                <p className="text-error text-sm mt-1">
+                                    {errors.photo.message}
+                                </p>
+                            )
+                        }
 
-                    </TextField>
+                    </div>
 
                     {/* Email */}
-                    <TextField
-                        isRequired
-                        type="email"
-                    >
+                    <div>
 
-                        <Label>
-                            Email Address
-                        </Label>
+                        <label className="label font-semibold">
+                            Email
+                        </label>
 
-                        <Input
-                            placeholder="Your Email"
-                            className="mt-1 w-full"
-                            {...register("email")}
+                        <input
+                            type="email"
+                            placeholder="Email Address"
+                            className="input input-bordered w-full"
+                            {...register("email", {
+                                required:
+                                    "Email is required",
+                            })}
                         />
 
-                        <FieldError />
+                        {
+                            errors.email && (
+                                <p className="text-error text-sm mt-1">
+                                    {errors.email.message}
+                                </p>
+                            )
+                        }
 
-                    </TextField>
+                    </div>
 
                     {/* Password */}
-                    <TextField
-                        isRequired
-                        type={
-                            isShowPassword
-                                ? "text"
-                                : "password"
-                        }
-                        validate={(value) => {
+                    <div>
 
-                            if (value.length < 6) {
-                                return "Password must be at least 6 characters";
-                            }
-
-                            if (!/[A-Z]/.test(value)) {
-                                return "Must contain uppercase letter";
-                            }
-
-                            if (!/[a-z]/.test(value)) {
-                                return "Must contain lowercase letter";
-                            }
-
-                            return null;
-                        }}
-                    >
-
-                        <Label>
+                        <label className="label font-semibold">
                             Password
-                        </Label>
+                        </label>
 
-                        <InputGroup>
+                        <div className="relative">
 
-                            <InputGroup.Input
-                                className="w-full"
-                                placeholder="Your Password"
+                            <input
                                 type={
-                                    isShowPassword
+                                    showPassword
                                         ? "text"
                                         : "password"
                                 }
-                                {...register("password")}
+                                placeholder="Password"
+                                className="input input-bordered w-full"
+                                {...register(
+                                    "password",
+                                    {
+                                        required:
+                                            "Password is required",
+
+                                        minLength: {
+                                            value: 6,
+
+                                            message:
+                                                "Password must be at least 6 characters",
+                                        },
+
+                                        validate: {
+
+                                            uppercase: (
+                                                value
+                                            ) =>
+                                                /[A-Z]/.test(
+                                                    value
+                                                ) ||
+
+                                                "Must contain uppercase letter",
+
+                                            lowercase: (
+                                                value
+                                            ) =>
+                                                /[a-z]/.test(
+                                                    value
+                                                ) ||
+
+                                                "Must contain lowercase letter",
+                                        },
+                                    }
+                                )}
                             />
 
-                            <InputGroup.Suffix>
+                            <button
+                                type="button"
+                                onClick={() =>
+                                    setShowPassword(
+                                        !showPassword
+                                    )
+                                }
+                                className="absolute top-1/2 right-4 -translate-y-1/2"
+                            >
 
-                                <Button
-                                    isIconOnly
-                                    size="sm"
-                                    variant="light"
-                                    onPress={() =>
-                                        setIsShowPassword(
-                                            !isShowPassword
-                                        )
-                                    }
-                                >
+                                {
+                                    showPassword
+                                        ? <FaEyeSlash />
+                                        : <FaEye />
+                                }
 
-                                    {
-                                        isShowPassword
-                                            ? (
-                                                <FaEye className="size-4" />
-                                            ) : (
-                                                <FaEyeSlash className="size-4" />
-                                            )
-                                    }
+                            </button>
 
-                                </Button>
+                        </div>
 
-                            </InputGroup.Suffix>
+                        {
+                            errors.password && (
+                                <p className="text-error text-sm mt-1">
+                                    {errors.password.message}
+                                </p>
+                            )
+                        }
 
-                        </InputGroup>
+                    </div>
 
-                        <FieldError />
-
-                    </TextField>
-
-                    {/* Register Button */}
-                    <Button
+                    {/* Submit */}
+                    <button
                         type="submit"
-                        className="w-full btn btn-primary text-white"
+                        className="btn btn-primary w-full"
                     >
                         Register
-                    </Button>
+                    </button>
 
-                </Form>
+                </form>
 
                 {/* Divider */}
                 <div className="divider my-8">
@@ -237,41 +300,34 @@ const RegisterPage = () => {
                 </div>
 
                 {/* Google */}
-                <Button
-                    onPress={handleGoogleLogin}
-                    className="w-full"
-                    variant="bordered"
+                <button
+                    onClick={handleGoogleLogin}
+                    className="btn btn-outline w-full"
                 >
 
-                    <FcGoogle className="text-xl" />
+                    <FcGoogle className="text-2xl" />
 
                     Continue with Google
 
-                </Button>
+                </button>
 
                 {/* Login */}
-                <div className="flex gap-2 items-center justify-center mt-8 text-sm">
+                <p className="text-center mt-8 text-base-content/70">
 
-                    <p className="text-base-content/70">
-                        Already Have An Account?
-                    </p>
+                    Already have an account?{" "}
 
                     <Link
                         href="/login"
-                        className="text-primary font-semibold hover:underline"
+                        className="text-primary font-semibold"
                     >
                         Login
                     </Link>
 
-                </div>
-            </div>
+                </p>
 
-            {/* Toast */}
-            <ToastContainer
-                position="top-center"
-            />
+            </div>
         </div>
     );
 };
 
-export default RegisterPage;    
+export default RegisterPage;
