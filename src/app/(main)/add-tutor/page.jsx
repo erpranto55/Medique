@@ -19,6 +19,8 @@ import {
 import "react-toastify/dist/ReactToastify.css";
 
 import { useForm } from "react-hook-form";
+import axios from "axios";
+import axiosSecure from "@/lib/axiosSecure";
 
 const subjects = [
     "Mathematics",
@@ -43,13 +45,29 @@ const AddTutorPage = () => {
     } = useForm();
 
     // SUBMIT
-    const handleAddTutor = (data) => {
+    const handleAddTutor = async (data) => {
+        try {
 
-        console.log(data);
+            const tutorInfo = {
+                ...data,
+                createdAt: new Date(),
+            };
 
-        toast.success(
-            "Tutor Added Successfully!"
-        );
+            const res = await axios.post(
+                "http://localhost:5000/tutors",
+                tutorInfo
+            );
+
+            console.log(res.data);
+
+            if (res.data.insertedId) {
+                alert("Tutor Added Successfully");
+                reset();
+            }
+
+        } catch (error) {
+            console.log(error);
+        }
     };
 
     return (
