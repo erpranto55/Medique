@@ -55,7 +55,7 @@ const AddTutorPage = () => {
     return (
         <div className="container mx-auto px-4 py-16">
 
-            <div className="max-w-6xl mx-auto bg-base-100 shadow-2xl rounded-3xl p-8 md:p-12 border border-base-300">
+            <div className="max-w-5xl mx-auto bg-base-100 shadow-2xl rounded-3xl p-8 md:p-12 border border-base-300">
 
                 {/* Heading */}
                 <div className="text-center mb-12">
@@ -74,7 +74,7 @@ const AddTutorPage = () => {
                 {/* Form */}
                 <Form
                     onSubmit={handleSubmit(handleAddTutor)}
-                    className="grid md:grid-cols-2 gap-x-8 gap-y-6 items-start"
+                    className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full"
                 >
 
                     {/* Tutor Name */}
@@ -349,7 +349,6 @@ const AddTutorPage = () => {
                         <TextArea
                             className="w-full"
                             placeholder="Write about your tutoring experience..."
-                            minRows={5}
                             {...register("description")}
                         />
 
