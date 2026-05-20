@@ -31,9 +31,11 @@ export default function RootLayout({ children }) {
       <body className="min-h-full flex flex-col">
         <AuthProvider>
           <Navbar />
-          <main>{children}</main>
+          <main>
+            <ToastContainer />
+            {children}
+          </main>
           <Footer />
-          <ToastContainer />
         </AuthProvider>
       </body>
     </html>
