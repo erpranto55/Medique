@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { use, useEffect, useState } from "react";
+import { toast } from "react-toastify";
 
 const TutorDetailsPage = ({ params }) => {
 
@@ -17,6 +18,67 @@ const TutorDetailsPage = ({ params }) => {
             .then((data) => setTutor(data));
 
     }, [id]);
+
+    const handleBooking = async () => {
+
+        const bookingData = {
+            tutorId: tutor._id,
+            tutorName: tutor.name,
+            subject: tutor.subject,
+            fee: tutor.fee,
+            image: tutor.photo,
+            bookedAt: new Date(),
+        };
+
+        try {
+
+            const res = await fetch(
+                "http://localhost:5000/bookings",
+                {
+                    method: "POST",
+                    headers: {
+                        "content-type": "application/json",
+                    },
+                    body: JSON.stringify(bookingData),
+                }
+            );
+
+            const data = await res.json();
+
+            if (data.insertedId) {
+
+                toast.success(
+                    "Booking Successful!",
+                    {
+                        position: "top-center",
+                        autoClose: 2000,
+                    }
+                );
+
+                document
+                    .getElementById("book_modal")
+                    .close();
+
+                setTimeout(() => {
+
+                    window.location.href =
+                        "/my-bookings";
+
+                }, 2000);
+            }
+
+        } catch (error) {
+
+            console.log(error);
+
+            toast.error(
+                "Booking Failed!",
+                {
+                    position: "top-center",
+                }
+            );
+        }
+    };
 
     // LOADING
     if (!tutor) {
@@ -45,8 +107,10 @@ const TutorDetailsPage = ({ params }) => {
                                 ? tutor.photo
                                 : "/avatar.png"
                         }
-                        alt={tutor.name}
+                        alt={tutor?.name || "Tutor Image"}
                         fill
+                        sizes="100vw"
+                        priority
                         className="object-cover"
                     />
 
@@ -230,7 +294,10 @@ const TutorDetailsPage = ({ params }) => {
 
                         </form>
 
-                        <button className="btn btn-primary">
+                        <button
+                            onClick={handleBooking}
+                            className="btn btn-primary"
+                        >
                             Confirm Booking
                         </button>
 
