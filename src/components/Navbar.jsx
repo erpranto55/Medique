@@ -1,24 +1,63 @@
 "use client";
 
 import Link from "next/link";
-import { FaUserCircle } from "react-icons/fa";
-import ThemeToggle from "./ThemeToggle";
-import { GiHamburgerMenu } from "react-icons/gi";
+
+import {
+    useContext,
+} from "react";
+
+import {
+    AuthContext,
+} from "@/providers/AuthProvider";
+
+import {
+    toast,
+} from "react-toastify";
+import Image from "next/image";
 
 const Navbar = () => {
 
-    // temporary auth state
-    const user = true;
-    // later replace with firebase/auth context
+    const {
+        user,
+        logoutUser,
+    } = useContext(AuthContext);
 
+    // LOGOUT
+    const handleLogout =
+        async () => {
+
+            try {
+
+                await logoutUser();
+
+                toast.success(
+                    "Logout Successful"
+                );
+
+            } catch (error) {
+
+                console.log(error);
+
+                toast.error(
+                    "Logout Failed"
+                );
+            }
+        };
+
+    // NAV LINKS
     const navLinks = (
         <>
+
             <li>
-                <Link href="/">Home</Link>
+                <Link href="/">
+                    Home
+                </Link>
             </li>
 
             <li>
-                <Link href="/tutors">Tutors</Link>
+                <Link href="/tutors">
+                    Tutors
+                </Link>
             </li>
 
             {
@@ -38,116 +77,145 @@ const Navbar = () => {
 
                         <li>
                             <Link href="/my-bookings">
-                                My Booked Sessions
+                                My Bookings
                             </Link>
                         </li>
                     </>
                 )
             }
+
         </>
     );
 
     return (
-        <div className="bg-base-100 shadow-md sticky top-0 z-50 mb-10">
-            <div className="navbar container mx-auto px-4">
+        <div className="navbar bg-base-100 shadow-sm px-4 md:px-8">
 
-                {/* LEFT */}
-                <div className="navbar-start">
+            {/* START */}
+            <div className="navbar-start">
 
-                    {/* MOBILE MENU */}
-                    <div className="dropdown">
-                        <div
-                            tabIndex={0}
-                            role="button"
-                            className="btn btn-ghost lg:hidden"
+                {/* MOBILE MENU */}
+                <div className="dropdown">
+
+                    <div
+                        tabIndex={0}
+                        role="button"
+                        className="btn btn-ghost lg:hidden"
+                    >
+
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            className="h-5 w-5"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
                         >
-                            <GiHamburgerMenu />
-                        </div>
 
-                        <ul
-                            tabIndex={0}
-                            className="menu menu-sm dropdown-content mt-3 z-1 p-2 shadow bg-base-100 rounded-box w-52"
-                        >
-                            {navLinks}
-                        </ul>
+                            <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth="2"
+                                d="M4 6h16M4 12h8m-8 6h16"
+                            />
+
+                        </svg>
+
                     </div>
 
-                    {/* LOGO */}
-                    <Link
-                        href="/"
-                        className="text-3xl md:text-4xl font-bold text-primary"
+                    <ul
+                        tabIndex={0}
+                        className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow"
                     >
-                        MediQueue
-                    </Link>
-                </div>
 
-                {/* CENTER */}
-                <div className="navbar-center hidden lg:flex">
-                    <ul className="menu menu-horizontal px-1 gap-2 font-medium">
                         {navLinks}
+
                     </ul>
-                </div>
-
-                {/* RIGHT */}
-                <div className="navbar-end gap-3">
-
-                    {/* THEME TOGGLE */}
-                    <ThemeToggle />
-
-                    {
-                        user ? (
-                            <div className="dropdown dropdown-end">
-
-                                <div
-                                    tabIndex={0}
-                                    role="button"
-                                    className="avatar placeholder"
-                                >
-                                    <div className="bg-neutral text-neutral-content rounded-full w-10">
-                                        <FaUserCircle className="text-3xl" />
-                                    </div>
-                                </div>
-
-                                <ul
-                                    tabIndex={0}
-                                    className="menu menu-sm dropdown-content mt-3 z-1 p-2 shadow bg-base-100 rounded-box w-52"
-                                >
-                                    <li>
-                                        <Link href="/profile">
-                                            Profile
-                                        </Link>
-                                    </li>
-
-                                    <li>
-                                        <button>
-                                            Logout
-                                        </button>
-                                    </li>
-                                </ul>
-                            </div>
-                        ) : (
-                            <div className="flex gap-2">
-
-                                <Link
-                                    href="/login"
-                                    className="btn btn-primary btn-sm"
-                                >
-                                    Login
-                                </Link>
-
-                                <Link
-                                    href="/register"
-                                    className="btn btn-outline btn-primary btn-sm"
-                                >
-                                    Register
-                                </Link>
-
-                            </div>
-                        )
-                    }
 
                 </div>
+
+                {/* LOGO */}
+                <Link
+                    href="/"
+                    className="text-2xl font-bold"
+                >
+                    MediQueue
+                </Link>
+
             </div>
+
+            {/* CENTER */}
+            <div className="navbar-center hidden lg:flex">
+
+                <ul className="menu menu-horizontal px-1">
+
+                    {navLinks}
+
+                </ul>
+
+            </div>
+
+            {/* END */}
+            <div className="navbar-end gap-3">
+
+                {
+                    user ? (
+                        <>
+
+                            {/* USER IMAGE */}
+                            <div
+                                className="tooltip tooltip-bottom"
+                                data-tip={
+                                    user?.displayName ||
+                                    "User"
+                                }
+                            >
+
+                                <Image
+                                    src={
+                                        user?.photoURL ||
+                                        "/avatar.png"
+                                    }
+                                    alt="user"
+                                    width={50}
+                                    height={50}
+                                    className="w-10 h-10 rounded-full object-cover border"
+                                />
+
+                            </div>
+
+                            {/* LOGOUT */}
+                            <button
+                                onClick={
+                                    handleLogout
+                                }
+                                className="btn btn-error btn-sm text-white"
+                            >
+                                Logout
+                            </button>
+
+                        </>
+                    ) : (
+                        <>
+
+                            <Link
+                                href="/login"
+                                className="btn btn-primary btn-sm"
+                            >
+                                Login
+                            </Link>
+
+                            <Link
+                                href="/register"
+                                className="btn btn-outline btn-sm"
+                            >
+                                Register
+                            </Link>
+
+                        </>
+                    )
+                }
+
+            </div>
+
         </div>
     );
 };
