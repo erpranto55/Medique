@@ -1,5 +1,6 @@
 "use client";
 
+import PrivateRoute from "@/routes/PrivateRoute";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -70,271 +71,273 @@ const MyTutorsPage = () => {
     };
 
     return (
-        <div className="container mx-auto px-4 py-10">
+        <PrivateRoute>
+            <div className="container mx-auto px-4 py-10">
 
-            {/* HEADING */}
-            <div className="text-center mb-12">
+                {/* HEADING */}
+                <div className="text-center mb-12">
 
-                <h1 className="text-4xl md:text-5xl font-bold mb-4">
-                    My Tutors
-                </h1>
+                    <h1 className="text-4xl md:text-5xl font-bold mb-4">
+                        My Tutors
+                    </h1>
 
-                <p className="text-base-content/70 text-lg">
-                    Manage your added tutors easily.
-                </p>
+                    <p className="text-base-content/70 text-lg">
+                        Manage your added tutors easily.
+                    </p>
 
-            </div>
+                </div>
 
-            {/* EMPTY STATE */}
-            {
-                tutors.length === 0 ? (
+                {/* EMPTY STATE */}
+                {
+                    tutors.length === 0 ? (
 
-                    <div className="bg-base-100 rounded-3xl shadow-xl border border-base-300 p-16 text-center">
+                        <div className="bg-base-100 rounded-3xl shadow-xl border border-base-300 p-16 text-center">
 
-                        <h2 className="text-3xl font-bold mb-3">
-                            No Tutors Found
-                        </h2>
+                            <h2 className="text-3xl font-bold mb-3">
+                                No Tutors Found
+                            </h2>
 
-                        <p className="text-base-content/70">
-                            Add tutors to manage them here.
-                        </p>
+                            <p className="text-base-content/70">
+                                Add tutors to manage them here.
+                            </p>
 
-                    </div>
+                        </div>
 
-                ) : (
+                    ) : (
 
-                    <>
-                        {/* DESKTOP TABLE */}
-                        <div className="hidden lg:block overflow-x-auto rounded-3xl shadow-2xl border border-base-300 bg-base-100">
+                        <>
+                            {/* DESKTOP TABLE */}
+                            <div className="hidden lg:block overflow-x-auto rounded-3xl shadow-2xl border border-base-300 bg-base-100">
 
-                            <table className="table table-zebra">
+                                <table className="table table-zebra">
 
-                                {/* HEAD */}
-                                <thead>
+                                    {/* HEAD */}
+                                    <thead>
 
-                                    <tr className="text-base">
+                                        <tr className="text-base">
 
-                                        <th>
-                                            Tutor
-                                        </th>
+                                            <th>
+                                                Tutor
+                                            </th>
 
-                                        <th>
-                                            Subject
-                                        </th>
+                                            <th>
+                                                Subject
+                                            </th>
 
-                                        <th>
-                                            Fee
-                                        </th>
+                                            <th>
+                                                Fee
+                                            </th>
 
-                                        <th className="text-right pr-10">
-                                            Actions
-                                        </th>
+                                            <th className="text-right pr-10">
+                                                Actions
+                                            </th>
 
-                                    </tr>
+                                        </tr>
 
-                                </thead>
+                                    </thead>
 
-                                {/* BODY */}
-                                <tbody>
+                                    {/* BODY */}
+                                    <tbody>
 
-                                    {
-                                        tutors.map((tutor) => (
+                                        {
+                                            tutors.map((tutor) => (
 
-                                            <tr
-                                                key={tutor._id}
-                                                className="hover align-middle"
-                                            >
+                                                <tr
+                                                    key={tutor._id}
+                                                    className="hover align-middle"
+                                                >
 
-                                                {/* TUTOR */}
-                                                <td>
+                                                    {/* TUTOR */}
+                                                    <td>
 
-                                                    <div className="flex items-center gap-4">
+                                                        <div className="flex items-center gap-4">
 
-                                                        <div className="avatar">
+                                                            <div className="avatar">
 
-                                                            <div className="w-16 h-16 rounded-2xl overflow-hidden">
+                                                                <div className="w-16 h-16 rounded-2xl overflow-hidden">
 
-                                                                <Image
-                                                                    src={
-                                                                        tutor?.photo &&
-                                                                            tutor.photo.startsWith("http")
-                                                                            ? tutor.photo
-                                                                            : "/avatar.png"
-                                                                    }
-                                                                    alt={tutor.name}
-                                                                    width={70}
-                                                                    height={70}
-                                                                    className="object-cover w-full h-full"
-                                                                />
+                                                                    <Image
+                                                                        src={
+                                                                            tutor?.photo &&
+                                                                                tutor.photo.startsWith("http")
+                                                                                ? tutor.photo
+                                                                                : "/avatar.png"
+                                                                        }
+                                                                        alt={tutor.name}
+                                                                        width={70}
+                                                                        height={70}
+                                                                        className="object-cover w-full h-full"
+                                                                    />
+
+                                                                </div>
+
+                                                            </div>
+
+                                                            <div>
+
+                                                                <h2 className="font-bold text-lg">
+                                                                    {tutor.name}
+                                                                </h2>
+
+                                                                <p className="text-base-content/70 text-sm">
+                                                                    {tutor.location}
+                                                                </p>
 
                                                             </div>
 
                                                         </div>
 
-                                                        <div>
+                                                    </td>
 
-                                                            <h2 className="font-bold text-lg">
-                                                                {tutor.name}
-                                                            </h2>
+                                                    {/* SUBJECT */}
+                                                    <td>
 
-                                                            <p className="text-base-content/70 text-sm">
-                                                                {tutor.location}
-                                                            </p>
+                                                        <div className="badge badge-primary badge-lg">
+
+                                                            {tutor.subject}
 
                                                         </div>
 
-                                                    </div>
+                                                    </td>
 
-                                                </td>
+                                                    {/* FEE */}
+                                                    <td className="font-semibold">
 
-                                                {/* SUBJECT */}
-                                                <td>
+                                                        {tutor.fee} BDT
 
-                                                    <div className="badge badge-primary badge-lg">
+                                                    </td>
 
-                                                        {tutor.subject}
+                                                    {/* ACTIONS */}
+                                                    <td>
 
-                                                    </div>
+                                                        <div className="flex items-center justify-end gap-3">
 
-                                                </td>
+                                                            <Link
+                                                                href={`/update-tutor/${tutor._id}`}
+                                                                className="btn btn-primary btn-sm"
+                                                            >
+                                                                Update
+                                                            </Link>
 
-                                                {/* FEE */}
-                                                <td className="font-semibold">
+                                                            <button
+                                                                onClick={() =>
+                                                                    handleDeleteTutor(
+                                                                        tutor._id
+                                                                    )
+                                                                }
+                                                                className="btn btn-error btn-sm"
+                                                            >
+                                                                Delete
+                                                            </button>
 
-                                                    {tutor.fee} BDT
+                                                        </div>
 
-                                                </td>
+                                                    </td>
 
-                                                {/* ACTIONS */}
-                                                <td>
+                                                </tr>
+                                            ))
+                                        }
 
-                                                    <div className="flex items-center justify-end gap-3">
+                                    </tbody>
 
-                                                        <Link
-                                                            href={`/update-tutor/${tutor._id}`}
-                                                            className="btn btn-primary btn-sm"
-                                                        >
-                                                            Update
-                                                        </Link>
+                                </table>
 
-                                                        <button
-                                                            onClick={() =>
-                                                                handleDeleteTutor(
-                                                                    tutor._id
-                                                                )
+                            </div>
+
+                            {/* MOBILE CARDS */}
+                            <div className="grid gap-6 lg:hidden">
+
+                                {
+                                    tutors.map((tutor) => (
+
+                                        <div
+                                            key={tutor._id}
+                                            className="bg-base-100 rounded-3xl shadow-xl border border-base-300 p-5"
+                                        >
+
+                                            <div className="flex items-center gap-4">
+
+                                                <div className="avatar">
+
+                                                    <div className="w-20 h-20 rounded-2xl overflow-hidden">
+
+                                                        <Image
+                                                            src={
+                                                                tutor?.photo &&
+                                                                    tutor.photo.startsWith("http")
+                                                                    ? tutor.photo
+                                                                    : "/avatar.png"
                                                             }
-                                                            className="btn btn-error btn-sm"
-                                                        >
-                                                            Delete
-                                                        </button>
+                                                            alt={tutor.name}
+                                                            width={100}
+                                                            height={100}
+                                                            className="object-cover w-full h-full"
+                                                        />
 
                                                     </div>
 
-                                                </td>
+                                                </div>
 
-                                            </tr>
-                                        ))
-                                    }
+                                                <div>
 
-                                </tbody>
+                                                    <h2 className="text-xl font-bold">
+                                                        {tutor.name}
+                                                    </h2>
 
-                            </table>
-
-                        </div>
-
-                        {/* MOBILE CARDS */}
-                        <div className="grid gap-6 lg:hidden">
-
-                            {
-                                tutors.map((tutor) => (
-
-                                    <div
-                                        key={tutor._id}
-                                        className="bg-base-100 rounded-3xl shadow-xl border border-base-300 p-5"
-                                    >
-
-                                        <div className="flex items-center gap-4">
-
-                                            <div className="avatar">
-
-                                                <div className="w-20 h-20 rounded-2xl overflow-hidden">
-
-                                                    <Image
-                                                        src={
-                                                            tutor?.photo &&
-                                                                tutor.photo.startsWith("http")
-                                                                ? tutor.photo
-                                                                : "/avatar.png"
-                                                        }
-                                                        alt={tutor.name}
-                                                        width={100}
-                                                        height={100}
-                                                        className="object-cover w-full h-full"
-                                                    />
+                                                    <p className="text-base-content/70">
+                                                        {tutor.location}
+                                                    </p>
 
                                                 </div>
 
                                             </div>
 
-                                            <div>
+                                            <div className="mt-5 flex items-center justify-between">
 
-                                                <h2 className="text-xl font-bold">
-                                                    {tutor.name}
+                                                <div className="badge badge-primary badge-lg">
+                                                    {tutor.subject}
+                                                </div>
+
+                                                <h2 className="font-bold">
+                                                    {tutor.fee} BDT
                                                 </h2>
 
-                                                <p className="text-base-content/70">
-                                                    {tutor.location}
-                                                </p>
+                                            </div>
+
+                                            {/* ACTIONS */}
+                                            <div className="flex gap-3 mt-6">
+
+                                                <Link
+                                                    href={`/update-tutor/${tutor._id}`}
+                                                    className="btn btn-primary flex-1"
+                                                >
+                                                    Update
+                                                </Link>
+
+                                                <button
+                                                    onClick={() =>
+                                                        handleDeleteTutor(
+                                                            tutor._id
+                                                        )
+                                                    }
+                                                    className="btn btn-error flex-1"
+                                                >
+                                                    Delete
+                                                </button>
 
                                             </div>
 
                                         </div>
+                                    ))
+                                }
 
-                                        <div className="mt-5 flex items-center justify-between">
+                            </div>
+                        </>
+                    )
+                }
 
-                                            <div className="badge badge-primary badge-lg">
-                                                {tutor.subject}
-                                            </div>
-
-                                            <h2 className="font-bold">
-                                                {tutor.fee} BDT
-                                            </h2>
-
-                                        </div>
-
-                                        {/* ACTIONS */}
-                                        <div className="flex gap-3 mt-6">
-
-                                            <Link
-                                                href={`/update-tutor/${tutor._id}`}
-                                                className="btn btn-primary flex-1"
-                                            >
-                                                Update
-                                            </Link>
-
-                                            <button
-                                                onClick={() =>
-                                                    handleDeleteTutor(
-                                                        tutor._id
-                                                    )
-                                                }
-                                                className="btn btn-error flex-1"
-                                            >
-                                                Delete
-                                            </button>
-
-                                        </div>
-
-                                    </div>
-                                ))
-                            }
-
-                        </div>
-                    </>
-                )
-            }
-
-        </div>
+            </div>
+        </PrivateRoute>
     );
 };
 

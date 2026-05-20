@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 
 import TutorCard from "@/components/TutorCard";
+import PrivateRoute from "@/routes/PrivateRoute";
 
 const TutorsPage = () => {
 
@@ -59,71 +60,73 @@ const TutorsPage = () => {
     }
 
     return (
-        <div className="container mx-auto px-4 py-5">
+        <PrivateRoute>
+            <div className="container mx-auto px-4 py-5">
 
-            {/* Heading */}
-            <div className="text-center mb-12">
+                {/* Heading */}
+                <div className="text-center mb-12">
 
-                <h1 className="text-5xl font-bold mb-4">
-                    Explore Tutors
-                </h1>
+                    <h1 className="text-5xl font-bold mb-4">
+                        Explore Tutors
+                    </h1>
 
-                <p className="max-w-2xl mx-auto text-base-content/70">
-                    Discover professional tutors from different
-                    subjects and book sessions easily.
-                </p>
+                    <p className="max-w-2xl mx-auto text-base-content/70">
+                        Discover professional tutors from different
+                        subjects and book sessions easily.
+                    </p>
 
-            </div>
+                </div>
 
-            {/* Search */}
-            <div className="flex justify-center mb-10">
+                {/* Search */}
+                <div className="flex justify-center mb-10">
 
-                <input
-                    type="text"
-                    placeholder="Search tutors by name..."
-                    value={search}
-                    onChange={(e) =>
-                        setSearch(e.target.value)
-                    }
-                    className="input input-bordered w-full max-w-xl"
-                />
-
-            </div>
-
-            {/* Tutors Grid */}
-            {
-                filteredTutors.length > 0 ? (
-
-                    <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-
-                        {
-                            filteredTutors.map((tutor) => (
-                                <TutorCard
-                                    key={tutor._id}
-                                    tutor={tutor}
-                                />
-                            ))
+                    <input
+                        type="text"
+                        placeholder="Search tutors by name..."
+                        value={search}
+                        onChange={(e) =>
+                            setSearch(e.target.value)
                         }
+                        className="input input-bordered w-full max-w-xl"
+                    />
 
-                    </div>
+                </div>
 
-                ) : (
+                {/* Tutors Grid */}
+                {
+                    filteredTutors.length > 0 ? (
 
-                    <div className="text-center py-20">
+                        <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
 
-                        <h2 className="text-3xl font-bold mb-3">
-                            No Tutors Found
-                        </h2>
+                            {
+                                filteredTutors.map((tutor) => (
+                                    <TutorCard
+                                        key={tutor._id}
+                                        tutor={tutor}
+                                    />
+                                ))
+                            }
 
-                        <p className="text-base-content/70">
-                            Try searching with another tutor name.
-                        </p>
+                        </div>
 
-                    </div>
-                )
-            }
+                    ) : (
 
-        </div>
+                        <div className="text-center py-20">
+
+                            <h2 className="text-3xl font-bold mb-3">
+                                No Tutors Found
+                            </h2>
+
+                            <p className="text-base-content/70">
+                                Try searching with another tutor name.
+                            </p>
+
+                        </div>
+                    )
+                }
+
+            </div>
+        </PrivateRoute>
     );
 };
 

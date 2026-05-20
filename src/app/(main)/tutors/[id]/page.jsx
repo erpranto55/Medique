@@ -1,5 +1,6 @@
 "use client";
 
+import PrivateRoute from "@/routes/PrivateRoute";
 import Image from "next/image";
 import Link from "next/link";
 import { use, useEffect, useState } from "react";
@@ -93,221 +94,223 @@ const TutorDetailsPage = ({ params }) => {
     }
 
     return (
-        <div className="container mx-auto px-4 py-10">
+        <PrivateRoute>
+            <div className="container mx-auto px-4 py-10">
 
-            <div className="grid lg:grid-cols-2 gap-12 items-center">
+                <div className="grid lg:grid-cols-2 gap-12 items-center">
 
-                {/* IMAGE */}
-                <div className="relative w-full h-162.5 bg-base-200 rounded-3xl overflow-hidden shadow-xl">
+                    {/* IMAGE */}
+                    <div className="relative w-full h-162.5 bg-base-200 rounded-3xl overflow-hidden shadow-xl">
 
-                    <Image
-                        src={
-                            tutor?.photo &&
-                                tutor.photo.startsWith("http")
-                                ? tutor.photo
-                                : "/avatar.png"
-                        }
-                        alt={tutor?.name || "Tutor Image"}
-                        fill
-                        sizes="100vw"
-                        priority
-                        className="object-cover"
-                    />
-
-                </div>
-
-                {/* CONTENT */}
-                <div className="space-y-6">
-
-                    <div className="badge badge-primary badge-lg">
-                        {tutor.subject}
-                    </div>
-
-                    <h1 className="text-5xl font-bold">
-                        {tutor.name}
-                    </h1>
-
-                    <p className="text-lg text-base-content/70 leading-8">
-                        {tutor.description}
-                    </p>
-
-                    {/* INFO */}
-                    <div className="space-y-4 text-lg">
-
-                        <p>
-                            <span className="font-bold">
-                                Experience:
-                            </span>{" "}
-                            {tutor.experience}
-                        </p>
-
-                        <p>
-                            <span className="font-bold">
-                                Location:
-                            </span>{" "}
-                            {tutor.location}
-                        </p>
-
-                        <p>
-                            <span className="font-bold">
-                                Hourly Fee:
-                            </span>{" "}
-                            {tutor.fee} BDT
-                        </p>
-
-                        <p>
-                            <span className="font-bold">
-                                Available Days:
-                            </span>{" "}
-                            {tutor.availableDays}
-                        </p>
-
-                        <p>
-                            <span className="font-bold">
-                                Time Slot:
-                            </span>{" "}
-                            {tutor.timeSlot}
-                        </p>
-
-                        <p>
-                            <span className="font-bold">
-                                Teaching Mode:
-                            </span>{" "}
-                            {tutor.teachingMode}
-                        </p>
-
-                    </div>
-
-                    {/* BUTTON */}
-                    <div className="pt-4">
-
-                        <button
-                            className="btn btn-primary btn-lg"
-                            onClick={() =>
-                                document
-                                    .getElementById("book_modal")
-                                    .showModal()
+                        <Image
+                            src={
+                                tutor?.photo &&
+                                    tutor.photo.startsWith("http")
+                                    ? tutor.photo
+                                    : "/avatar.png"
                             }
-                        >
-                            Book Session
-                        </button>
+                            alt={tutor?.name || "Tutor Image"}
+                            fill
+                            sizes="100vw"
+                            priority
+                            className="object-cover"
+                        />
 
                     </div>
 
-                </div>
+                    {/* CONTENT */}
+                    <div className="space-y-6">
 
-            </div>
+                        <div className="badge badge-primary badge-lg">
+                            {tutor.subject}
+                        </div>
 
-            {/* MODAL */}
-            <dialog id="book_modal" className="modal">
+                        <h1 className="text-5xl font-bold">
+                            {tutor.name}
+                        </h1>
 
-                <div className="modal-box">
+                        <p className="text-lg text-base-content/70 leading-8">
+                            {tutor.description}
+                        </p>
 
-                    <h3 className="font-bold text-2xl mb-6">
-                        Book Tutor Session
-                    </h3>
+                        {/* INFO */}
+                        <div className="space-y-4 text-lg">
 
-                    <div className="space-y-4">
+                            <p>
+                                <span className="font-bold">
+                                    Experience:
+                                </span>{" "}
+                                {tutor.experience}
+                            </p>
 
-                        <div>
+                            <p>
+                                <span className="font-bold">
+                                    Location:
+                                </span>{" "}
+                                {tutor.location}
+                            </p>
 
-                            <label className="label">
-                                Tutor Name
-                            </label>
+                            <p>
+                                <span className="font-bold">
+                                    Hourly Fee:
+                                </span>{" "}
+                                {tutor.fee} BDT
+                            </p>
 
-                            <input
-                                type="text"
-                                value={tutor.name}
-                                readOnly
-                                className="input input-bordered w-full"
-                            />
+                            <p>
+                                <span className="font-bold">
+                                    Available Days:
+                                </span>{" "}
+                                {tutor.availableDays}
+                            </p>
+
+                            <p>
+                                <span className="font-bold">
+                                    Time Slot:
+                                </span>{" "}
+                                {tutor.timeSlot}
+                            </p>
+
+                            <p>
+                                <span className="font-bold">
+                                    Teaching Mode:
+                                </span>{" "}
+                                {tutor.teachingMode}
+                            </p>
 
                         </div>
 
-                        <div>
+                        {/* BUTTON */}
+                        <div className="pt-4">
 
-                            <label className="label">
-                                Subject
-                            </label>
-
-                            <input
-                                type="text"
-                                value={tutor.subject}
-                                readOnly
-                                className="input input-bordered w-full"
-                            />
-
-                        </div>
-
-                        <div>
-
-                            <label className="label">
-                                Hourly Fee
-                            </label>
-
-                            <input
-                                type="text"
-                                value={`${tutor.fee} BDT`}
-                                readOnly
-                                className="input input-bordered w-full"
-                            />
-
-                        </div>
-
-                        <div>
-
-                            <label className="label">
-                                Student Name
-                            </label>
-
-                            <input
-                                type="text"
-                                placeholder="Enter your name"
-                                className="input input-bordered w-full"
-                            />
-
-                        </div>
-
-                        <div>
-
-                            <label className="label">
-                                Email
-                            </label>
-
-                            <input
-                                type="email"
-                                placeholder="Enter your email"
-                                className="input input-bordered w-full"
-                            />
-
-                        </div>
-
-                    </div>
-
-                    <div className="modal-action">
-
-                        <form method="dialog">
-
-                            <button className="btn">
-                                Cancel
+                            <button
+                                className="btn btn-primary btn-lg"
+                                onClick={() =>
+                                    document
+                                        .getElementById("book_modal")
+                                        .showModal()
+                                }
+                            >
+                                Book Session
                             </button>
 
-                        </form>
-
-                        <button
-                            onClick={handleBooking}
-                            className="btn btn-primary"
-                        >
-                            Confirm Booking
-                        </button>
+                        </div>
 
                     </div>
 
                 </div>
 
-            </dialog>
+                {/* MODAL */}
+                <dialog id="book_modal" className="modal">
 
-        </div>
+                    <div className="modal-box">
+
+                        <h3 className="font-bold text-2xl mb-6">
+                            Book Tutor Session
+                        </h3>
+
+                        <div className="space-y-4">
+
+                            <div>
+
+                                <label className="label">
+                                    Tutor Name
+                                </label>
+
+                                <input
+                                    type="text"
+                                    value={tutor.name}
+                                    readOnly
+                                    className="input input-bordered w-full"
+                                />
+
+                            </div>
+
+                            <div>
+
+                                <label className="label">
+                                    Subject
+                                </label>
+
+                                <input
+                                    type="text"
+                                    value={tutor.subject}
+                                    readOnly
+                                    className="input input-bordered w-full"
+                                />
+
+                            </div>
+
+                            <div>
+
+                                <label className="label">
+                                    Hourly Fee
+                                </label>
+
+                                <input
+                                    type="text"
+                                    value={`${tutor.fee} BDT`}
+                                    readOnly
+                                    className="input input-bordered w-full"
+                                />
+
+                            </div>
+
+                            <div>
+
+                                <label className="label">
+                                    Student Name
+                                </label>
+
+                                <input
+                                    type="text"
+                                    placeholder="Enter your name"
+                                    className="input input-bordered w-full"
+                                />
+
+                            </div>
+
+                            <div>
+
+                                <label className="label">
+                                    Email
+                                </label>
+
+                                <input
+                                    type="email"
+                                    placeholder="Enter your email"
+                                    className="input input-bordered w-full"
+                                />
+
+                            </div>
+
+                        </div>
+
+                        <div className="modal-action">
+
+                            <form method="dialog">
+
+                                <button className="btn">
+                                    Cancel
+                                </button>
+
+                            </form>
+
+                            <button
+                                onClick={handleBooking}
+                                className="btn btn-primary"
+                            >
+                                Confirm Booking
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                </dialog>
+
+            </div>
+        </PrivateRoute>
     );
 };
 

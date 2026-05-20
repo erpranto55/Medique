@@ -1,5 +1,6 @@
 "use client";
 
+import PrivateRoute from "@/routes/PrivateRoute";
 import { useEffect, useState } from "react";
 
 import {
@@ -97,143 +98,145 @@ const MyBookingsPage = () => {
     }
 
     return (
-        <div className="container mx-auto px-4 py-10">
+        <PrivateRoute>
+            <div className="container mx-auto px-4 py-10">
 
-            {/* HEADING */}
-            <div className="text-center mb-10">
+                {/* HEADING */}
+                <div className="text-center mb-10">
 
-                <h1 className="text-5xl font-bold mb-4">
-                    My Booked Sessions
-                </h1>
+                    <h1 className="text-5xl font-bold mb-4">
+                        My Booked Sessions
+                    </h1>
 
-                <p className="text-base-content/70">
-                    Manage all your booked tutoring sessions.
-                </p>
+                    <p className="text-base-content/70">
+                        Manage all your booked tutoring sessions.
+                    </p>
+
+                </div>
+
+                {
+                    bookings.length === 0 ? (
+
+                        <div className="text-center py-20">
+
+                            <h2 className="text-3xl font-bold">
+                                No Bookings Found
+                            </h2>
+
+                        </div>
+
+                    ) : (
+
+                        <div className="overflow-x-auto rounded-2xl border border-base-300">
+
+                            <table className="table">
+
+                                {/* HEAD */}
+                                <thead className="bg-base-200">
+
+                                    <tr>
+
+                                        <th>#</th>
+
+                                        <th>Tutor</th>
+
+                                        <th>Subject</th>
+
+                                        <th>Fee</th>
+
+                                        <th>Student</th>
+
+                                        <th>Email</th>
+
+                                        <th className="text-end">
+                                            Actions
+                                        </th>
+
+                                    </tr>
+
+                                </thead>
+
+                                <tbody>
+
+                                    {
+                                        bookings.map(
+                                            (
+                                                booking,
+                                                index
+                                            ) => (
+                                                <tr
+                                                    key={
+                                                        booking._id
+                                                    }
+                                                >
+
+                                                    <td>
+                                                        {index + 1}
+                                                    </td>
+
+                                                    <td>
+                                                        {
+                                                            booking.tutorName
+                                                        }
+                                                    </td>
+
+                                                    <td>
+                                                        {
+                                                            booking.subject
+                                                        }
+                                                    </td>
+
+                                                    <td>
+                                                        {
+                                                            booking.fee
+                                                        }{" "}
+                                                        BDT
+                                                    </td>
+
+                                                    <td>
+                                                        {
+                                                            booking.studentName
+                                                        }
+                                                    </td>
+
+                                                    <td>
+                                                        {
+                                                            booking.email
+                                                        }
+                                                    </td>
+
+                                                    <td className="text-end">
+
+                                                        <button
+                                                            onClick={() =>
+                                                                handleDelete(
+                                                                    booking._id
+                                                                )
+                                                            }
+                                                            className="btn btn-error btn-sm text-white"
+                                                        >
+                                                            Cancel
+                                                        </button>
+
+                                                    </td>
+
+                                                </tr>
+                                            )
+                                        )
+                                    }
+
+                                </tbody>
+
+                            </table>
+
+                        </div>
+                    )
+                }
+
+                <ToastContainer position="top-center" />
 
             </div>
-
-            {
-                bookings.length === 0 ? (
-
-                    <div className="text-center py-20">
-
-                        <h2 className="text-3xl font-bold">
-                            No Bookings Found
-                        </h2>
-
-                    </div>
-
-                ) : (
-
-                    <div className="overflow-x-auto rounded-2xl border border-base-300">
-
-                        <table className="table">
-
-                            {/* HEAD */}
-                            <thead className="bg-base-200">
-
-                                <tr>
-
-                                    <th>#</th>
-
-                                    <th>Tutor</th>
-
-                                    <th>Subject</th>
-
-                                    <th>Fee</th>
-
-                                    <th>Student</th>
-
-                                    <th>Email</th>
-
-                                    <th className="text-end">
-                                        Actions
-                                    </th>
-
-                                </tr>
-
-                            </thead>
-
-                            <tbody>
-
-                                {
-                                    bookings.map(
-                                        (
-                                            booking,
-                                            index
-                                        ) => (
-                                            <tr
-                                                key={
-                                                    booking._id
-                                                }
-                                            >
-
-                                                <td>
-                                                    {index + 1}
-                                                </td>
-
-                                                <td>
-                                                    {
-                                                        booking.tutorName
-                                                    }
-                                                </td>
-
-                                                <td>
-                                                    {
-                                                        booking.subject
-                                                    }
-                                                </td>
-
-                                                <td>
-                                                    {
-                                                        booking.fee
-                                                    }{" "}
-                                                    BDT
-                                                </td>
-
-                                                <td>
-                                                    {
-                                                        booking.studentName
-                                                    }
-                                                </td>
-
-                                                <td>
-                                                    {
-                                                        booking.email
-                                                    }
-                                                </td>
-
-                                                <td className="text-end">
-
-                                                    <button
-                                                        onClick={() =>
-                                                            handleDelete(
-                                                                booking._id
-                                                            )
-                                                        }
-                                                        className="btn btn-error btn-sm text-white"
-                                                    >
-                                                        Cancel
-                                                    </button>
-
-                                                </td>
-
-                                            </tr>
-                                        )
-                                    )
-                                }
-
-                            </tbody>
-
-                        </table>
-
-                    </div>
-                )
-            }
-
-            <ToastContainer position="top-center" />
-
-        </div>
+        </PrivateRoute>
     );
 };
 
