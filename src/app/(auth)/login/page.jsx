@@ -1,237 +1,230 @@
 "use client";
 
-import React, { useState } from "react";
-
-import {
-    Button,
-    FieldError,
-    Form,
-    Input,
-    InputGroup,
-    Label,
-    TextField,
-} from "@heroui/react";
-
 import Link from "next/link";
 
-import { useForm } from "react-hook-form";
+import {
+    useContext,
+    useState,
+} from "react";
 
 import {
-    FaEye,
-    FaEyeSlash,
-} from "react-icons/fa";
-
-import { FcGoogle } from "react-icons/fc";
+    AuthContext,
+} from "@/providers/AuthProvider";
 
 import {
-    ToastContainer,
     toast,
+    ToastContainer,
 } from "react-toastify";
 
 import "react-toastify/dist/ReactToastify.css";
 
-import { useRouter } from "next/navigation";
+import {
+    useRouter,
+    useSearchParams,
+} from "next/navigation";
 
 const LoginPage = () => {
 
+    const {
+        signInUser,
+        googleLogin,
+    } = useContext(AuthContext);
+
     const router = useRouter();
 
-    const {
-        register,
-        handleSubmit,
-    } = useForm();
+    const searchParams =
+        useSearchParams();
 
-    const [isShowPassword, setIsShowPassword] =
-        useState(false);
+    const redirect =
+        searchParams.get("redirect") || "/";
+
+    const [error, setError] =
+        useState("");
 
     // LOGIN
-    const handleLogInFunc = async (data) => {
+    const handleLogin = async (e) => {
 
-        console.log(data);
+        e.preventDefault();
 
-        toast.success("Login successful!");
+        setError("");
 
-        setTimeout(() => {
-            router.push("/");
-        }, 1500);
+        const form = e.target;
+
+        const email =
+            form.email.value;
+
+        const password =
+            form.password.value;
+
+        try {
+
+            await signInUser(
+                email,
+                password
+            );
+
+            toast.success(
+                "Login Successful"
+            );
+
+            setTimeout(() => {
+
+                router.push(redirect);
+
+            }, 1500);
+
+        } catch (error) {
+
+            console.log(error);
+
+            setError(
+                "Invalid Email or Password"
+            );
+
+            toast.error(
+                "Login Failed"
+            );
+        }
     };
 
     // GOOGLE LOGIN
-    const handleGoogleLogin = () => {
+    const handleGoogleLogin =
+        async () => {
 
-        toast.success(
-            "Google Login Clicked"
-        );
-    };
+            try {
+
+                await googleLogin();
+
+                toast.success(
+                    "Login Successful"
+                );
+
+                setTimeout(() => {
+
+                    router.push("/");
+
+                }, 1500);
+
+            } catch (error) {
+
+                console.log(error);
+
+                toast.error(
+                    "Google Login Failed"
+                );
+            }
+        };
 
     return (
-        <div className="container mx-auto min-h-screen flex items-center justify-center px-4 py-16">
+        <div className="min-h-screen flex items-center justify-center px-4 py-10">
 
-            <div className="w-full max-w-lg bg-base-100 p-8 rounded-3xl shadow-2xl border border-base-300">
+            <div className="w-full max-w-md bg-base-100 shadow-2xl rounded-3xl border border-base-300 p-8">
 
-                {/* Heading */}
+                {/* HEADING */}
                 <div className="text-center mb-8">
 
-                    <h2 className="text-4xl font-bold text-base-content">
-                        Login Your Account
-                    </h2>
+                    <h1 className="text-4xl font-bold">
+                        Welcome Back
+                    </h1>
 
                     <p className="text-base-content/70 mt-3">
-                        Welcome back to MediQueue
+                        Login to continue.
                     </p>
 
                 </div>
 
-                <hr className="border-base-300 mb-8" />
-
-                {/* Form */}
-                <Form
-                    className="flex flex-col gap-5"
-                    onSubmit={handleSubmit(handleLogInFunc)}
+                {/* FORM */}
+                <form
+                    onSubmit={handleLogin}
+                    className="space-y-5"
                 >
 
-                    {/* Email */}
-                    <TextField
-                        isRequired
-                        name="email"
-                        type="email"
-                    >
+                    {/* EMAIL */}
+                    <div>
 
-                        <Label>
-                            Email Address
-                        </Label>
+                        <label className="label">
+                            Email
+                        </label>
 
-                        <Input
-                            placeholder="Enter your email"
-                            className="mt-1 w-full"
-                            {...register("email")}
+                        <input
+                            type="email"
+                            name="email"
+                            required
+                            placeholder="Enter email"
+                            className="input input-bordered w-full"
                         />
-
-                        <FieldError />
-
-                    </TextField>
-
-                    {/* Password */}
-                    <TextField
-                        isRequired
-                        name="password"
-                        type={
-                            isShowPassword
-                                ? "text"
-                                : "password"
-                        }
-                    >
-
-                        <Label>
-                            Password
-                        </Label>
-
-                        <InputGroup>
-
-                            <InputGroup.Input
-                                className="w-full"
-                                placeholder="Enter your password"
-                                type={
-                                    isShowPassword
-                                        ? "text"
-                                        : "password"
-                                }
-                                {...register("password")}
-                            />
-
-                            <InputGroup.Suffix>
-
-                                <Button
-                                    isIconOnly
-                                    size="sm"
-                                    variant="light"
-                                    onPress={() =>
-                                        setIsShowPassword(
-                                            !isShowPassword
-                                        )
-                                    }
-                                >
-
-                                    {
-                                        isShowPassword
-                                            ? (
-                                                <FaEye className="size-4" />
-                                            ) : (
-                                                <FaEyeSlash className="size-4" />
-                                            )
-                                    }
-
-                                </Button>
-
-                            </InputGroup.Suffix>
-
-                        </InputGroup>
-
-                        <FieldError />
-
-                    </TextField>
-
-                    {/* Forgot Password */}
-                    <div className="w-full text-right">
-
-                        <button
-                            type="button"
-                            className="text-sm text-primary hover:underline"
-                        >
-                            Forgot Password?
-                        </button>
 
                     </div>
 
-                    {/* Login Button */}
-                    <Button
-                        type="submit"
-                        className="w-full btn btn-primary text-white"
-                    >
+                    {/* PASSWORD */}
+                    <div>
+
+                        <label className="label">
+                            Password
+                        </label>
+
+                        <input
+                            type="password"
+                            name="password"
+                            required
+                            placeholder="Enter password"
+                            className="input input-bordered w-full"
+                        />
+
+                    </div>
+
+                    {/* ERROR */}
+                    {
+                        error && (
+
+                            <p className="text-error text-sm">
+                                {error}
+                            </p>
+                        )
+                    }
+
+                    {/* BUTTON */}
+                    <button className="btn btn-primary w-full">
+
                         Login
-                    </Button>
 
-                </Form>
+                    </button>
 
-                {/* Divider */}
-                <div className="divider my-8">
+                </form>
+
+                {/* DIVIDER */}
+                <div className="divider">
                     OR
                 </div>
 
-                {/* Google */}
-                <Button
-                    onPress={handleGoogleLogin}
-                    className="w-full"
-                    variant="bordered"
+                {/* GOOGLE LOGIN */}
+                <button
+                    onClick={
+                        handleGoogleLogin
+                    }
+                    className="btn btn-outline w-full"
                 >
+                    Continue With Google
+                </button>
 
-                    <FcGoogle className="text-xl" />
+                {/* REGISTER */}
+                <p className="text-center mt-6 text-base-content/70">
 
-                    Continue with Google
-
-                </Button>
-
-                {/* Register */}
-                <div className="flex gap-2 items-center justify-center mt-8 text-sm">
-
-                    <p className="text-base-content/70">
-                        Don&apos;t have an account?
-                    </p>
+                    Don&apos;t have an account?{" "}
 
                     <Link
                         href="/register"
-                        className="text-primary font-semibold hover:underline"
+                        className="text-primary font-semibold"
                     >
                         Register
                     </Link>
 
-                </div>
+                </p>
+
             </div>
 
-            {/* Toast */}
-            <ToastContainer
-                position="top-center"
-            />
+            <ToastContainer position="top-center" />
+
         </div>
     );
 };

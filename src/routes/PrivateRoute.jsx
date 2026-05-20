@@ -5,6 +5,7 @@ import {
 } from "@/providers/AuthProvider";
 
 import {
+    usePathname,
     useRouter,
 } from "next/navigation";
 
@@ -24,6 +25,9 @@ const PrivateRoute = ({
 
     const router = useRouter();
 
+    const pathname =
+        usePathname();
+
     useEffect(() => {
 
         if (
@@ -31,13 +35,16 @@ const PrivateRoute = ({
             !user
         ) {
 
-            router.push("/login");
+            router.push(
+                `/login?redirect=${pathname}`
+            );
         }
 
     }, [
         user,
         loading,
         router,
+        pathname,
     ]);
 
     // LOADING
