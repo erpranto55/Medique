@@ -1,23 +1,38 @@
 "use client";
 
-import Image from "next/image";
 import { useEffect, useState } from "react";
-import { toast } from "react-toastify";
+
+import {
+    ToastContainer,
+    toast,
+} from "react-toastify";
+
+import "react-toastify/dist/ReactToastify.css";
 import Swal from "sweetalert2";
 
 const MyBookingsPage = () => {
 
     const [bookings, setBookings] = useState([]);
 
+    const [loading, setLoading] = useState(true);
+
+    // FETCH BOOKINGS
     useEffect(() => {
 
         fetch("http://localhost:5000/bookings")
             .then((res) => res.json())
-            .then((data) => setBookings(data));
+            .then((data) => {
+
+                setBookings(data);
+
+                setLoading(false);
+            });
 
     }, []);
 
-    const handleCancelBooking = async (id) => {
+    // DELETE BOOKING
+    // DELETE BOOKING
+    const handleDelete = async (id) => {
 
         const result = await Swal.fire({
             title: "Are you sure?",
@@ -54,7 +69,9 @@ const MyBookingsPage = () => {
                             booking._id !== id
                     );
 
-                setBookings(remainingBookings);
+                setBookings(
+                    remainingBookings
+                );
             }
 
         } catch (error) {
@@ -62,22 +79,35 @@ const MyBookingsPage = () => {
             console.log(error);
 
             toast.error(
-                "Failed to cancel booking"
+                "Failed To Cancel Booking"
             );
         }
     };
 
+    // LOADING
+    if (loading) {
+
+        return (
+            <div className="min-h-screen flex items-center justify-center">
+
+                <span className="loading loading-spinner loading-lg"></span>
+
+            </div>
+        );
+    }
+
     return (
         <div className="container mx-auto px-4 py-10">
 
-            <div className="text-center mb-12">
+            {/* HEADING */}
+            <div className="text-center mb-10">
 
                 <h1 className="text-5xl font-bold mb-4">
-                    My Bookings
+                    My Booked Sessions
                 </h1>
 
                 <p className="text-base-content/70">
-                    Manage your booked tutor sessions.
+                    Manage all your booked tutoring sessions.
                 </p>
 
             </div>
@@ -87,7 +117,7 @@ const MyBookingsPage = () => {
 
                     <div className="text-center py-20">
 
-                        <h2 className="text-3xl font-bold mb-3">
+                        <h2 className="text-3xl font-bold">
                             No Bookings Found
                         </h2>
 
@@ -95,19 +125,30 @@ const MyBookingsPage = () => {
 
                 ) : (
 
-                    <div className="overflow-x-auto">
+                    <div className="overflow-x-auto rounded-2xl border border-base-300">
 
                         <table className="table">
 
-                            <thead>
+                            {/* HEAD */}
+                            <thead className="bg-base-200">
 
                                 <tr>
 
-                                    <th>Image</th>
+                                    <th>#</th>
+
                                     <th>Tutor</th>
+
                                     <th>Subject</th>
+
                                     <th>Fee</th>
-                                    <th>Action</th>
+
+                                    <th>Student</th>
+
+                                    <th>Email</th>
+
+                                    <th className="text-end">
+                                        Actions
+                                    </th>
 
                                 </tr>
 
@@ -117,8 +158,10 @@ const MyBookingsPage = () => {
 
                                 {
                                     bookings.map(
-                                        (booking) => (
-
+                                        (
+                                            booking,
+                                            index
+                                        ) => (
                                             <tr
                                                 key={
                                                     booking._id
@@ -126,36 +169,7 @@ const MyBookingsPage = () => {
                                             >
 
                                                 <td>
-
-                                                    <div className="avatar">
-
-                                                        <div className="w-16 rounded-xl">
-
-                                                            <Image
-                                                                src={
-                                                                    booking?.image &&
-                                                                        booking.image.startsWith(
-                                                                            "http"
-                                                                        )
-                                                                        ? booking.image
-                                                                        : "/avatar.png"
-                                                                }
-                                                                alt={
-                                                                    booking.tutorName
-                                                                }
-                                                                width={
-                                                                    70
-                                                                }
-                                                                height={
-                                                                    70
-                                                                }
-                                                                className="object-cover"
-                                                            />
-
-                                                        </div>
-
-                                                    </div>
-
+                                                    {index + 1}
                                                 </td>
 
                                                 <td>
@@ -178,14 +192,26 @@ const MyBookingsPage = () => {
                                                 </td>
 
                                                 <td>
+                                                    {
+                                                        booking.studentName
+                                                    }
+                                                </td>
+
+                                                <td>
+                                                    {
+                                                        booking.email
+                                                    }
+                                                </td>
+
+                                                <td className="text-end">
 
                                                     <button
                                                         onClick={() =>
-                                                            handleCancelBooking(
+                                                            handleDelete(
                                                                 booking._id
                                                             )
                                                         }
-                                                        className="btn btn-error btn-sm"
+                                                        className="btn btn-error btn-sm text-white"
                                                     >
                                                         Cancel
                                                     </button>
@@ -204,6 +230,8 @@ const MyBookingsPage = () => {
                     </div>
                 )
             }
+
+            <ToastContainer position="top-center" />
 
         </div>
     );
