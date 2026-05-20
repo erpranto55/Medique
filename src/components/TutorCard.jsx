@@ -71,7 +71,7 @@ const TutorCard = ({ tutor }) => {
             <span className="font-semibold">
               Hourly Fee:
             </span>{" "}
-            ${fee}
+            {fee} BDT
           </p>
 
         </div>

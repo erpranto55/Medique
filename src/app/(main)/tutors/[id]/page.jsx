@@ -1,52 +1,53 @@
-import tutors from "@/data/tutors";
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
+import { use, useEffect, useState } from "react";
 
-const TutorDetailsPage = async ({ params }) => {
+const TutorDetailsPage = ({ params }) => {
 
-    const { id } = await params;
+    const { id } = use(params);
 
-    const tutor = tutors.find(
-        (item) => item.id === parseInt(id)
-    );
+    const [tutor, setTutor] = useState(null);
 
-    // NOT FOUND
+    useEffect(() => {
+
+        fetch(`http://localhost:5000/tutors/${id}`)
+            .then((res) => res.json())
+            .then((data) => setTutor(data));
+
+    }, [id]);
+
+    // LOADING
     if (!tutor) {
+
         return (
             <div className="min-h-screen flex items-center justify-center">
 
-                <div className="text-center">
+                <span className="loading loading-spinner loading-lg"></span>
 
-                    <h1 className="text-5xl font-bold mb-4">
-                        Tutor Not Found
-                    </h1>
-
-                    <Link
-                        href="/tutors"
-                        className="btn btn-primary"
-                    >
-                        Back To Tutors
-                    </Link>
-
-                </div>
             </div>
         );
     }
 
     return (
-        <div className="container mx-auto px-4 py-5">
+        <div className="container mx-auto px-4 py-10">
 
             <div className="grid lg:grid-cols-2 gap-12 items-center">
 
                 {/* IMAGE */}
-                {/* IMAGE */}
                 <div className="relative w-full h-162.5 bg-base-200 rounded-3xl overflow-hidden shadow-xl">
 
                     <Image
-                        src={tutor.image}
+                        src={
+                            tutor?.photo &&
+                                tutor.photo.startsWith("http")
+                                ? tutor.photo
+                                : "/avatar.png"
+                        }
                         alt={tutor.name}
                         fill
-                        className="object-contain"
+                        className="object-cover"
                     />
 
                 </div>
@@ -63,9 +64,7 @@ const TutorDetailsPage = async ({ params }) => {
                     </h1>
 
                     <p className="text-lg text-base-content/70 leading-8">
-                        Experienced tutor helping students improve
-                        their learning skills through personalized
-                        academic support and smart teaching methods.
+                        {tutor.description}
                     </p>
 
                     {/* INFO */}
@@ -89,28 +88,28 @@ const TutorDetailsPage = async ({ params }) => {
                             <span className="font-bold">
                                 Hourly Fee:
                             </span>{" "}
-                            ${tutor.fee}
+                            {tutor.fee} BDT
                         </p>
 
                         <p>
                             <span className="font-bold">
                                 Available Days:
                             </span>{" "}
-                            Sun - Thu
+                            {tutor.availableDays}
                         </p>
 
                         <p>
                             <span className="font-bold">
-                                Time:
+                                Time Slot:
                             </span>{" "}
-                            5:00 PM - 8:00 PM
+                            {tutor.timeSlot}
                         </p>
 
                         <p>
                             <span className="font-bold">
                                 Teaching Mode:
                             </span>{" "}
-                            Online & Offline
+                            {tutor.teachingMode}
                         </p>
 
                     </div>
@@ -118,13 +117,129 @@ const TutorDetailsPage = async ({ params }) => {
                     {/* BUTTON */}
                     <div className="pt-4">
 
-                        <button className="btn btn-primary btn-lg">
+                        <button
+                            className="btn btn-primary btn-lg"
+                            onClick={() =>
+                                document
+                                    .getElementById("book_modal")
+                                    .showModal()
+                            }
+                        >
                             Book Session
                         </button>
 
                     </div>
+
                 </div>
+
             </div>
+
+            {/* MODAL */}
+            <dialog id="book_modal" className="modal">
+
+                <div className="modal-box">
+
+                    <h3 className="font-bold text-2xl mb-6">
+                        Book Tutor Session
+                    </h3>
+
+                    <div className="space-y-4">
+
+                        <div>
+
+                            <label className="label">
+                                Tutor Name
+                            </label>
+
+                            <input
+                                type="text"
+                                value={tutor.name}
+                                readOnly
+                                className="input input-bordered w-full"
+                            />
+
+                        </div>
+
+                        <div>
+
+                            <label className="label">
+                                Subject
+                            </label>
+
+                            <input
+                                type="text"
+                                value={tutor.subject}
+                                readOnly
+                                className="input input-bordered w-full"
+                            />
+
+                        </div>
+
+                        <div>
+
+                            <label className="label">
+                                Hourly Fee
+                            </label>
+
+                            <input
+                                type="text"
+                                value={`${tutor.fee} BDT`}
+                                readOnly
+                                className="input input-bordered w-full"
+                            />
+
+                        </div>
+
+                        <div>
+
+                            <label className="label">
+                                Student Name
+                            </label>
+
+                            <input
+                                type="text"
+                                placeholder="Enter your name"
+                                className="input input-bordered w-full"
+                            />
+
+                        </div>
+
+                        <div>
+
+                            <label className="label">
+                                Email
+                            </label>
+
+                            <input
+                                type="email"
+                                placeholder="Enter your email"
+                                className="input input-bordered w-full"
+                            />
+
+                        </div>
+
+                    </div>
+
+                    <div className="modal-action">
+
+                        <form method="dialog">
+
+                            <button className="btn">
+                                Cancel
+                            </button>
+
+                        </form>
+
+                        <button className="btn btn-primary">
+                            Confirm Booking
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </dialog>
+
         </div>
     );
 };
