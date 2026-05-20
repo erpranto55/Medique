@@ -2,19 +2,19 @@ import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyCefTiWIYb33omoiNA_C67Cn1xnMkaVaYw",
+  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
 
-  authDomain: "mediqueue-5eeca.firebaseapp.com",
+  authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
 
-  projectId: "mediqueue-5eeca",
+  projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
 
-  storageBucket: "mediqueue-5eeca.firebasestorage.app",
+  storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
 
-  messagingSenderId: "254670049246",
+  messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
 
-  appId: "1:254670049246:web:2e28dea2aa2a5329c0574f",
+  appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
 
-  measurementId: "G-H7YE2DRD1M",
+  measurementId: process.env.NEXT_PUBLIC_MEASUREMENT_ID,
 };
 
 // Initialize Firebase
