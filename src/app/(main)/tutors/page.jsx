@@ -1,20 +1,62 @@
 "use client";
 
-import { useState } from "react";
-import tutorsData from "@/data/tutors";
-import TutorCard from "@/components/TutorCard";
+import { useEffect, useState } from "react";
 
+import axios from "axios";
+
+import TutorCard from "@/components/TutorCard";
 
 const TutorsPage = () => {
 
+    const [tutors, setTutors] = useState([]);
+
     const [search, setSearch] = useState("");
 
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+
+        const fetchTutors = async () => {
+
+            try {
+
+                const res = await axios.get(
+                    "http://localhost:5000/tutors"
+                );
+
+                setTutors(res.data);
+
+            } catch (error) {
+
+                console.log(error);
+
+            } finally {
+
+                setLoading(false);
+
+            }
+        };
+
+        fetchTutors();
+
+    }, []);
+
     // SEARCH FILTER
-    const filteredTutors = tutorsData.filter((tutor) =>
+    const filteredTutors = tutors.filter((tutor) =>
         tutor.name
-            .toLowerCase()
+            ?.toLowerCase()
             .includes(search.toLowerCase())
     );
+
+    if (loading) {
+        return (
+            <div className="min-h-screen flex items-center justify-center">
+
+                <span className="loading loading-spinner loading-lg"></span>
+
+            </div>
+        );
+    }
 
     return (
         <div className="container mx-auto px-4 py-5">
@@ -30,6 +72,7 @@ const TutorsPage = () => {
                     Discover professional tutors from different
                     subjects and book sessions easily.
                 </p>
+
             </div>
 
             {/* Search */}
@@ -56,7 +99,7 @@ const TutorsPage = () => {
                         {
                             filteredTutors.map((tutor) => (
                                 <TutorCard
-                                    key={tutor.id}
+                                    key={tutor._id}
                                     tutor={tutor}
                                 />
                             ))
@@ -75,9 +118,11 @@ const TutorsPage = () => {
                         <p className="text-base-content/70">
                             Try searching with another tutor name.
                         </p>
+
                     </div>
                 )
             }
+
         </div>
     );
 };

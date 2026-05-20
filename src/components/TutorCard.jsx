@@ -4,10 +4,10 @@ import Link from "next/link";
 const TutorCard = ({ tutor }) => {
 
   const {
-    id,
+    _id,
     name,
     subject,
-    image,
+    photo,
     experience,
     fee,
     location,
@@ -19,11 +19,21 @@ const TutorCard = ({ tutor }) => {
       <figure className="h-100 bg-base-200 overflow-hidden">
 
         <Image
-          src={image}
+          src={
+            photo &&
+              photo.startsWith("http")
+              ? photo
+              : "/avatar.png"
+          }
           alt={name}
           height={300}
           width={300}
-          className="w-full h-full object-contain hover:scale-105 transition duration-500"
+          loading="eager"
+          unoptimized
+          onError={(e) => {
+            e.currentTarget.src = "/avatar.png";
+          }}
+          className="w-full h-full object-cover hover:scale-105 transition duration-500"
         />
 
       </figure>
@@ -69,7 +79,7 @@ const TutorCard = ({ tutor }) => {
         <div className="card-actions mt-5">
 
           <Link
-            href={`/tutors/${id}`}
+            href={`/tutors/${_id}`}
             className="btn btn-primary w-full"
           >
             View Details
