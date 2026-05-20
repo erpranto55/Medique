@@ -3,21 +3,28 @@
 import PrivateRoute from "@/routes/PrivateRoute";
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { toast } from "react-toastify";
 import Swal from "sweetalert2";
+import {
+    AuthContext,
+} from "@/providers/AuthProvider";
 
 const MyTutorsPage = () => {
+    const { user } =
+        useContext(AuthContext);
 
     const [tutors, setTutors] = useState([]);
 
     useEffect(() => {
 
-        fetch("http://localhost:5000/tutors")
+        fetch(
+            `http://localhost:5000/my-tutors?email=${user?.email}`
+        )
             .then((res) => res.json())
             .then((data) => setTutors(data));
 
-    }, []);
+    }, [user]);
 
     // DELETE TUTOR
     const handleDeleteTutor = async (id) => {
