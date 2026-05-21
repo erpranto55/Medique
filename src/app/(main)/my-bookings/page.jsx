@@ -15,6 +15,11 @@ import {
 } from "@/providers/AuthProvider";
 
 const MyBookingsPage = () => {
+
+    useEffect(() => {
+        document.title =
+            "My Bookings | MediQueue";
+    }, []);
     const { user } = useContext(AuthContext);
 
     const [bookings, setBookings] = useState([]);

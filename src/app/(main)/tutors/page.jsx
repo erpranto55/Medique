@@ -7,7 +7,13 @@ import axios from "axios";
 import TutorCard from "@/components/TutorCard";
 import PrivateRoute from "@/routes/PrivateRoute";
 
+
 const TutorsPage = () => {
+    
+    useEffect(() => {
+        document.title =
+            "Tutors | MediQueue";
+    }, []);
 
     const [tutors, setTutors] = useState([]);
 
@@ -131,3 +137,4 @@ const TutorsPage = () => {
 };
 
 export default TutorsPage;
+

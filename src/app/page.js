@@ -5,6 +5,10 @@ import Statistics from "@/components/Statistics";
 import Testimonials from "@/components/Testimonials";
 import WhyChooseUs from "@/components/WhyChooseUs";
 
+export const metadata = {
+  title: "MediQueue",
+};
+
 export default function Home() {
   return (
     <div>

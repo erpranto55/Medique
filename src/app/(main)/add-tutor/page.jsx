@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 
 import {
     Button,
@@ -39,6 +39,11 @@ const teachingModes = [
 ];
 
 const AddTutorPage = () => {
+
+    useEffect(() => {
+        document.title =
+            "Add Tutor | MediQueue";
+    }, []);
 
     const {
         register,

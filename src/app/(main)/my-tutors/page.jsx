@@ -11,6 +11,11 @@ import {
 } from "@/providers/AuthProvider";
 
 const MyTutorsPage = () => {
+
+    useEffect(() => {
+        document.title =
+            "My Tutors | MediQueue";
+    }, []);
     const { user } =
         useContext(AuthContext);
 
