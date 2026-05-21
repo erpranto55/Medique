@@ -58,7 +58,7 @@ const TutorDetailsPage = ({ params }) => {
 
             const data = await res.json();
 
-            if (data.success) {
+            if (data.insertedId) {
 
                 toast.success(
                     "Booking Successful!",
