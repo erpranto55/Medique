@@ -16,6 +16,13 @@ import {
 } from "react-hook-form";
 
 import {
+    ToastContainer,
+    toast,
+} from "react-toastify";
+
+import "react-toastify/dist/ReactToastify.css";
+
+import {
     AuthContext,
 } from "@/providers/AuthProvider";
 
@@ -67,13 +74,55 @@ const RegisterPage = () => {
                 photoURL: data.photo,
             });
 
+            // SAVE USER TO DATABASE
+            const userData = {
+
+                name: data.name,
+
+                email: data.email,
+
+                photo: data.photo,
+
+                role: "student",
+
+                createdAt: new Date(),
+            };
+
+            await fetch(
+                "http://localhost:5000/users",
+                {
+                    method: "POST",
+
+                    headers: {
+                        "content-type":
+                            "application/json",
+                    },
+
+                    body: JSON.stringify(
+                        userData
+                    ),
+                }
+            );
+
             console.log(result.user);
 
-            router.push("/");
+            toast.success(
+                "Registration Successful"
+            );
+
+            setTimeout(() => {
+
+                router.push("/");
+
+            }, 1500);
 
         } catch (error) {
 
             console.log(error.message);
+
+            toast.error(
+                error.message
+            );
         }
     };
 
@@ -83,13 +132,63 @@ const RegisterPage = () => {
 
             try {
 
-                await googleLogin();
+                const result =
+                    await googleLogin();
 
-                router.push("/");
+                const user =
+                    result.user;
+
+                // SAVE GOOGLE USER
+                const userData = {
+
+                    name:
+                        user.displayName,
+
+                    email:
+                        user.email,
+
+                    photo:
+                        user.photoURL,
+
+                    role: "student",
+
+                    createdAt:
+                        new Date(),
+                };
+
+                await fetch(
+                    "http://localhost:5000/users",
+                    {
+                        method: "POST",
+
+                        headers: {
+                            "content-type":
+                                "application/json",
+                        },
+
+                        body: JSON.stringify(
+                            userData
+                        ),
+                    }
+                );
+
+                toast.success(
+                    "Login Successful"
+                );
+
+                setTimeout(() => {
+
+                    router.push("/");
+
+                }, 1500);
 
             } catch (error) {
 
                 console.log(error.message);
+
+                toast.error(
+                    error.message
+                );
             }
         };
 
@@ -98,7 +197,7 @@ const RegisterPage = () => {
 
             <div className="w-full max-w-xl bg-base-100 shadow-2xl rounded-3xl p-8 md:p-12 border border-base-300">
 
-                {/* Heading */}
+                {/* HEADING */}
                 <div className="text-center mb-10">
 
                     <h1 className="text-4xl font-bold">
@@ -119,7 +218,7 @@ const RegisterPage = () => {
                     className="space-y-6"
                 >
 
-                    {/* Name */}
+                    {/* NAME */}
                     <div>
 
                         <label className="label font-semibold">
@@ -146,7 +245,7 @@ const RegisterPage = () => {
 
                     </div>
 
-                    {/* Photo */}
+                    {/* PHOTO */}
                     <div>
 
                         <label className="label font-semibold">
@@ -173,7 +272,7 @@ const RegisterPage = () => {
 
                     </div>
 
-                    {/* Email */}
+                    {/* EMAIL */}
                     <div>
 
                         <label className="label font-semibold">
@@ -200,7 +299,7 @@ const RegisterPage = () => {
 
                     </div>
 
-                    {/* Password */}
+                    {/* PASSWORD */}
                     <div>
 
                         <label className="label font-semibold">
@@ -284,7 +383,7 @@ const RegisterPage = () => {
 
                     </div>
 
-                    {/* Submit */}
+                    {/* SUBMIT */}
                     <button
                         type="submit"
                         className="btn btn-primary w-full"
@@ -294,12 +393,12 @@ const RegisterPage = () => {
 
                 </form>
 
-                {/* Divider */}
+                {/* DIVIDER */}
                 <div className="divider my-8">
                     OR
                 </div>
 
-                {/* Google */}
+                {/* GOOGLE */}
                 <button
                     onClick={handleGoogleLogin}
                     className="btn btn-outline w-full"
@@ -311,7 +410,7 @@ const RegisterPage = () => {
 
                 </button>
 
-                {/* Login */}
+                {/* LOGIN */}
                 <p className="text-center mt-8 text-base-content/70">
 
                     Already have an account?{" "}
@@ -326,6 +425,10 @@ const RegisterPage = () => {
                 </p>
 
             </div>
+
+            {/* TOAST */}
+            <ToastContainer position="top-center" />
+
         </div>
     );
 };
