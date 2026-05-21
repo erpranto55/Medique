@@ -91,43 +91,66 @@ const Navbar = () => {
 
     return (
 
-        <div className="navbar bg-base-100 shadow-sm px-4 md:px-8">
+        <div className=" bg-base-100 shadow-sm px-4 md:px-8">
 
-            {/* START */}
-            <div className="navbar-start">
+            <div className="container mx-auto navbar">
 
-                {/* MOBILE MENU */}
-                <div className="dropdown">
+                {/* START */}
+                <div className="navbar-start">
 
-                    <div
-                        tabIndex={0}
-                        role="button"
-                        className="btn btn-ghost lg:hidden"
-                    >
+                    {/* MOBILE MENU */}
+                    <div className="dropdown">
 
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            className="h-5 w-5"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
+                        <div
+                            tabIndex={0}
+                            role="button"
+                            className="btn btn-ghost lg:hidden"
                         >
 
-                            <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth="2"
-                                d="M4 6h16M4 12h8m-8 6h16"
-                            />
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                className="h-5 w-5"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke="currentColor"
+                            >
 
-                        </svg>
+                                <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth="2"
+                                    d="M4 6h16M4 12h8m-8 6h16"
+                                />
+
+                            </svg>
+
+                        </div>
+
+                        <ul
+                            tabIndex={0}
+                            className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow"
+                        >
+
+                            {navLinks}
+
+                        </ul>
 
                     </div>
 
-                    <ul
-                        tabIndex={0}
-                        className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow"
+                    {/* LOGO */}
+                    <Link
+                        href="/"
+                        className="text-3xl font-bold text-primary"
                     >
+                        MediQueue
+                    </Link>
+
+                </div>
+
+                {/* CENTER */}
+                <div className="navbar-center hidden lg:flex">
+
+                    <ul className="menu menu-horizontal px-1">
 
                         {navLinks}
 
@@ -135,85 +158,66 @@ const Navbar = () => {
 
                 </div>
 
-                {/* LOGO */}
-                <Link
-                    href="/"
-                    className="text-3xl font-bold text-primary"
-                >
-                    MediQueue
-                </Link>
+                {/* END */}
+                <div className="navbar-end gap-3">
 
-            </div>
+                    {/* THEME TOGGLE */}
+                    <ThemeToggle />
 
-            {/* CENTER */}
-            <div className="navbar-center hidden lg:flex">
+                    {
+                        user ? (
+                            <>
 
-                <ul className="menu menu-horizontal px-1">
+                                {/* USER IMAGE */}
+                                <div>
 
-                    {navLinks}
+                                    <Image
+                                        src={
+                                            user?.photoURL
+                                                ? user.photoURL
+                                                : "/avatar.png"
+                                        }
+                                        alt="User Profile"
+                                        width={40}
+                                        height={40}
+                                        className="rounded-full object-cover cursor-pointer"
+                                    />
 
-                </ul>
+                                </div>
 
-            </div>
-
-            {/* END */}
-            <div className="navbar-end gap-3">
-
-                {/* THEME TOGGLE */}
-                <ThemeToggle />
-
-                {
-                    user ? (
-                        <>
-
-                            {/* USER IMAGE */}
-                            <div>
-
-                                <Image
-                                    src={
-                                        user?.photoURL
-                                            ? user.photoURL
-                                            : "/avatar.png"
+                                {/* LOGOUT */}
+                                <button
+                                    onClick={
+                                        handleLogout
                                     }
-                                    alt="User Profile"
-                                    width={40}
-                                    height={40}
-                                    className="rounded-full object-cover cursor-pointer"
-                                />
+                                    className="btn btn-error btn-sm text-white"
+                                >
+                                    Logout
+                                </button>
 
-                            </div>
+                            </>
+                        ) : (
+                            <>
 
-                            {/* LOGOUT */}
-                            <button
-                                onClick={
-                                    handleLogout
-                                }
-                                className="btn btn-error btn-sm text-white"
-                            >
-                                Logout
-                            </button>
+                                <Link
+                                    href="/login"
+                                    className="btn btn-primary btn-sm"
+                                >
+                                    Login
+                                </Link>
 
-                        </>
-                    ) : (
-                        <>
+                                <Link
+                                    href="/register"
+                                    className="btn btn-outline btn-sm"
+                                >
+                                    Register
+                                </Link>
 
-                            <Link
-                                href="/login"
-                                className="btn btn-primary btn-sm"
-                            >
-                                Login
-                            </Link>
+                            </>
+                        )
+                    }
 
-                            <Link
-                                href="/register"
-                                className="btn btn-outline btn-sm"
-                            >
-                                Register
-                            </Link>
-
-                        </>
-                    )
-                }
+                </div>
 
             </div>
 

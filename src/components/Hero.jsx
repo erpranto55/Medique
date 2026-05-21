@@ -74,7 +74,7 @@ const Hero = () => {
     };
 
     return (
-        <div className=" container mx-auto relative w-full h-[80vh] overflow-hidden rounded-3xl">
+        <div className="container mx-auto relative w-full h-[80vh] overflow-hidden rounded-3xl">
 
             {
                 slides.map((slide, index) => (
