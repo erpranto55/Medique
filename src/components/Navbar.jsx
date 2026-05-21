@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 
 import {
     useContext,
@@ -13,7 +14,8 @@ import {
 import {
     toast,
 } from "react-toastify";
-import Image from "next/image";
+
+import ThemeToggle from "./ThemeToggle";
 
 const Navbar = () => {
 
@@ -88,6 +90,7 @@ const Navbar = () => {
     );
 
     return (
+
         <div className="navbar bg-base-100 shadow-sm px-4 md:px-8">
 
             {/* START */}
@@ -135,7 +138,7 @@ const Navbar = () => {
                 {/* LOGO */}
                 <Link
                     href="/"
-                    className="text-2xl font-bold"
+                    className="text-3xl font-bold text-primary"
                 >
                     MediQueue
                 </Link>
@@ -156,6 +159,9 @@ const Navbar = () => {
             {/* END */}
             <div className="navbar-end gap-3">
 
+                {/* THEME TOGGLE */}
+                <ThemeToggle />
+
                 {
                     user ? (
                         <>
@@ -174,7 +180,7 @@ const Navbar = () => {
                                         user?.photoURL ||
                                         "/avatar.png"
                                     }
-                                    alt="user"
+                                    alt="User Profile"
                                     width={50}
                                     height={50}
                                     className="w-10 h-10 rounded-full object-cover border"

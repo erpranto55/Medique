@@ -8,20 +8,33 @@ import {
 } from "react";
 
 import {
-    AuthContext,
-} from "@/providers/AuthProvider";
+    useRouter,
+    useSearchParams,
+} from "next/navigation";
 
 import {
-    toast,
+    useForm,
+} from "react-hook-form";
+
+import {
     ToastContainer,
+    toast,
 } from "react-toastify";
 
 import "react-toastify/dist/ReactToastify.css";
 
 import {
-    useRouter,
-    useSearchParams,
-} from "next/navigation";
+    AuthContext,
+} from "@/providers/AuthProvider";
+
+import {
+    FaEye,
+    FaEyeSlash,
+} from "react-icons/fa";
+
+import {
+    FcGoogle,
+} from "react-icons/fc";
 
 const LoginPage = () => {
 
@@ -35,32 +48,27 @@ const LoginPage = () => {
     const searchParams =
         useSearchParams();
 
-    const redirect =
-        searchParams.get("redirect") || "/";
+    const from =
+        searchParams.get("redirect")
+        || "/";
 
-    const [error, setError] =
-        useState("");
+    const [showPassword, setShowPassword] =
+        useState(false);
+
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+    } = useForm();
 
     // LOGIN
-    const handleLogin = async (e) => {
-
-        e.preventDefault();
-
-        setError("");
-
-        const form = e.target;
-
-        const email =
-            form.email.value;
-
-        const password =
-            form.password.value;
+    const onSubmit = async (data) => {
 
         try {
 
             await signInUser(
-                email,
-                password
+                data.email,
+                data.password
             );
 
             toast.success(
@@ -69,20 +77,16 @@ const LoginPage = () => {
 
             setTimeout(() => {
 
-                router.push(redirect);
+                router.push(from);
 
             }, 1500);
 
         } catch (error) {
 
-            console.log(error);
-
-            setError(
-                "Invalid Email or Password"
-            );
+            console.log(error.message);
 
             toast.error(
-                "Login Failed"
+                "Invalid Email or Password"
             );
         }
     };
@@ -101,114 +105,157 @@ const LoginPage = () => {
 
                 setTimeout(() => {
 
-                    router.push("/");
+                    router.push(from);
 
                 }, 1500);
 
             } catch (error) {
 
-                console.log(error);
+                console.log(error.message);
 
                 toast.error(
-                    "Google Login Failed"
+                    error.message
                 );
             }
         };
 
     return (
-        <div className="min-h-screen flex items-center justify-center px-4 py-10">
+        <div className="min-h-screen flex items-center justify-center px-4 py-16">
 
-            <div className="w-full max-w-md bg-base-100 shadow-2xl rounded-3xl border border-base-300 p-8">
+            <div className="w-full max-w-xl bg-base-100 shadow-2xl rounded-3xl p-8 md:p-12 border border-base-300">
 
                 {/* HEADING */}
-                <div className="text-center mb-8">
+                <div className="text-center mb-10">
 
                     <h1 className="text-4xl font-bold">
                         Welcome Back
                     </h1>
 
                     <p className="text-base-content/70 mt-3">
-                        Login to continue.
+                        Login to continue using
+                        MediQueue.
                     </p>
 
                 </div>
 
                 {/* FORM */}
                 <form
-                    onSubmit={handleLogin}
-                    className="space-y-5"
+                    onSubmit={handleSubmit(onSubmit)}
+                    className="space-y-6"
                 >
 
                     {/* EMAIL */}
                     <div>
 
-                        <label className="label">
+                        <label className="label font-semibold">
                             Email
                         </label>
 
                         <input
                             type="email"
-                            name="email"
-                            required
-                            placeholder="Enter email"
+                            placeholder="Email Address"
                             className="input input-bordered w-full"
+                            {...register("email", {
+                                required:
+                                    "Email is required",
+                            })}
                         />
+
+                        {
+                            errors.email && (
+                                <p className="text-error text-sm mt-1">
+                                    {errors.email.message}
+                                </p>
+                            )
+                        }
 
                     </div>
 
                     {/* PASSWORD */}
                     <div>
 
-                        <label className="label">
+                        <label className="label font-semibold">
                             Password
                         </label>
 
-                        <input
-                            type="password"
-                            name="password"
-                            required
-                            placeholder="Enter password"
-                            className="input input-bordered w-full"
-                        />
+                        <div className="relative">
+
+                            <input
+                                type={
+                                    showPassword
+                                        ? "text"
+                                        : "password"
+                                }
+                                placeholder="Password"
+                                className="input input-bordered w-full"
+                                {...register(
+                                    "password",
+                                    {
+                                        required:
+                                            "Password is required",
+                                    }
+                                )}
+                            />
+
+                            <button
+                                type="button"
+                                onClick={() =>
+                                    setShowPassword(
+                                        !showPassword
+                                    )
+                                }
+                                className="absolute top-1/2 right-4 -translate-y-1/2"
+                            >
+
+                                {
+                                    showPassword
+                                        ? <FaEyeSlash />
+                                        : <FaEye />
+                                }
+
+                            </button>
+
+                        </div>
+
+                        {
+                            errors.password && (
+                                <p className="text-error text-sm mt-1">
+                                    {errors.password.message}
+                                </p>
+                            )
+                        }
 
                     </div>
 
-                    {/* ERROR */}
-                    {
-                        error && (
-
-                            <p className="text-error text-sm">
-                                {error}
-                            </p>
-                        )
-                    }
-
-                    {/* BUTTON */}
-                    <button className="btn btn-primary w-full">
-
+                    {/* SUBMIT */}
+                    <button
+                        type="submit"
+                        className="btn btn-primary w-full"
+                    >
                         Login
-
                     </button>
 
                 </form>
 
                 {/* DIVIDER */}
-                <div className="divider">
+                <div className="divider my-8">
                     OR
                 </div>
 
-                {/* GOOGLE LOGIN */}
+                {/* GOOGLE */}
                 <button
-                    onClick={
-                        handleGoogleLogin
-                    }
+                    onClick={handleGoogleLogin}
                     className="btn btn-outline w-full"
                 >
-                    Continue With Google
+
+                    <FcGoogle className="text-2xl" />
+
+                    Continue with Google
+
                 </button>
 
                 {/* REGISTER */}
-                <p className="text-center mt-6 text-base-content/70">
+                <p className="text-center mt-8 text-base-content/70">
 
                     Don&apos;t have an account?{" "}
 
@@ -223,6 +270,7 @@ const LoginPage = () => {
 
             </div>
 
+            {/* TOAST */}
             <ToastContainer position="top-center" />
 
         </div>
