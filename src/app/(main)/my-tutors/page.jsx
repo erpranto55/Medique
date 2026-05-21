@@ -1,11 +1,26 @@
 "use client";
 
 import PrivateRoute from "@/routes/PrivateRoute";
+
 import Image from "next/image";
+
 import Link from "next/link";
-import { useEffect, useState, useContext } from "react";
-import { toast } from "react-toastify";
+
+import {
+    useEffect,
+    useState,
+    useContext,
+} from "react";
+
+import {
+    ToastContainer,
+    toast,
+} from "react-toastify";
+
+import "react-toastify/dist/ReactToastify.css";
+
 import Swal from "sweetalert2";
+
 import {
     AuthContext,
 } from "@/providers/AuthProvider";
@@ -13,13 +28,20 @@ import {
 const MyTutorsPage = () => {
 
     useEffect(() => {
+
         document.title =
             "My Tutors | MediQueue";
+
     }, []);
+
     const { user } =
         useContext(AuthContext);
 
-    const [tutors, setTutors] = useState([]);
+    const [tutors, setTutors] =
+        useState([]);
+
+    const [loading, setLoading] =
+        useState(true);
 
     // FETCH MY TUTORS
     useEffect(() => {
@@ -57,6 +79,8 @@ const MyTutorsPage = () => {
                             "Unauthorized Access"
                         );
 
+                        setLoading(false);
+
                         return;
                     }
 
@@ -65,6 +89,8 @@ const MyTutorsPage = () => {
 
                     setTutors(data);
 
+                    setLoading(false);
+
                 } catch (error) {
 
                     console.log(error);
@@ -72,6 +98,8 @@ const MyTutorsPage = () => {
                     toast.error(
                         "Failed To Fetch Tutors"
                     );
+
+                    setLoading(false);
                 }
             };
 
@@ -80,85 +108,148 @@ const MyTutorsPage = () => {
     }, [user]);
 
     // DELETE TUTOR
-    const handleDeleteTutor = async (id) => {
+    const handleDeleteTutor =
+        async (id) => {
 
-        const result = await Swal.fire({
-            title: "Are you sure?",
-            text: "Tutor will be deleted permanently!",
-            icon: "warning",
-            showCancelButton: true,
-            confirmButtonColor: "#d33",
-            cancelButtonColor: "#6b7280",
-            confirmButtonText: "Yes, Delete",
-        });
+            const result =
+                await Swal.fire({
+                    title:
+                        "Are you sure?",
 
-        if (!result.isConfirmed) return;
+                    text:
+                        "Tutor will be deleted permanently!",
 
-        try {
+                    icon:
+                        "warning",
 
-            const res = await fetch(
-                `${process.env.NEXT_PUBLIC_API_URL}/tutors/${id}`,
-                {
-                    method: "DELETE",
-                }
-            );
+                    showCancelButton:
+                        true,
 
-            const data = await res.json();
+                    confirmButtonColor:
+                        "#d33",
 
-            if (data.deletedCount > 0) {
+                    cancelButtonColor:
+                        "#6b7280",
 
-                toast.success(
-                    "Tutor Deleted Successfully"
-                );
+                    confirmButtonText:
+                        "Yes, Delete",
+                });
 
-                const remainingTutors =
-                    tutors.filter(
-                        (tutor) =>
-                            tutor._id !== id
+            if (
+                !result.isConfirmed
+            )
+                return;
+
+            try {
+
+                const token =
+                    localStorage.getItem(
+                        "access-token"
                     );
 
-                setTutors(remainingTutors);
+                const res =
+                    await fetch(
+                        `${process.env.NEXT_PUBLIC_API_URL}/tutors/${id}`,
+                        {
+                            method:
+                                "DELETE",
+
+                            headers: {
+                                authorization:
+                                    `Bearer ${token}`,
+                            },
+                        }
+                    );
+
+                const data =
+                    await res.json();
+
+                if (
+                    data.deletedCount >
+                    0
+                ) {
+
+                    toast.success(
+                        "Tutor Deleted Successfully"
+                    );
+
+                    const remainingTutors =
+                        tutors.filter(
+                            (
+                                tutor
+                            ) =>
+                                tutor._id !==
+                                id
+                        );
+
+                    setTutors(
+                        remainingTutors
+                    );
+                }
+
+            } catch (error) {
+
+                console.log(error);
+
+                toast.error(
+                    "Failed To Delete Tutor"
+                );
             }
+        };
 
-        } catch (error) {
+    // LOADING
+    if (loading) {
 
-            console.log(error);
+        return (
 
-            toast.error(
-                "Failed To Delete Tutor"
-            );
-        }
-    };
+            <div className="min-h-screen flex items-center justify-center">
+
+                <span className="loading loading-spinner loading-lg"></span>
+
+            </div>
+        );
+    }
 
     return (
+
         <PrivateRoute>
+
             <div className="container mx-auto px-4 py-10">
 
                 {/* HEADING */}
                 <div className="text-center mb-12">
 
                     <h1 className="text-4xl md:text-5xl font-bold mb-4">
+
                         My Tutors
+
                     </h1>
 
                     <p className="text-base-content/70 text-lg">
+
                         Manage your added tutors easily.
+
                     </p>
 
                 </div>
 
                 {/* EMPTY STATE */}
                 {
-                    tutors.length === 0 ? (
+                    tutors.length ===
+                        0 ? (
 
                         <div className="bg-base-100 rounded-3xl shadow-xl border border-base-300 p-16 text-center">
 
                             <h2 className="text-3xl font-bold mb-3">
+
                                 No Tutors Found
+
                             </h2>
 
                             <p className="text-base-content/70">
+
                                 Add tutors to manage them here.
+
                             </p>
 
                         </div>
@@ -189,7 +280,9 @@ const MyTutorsPage = () => {
                                             </th>
 
                                             <th className="text-right pr-10">
+
                                                 Actions
+
                                             </th>
 
                                         </tr>
@@ -200,102 +293,134 @@ const MyTutorsPage = () => {
                                     <tbody>
 
                                         {
-                                            tutors.map((tutor) => (
+                                            tutors.map(
+                                                (
+                                                    tutor
+                                                ) => (
 
-                                                <tr
-                                                    key={tutor._id}
-                                                    className="hover align-middle"
-                                                >
+                                                    <tr
+                                                        key={
+                                                            tutor._id
+                                                        }
+                                                        className="hover align-middle"
+                                                    >
 
-                                                    {/* TUTOR */}
-                                                    <td>
+                                                        {/* TUTOR */}
+                                                        <td>
 
-                                                        <div className="flex items-center gap-4">
+                                                            <div className="flex items-center gap-4">
 
-                                                            <div className="avatar">
+                                                                <div className="avatar">
 
-                                                                <div className="w-16 h-16 rounded-2xl overflow-hidden">
+                                                                    <div className="w-16 h-16 rounded-2xl overflow-hidden">
 
-                                                                    <Image
-                                                                        src={
-                                                                            tutor?.photo &&
-                                                                                tutor.photo.startsWith("http")
-                                                                                ? tutor.photo
-                                                                                : "/avatar.png"
+                                                                        <Image
+                                                                            src={
+                                                                                tutor?.photo &&
+                                                                                    tutor.photo.startsWith(
+                                                                                        "http"
+                                                                                    )
+                                                                                    ? tutor.photo
+                                                                                    : "/avatar.png"
+                                                                            }
+                                                                            alt={
+                                                                                tutor.name
+                                                                            }
+                                                                            width={
+                                                                                70
+                                                                            }
+                                                                            height={
+                                                                                70
+                                                                            }
+                                                                            className="object-cover w-full h-full"
+                                                                        />
+
+                                                                    </div>
+
+                                                                </div>
+
+                                                                <div>
+
+                                                                    <h2 className="font-bold text-lg">
+
+                                                                        {
+                                                                            tutor.name
                                                                         }
-                                                                        alt={tutor.name}
-                                                                        width={70}
-                                                                        height={70}
-                                                                        className="object-cover w-full h-full"
-                                                                    />
+
+                                                                    </h2>
+
+                                                                    <p className="text-base-content/70 text-sm">
+
+                                                                        {
+                                                                            tutor.location
+                                                                        }
+
+                                                                    </p>
 
                                                                 </div>
 
                                                             </div>
 
-                                                            <div>
+                                                        </td>
 
-                                                                <h2 className="font-bold text-lg">
-                                                                    {tutor.name}
-                                                                </h2>
+                                                        {/* SUBJECT */}
+                                                        <td>
 
-                                                                <p className="text-base-content/70 text-sm">
-                                                                    {tutor.location}
-                                                                </p>
+                                                            <div className="badge badge-primary badge-lg">
+
+                                                                {
+                                                                    tutor.subject
+                                                                }
 
                                                             </div>
 
-                                                        </div>
+                                                        </td>
 
-                                                    </td>
+                                                        {/* FEE */}
+                                                        <td className="font-semibold">
 
-                                                    {/* SUBJECT */}
-                                                    <td>
+                                                            {
+                                                                tutor.fee
+                                                            }{" "}
 
-                                                        <div className="badge badge-primary badge-lg">
+                                                            BDT
 
-                                                            {tutor.subject}
+                                                        </td>
 
-                                                        </div>
+                                                        {/* ACTIONS */}
+                                                        <td>
 
-                                                    </td>
+                                                            <div className="flex items-center justify-end gap-3">
 
-                                                    {/* FEE */}
-                                                    <td className="font-semibold">
+                                                                <Link
+                                                                    href={`/update-tutor/${tutor._id}`}
+                                                                    className="btn btn-primary btn-sm"
+                                                                >
 
-                                                        {tutor.fee} BDT
+                                                                    Update
 
-                                                    </td>
+                                                                </Link>
 
-                                                    {/* ACTIONS */}
-                                                    <td>
+                                                                <button
+                                                                    onClick={() =>
+                                                                        handleDeleteTutor(
+                                                                            tutor._id
+                                                                        )
+                                                                    }
+                                                                    className="btn btn-error btn-sm"
+                                                                >
 
-                                                        <div className="flex items-center justify-end gap-3">
+                                                                    Delete
 
-                                                            <Link
-                                                                href={`/update-tutor/${tutor._id}`}
-                                                                className="btn btn-primary btn-sm"
-                                                            >
-                                                                Update
-                                                            </Link>
+                                                                </button>
 
-                                                            <button
-                                                                onClick={() =>
-                                                                    handleDeleteTutor(
-                                                                        tutor._id
-                                                                    )
-                                                                }
-                                                                className="btn btn-error btn-sm"
-                                                            >
-                                                                Delete
-                                                            </button>
+                                                            </div>
 
-                                                        </div>
+                                                        </td>
 
-                                                    </td>
-
-                                                </tr>
-                                            ))
+                                                    </tr>
+                                                )
+                                            )
                                         }
 
                                     </tbody>
@@ -308,87 +433,123 @@ const MyTutorsPage = () => {
                             <div className="grid gap-6 lg:hidden">
 
                                 {
-                                    tutors.map((tutor) => (
+                                    tutors.map(
+                                        (
+                                            tutor
+                                        ) => (
 
-                                        <div
-                                            key={tutor._id}
-                                            className="bg-base-100 rounded-3xl shadow-xl border border-base-300 p-5"
-                                        >
+                                            <div
+                                                key={
+                                                    tutor._id
+                                                }
+                                                className="bg-base-100 rounded-3xl shadow-xl border border-base-300 p-5"
+                                            >
 
-                                            <div className="flex items-center gap-4">
+                                                <div className="flex items-center gap-4">
 
-                                                <div className="avatar">
+                                                    <div className="avatar">
 
-                                                    <div className="w-20 h-20 rounded-2xl overflow-hidden">
+                                                        <div className="w-20 h-20 rounded-2xl overflow-hidden">
 
-                                                        <Image
-                                                            src={
-                                                                tutor?.photo &&
-                                                                    tutor.photo.startsWith("http")
-                                                                    ? tutor.photo
-                                                                    : "/avatar.png"
+                                                            <Image
+                                                                src={
+                                                                    tutor?.photo &&
+                                                                        tutor.photo.startsWith(
+                                                                            "http"
+                                                                        )
+                                                                        ? tutor.photo
+                                                                        : "/avatar.png"
+                                                                }
+                                                                alt={
+                                                                    tutor.name
+                                                                }
+                                                                width={
+                                                                    100
+                                                                }
+                                                                height={
+                                                                    100
+                                                                }
+                                                                className="object-cover w-full h-full"
+                                                            />
+
+                                                        </div>
+
+                                                    </div>
+
+                                                    <div>
+
+                                                        <h2 className="text-xl font-bold">
+
+                                                            {
+                                                                tutor.name
                                                             }
-                                                            alt={tutor.name}
-                                                            width={100}
-                                                            height={100}
-                                                            className="object-cover w-full h-full"
-                                                        />
+
+                                                        </h2>
+
+                                                        <p className="text-base-content/70">
+
+                                                            {
+                                                                tutor.location
+                                                            }
+
+                                                        </p>
 
                                                     </div>
 
                                                 </div>
 
-                                                <div>
+                                                <div className="mt-5 flex items-center justify-between">
 
-                                                    <h2 className="text-xl font-bold">
-                                                        {tutor.name}
+                                                    <div className="badge badge-primary badge-lg">
+
+                                                        {
+                                                            tutor.subject
+                                                        }
+
+                                                    </div>
+
+                                                    <h2 className="font-bold">
+
+                                                        {
+                                                            tutor.fee
+                                                        }{" "}
+
+                                                        BDT
+
                                                     </h2>
 
-                                                    <p className="text-base-content/70">
-                                                        {tutor.location}
-                                                    </p>
+                                                </div>
+
+                                                {/* ACTIONS */}
+                                                <div className="flex gap-3 mt-6">
+
+                                                    <Link
+                                                        href={`/update-tutor/${tutor._id}`}
+                                                        className="btn btn-primary flex-1"
+                                                    >
+
+                                                        Update
+
+                                                    </Link>
+
+                                                    <button
+                                                        onClick={() =>
+                                                            handleDeleteTutor(
+                                                                tutor._id
+                                                            )
+                                                        }
+                                                        className="btn btn-error flex-1"
+                                                    >
+
+                                                        Delete
+
+                                                    </button>
 
                                                 </div>
 
                                             </div>
-
-                                            <div className="mt-5 flex items-center justify-between">
-
-                                                <div className="badge badge-primary badge-lg">
-                                                    {tutor.subject}
-                                                </div>
-
-                                                <h2 className="font-bold">
-                                                    {tutor.fee} BDT
-                                                </h2>
-
-                                            </div>
-
-                                            {/* ACTIONS */}
-                                            <div className="flex gap-3 mt-6">
-
-                                                <Link
-                                                    href={`/update-tutor/${tutor._id}`}
-                                                    className="btn btn-primary flex-1"
-                                                >
-                                                    Update
-                                                </Link>
-
-                                                <button
-                                                    onClick={() =>
-                                                        handleDeleteTutor(
-                                                            tutor._id
-                                                        )
-                                                    }
-                                                    className="btn btn-error flex-1"
-                                                >
-                                                    Delete
-                                                </button>
-
-                                            </div>
-
-                                        </div>
-                                    ))
+                                        )
+                                    )
                                 }
 
                             </div>
@@ -396,7 +557,10 @@ const MyTutorsPage = () => {
                     )
                 }
 
+                <ToastContainer position="top-center" />
+
             </div>
+
         </PrivateRoute>
     );
 };
