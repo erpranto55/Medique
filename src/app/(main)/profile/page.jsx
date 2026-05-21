@@ -1,12 +1,13 @@
 "use client";
 
 import PrivateRoute from "@/routes/PrivateRoute";
-
 import Image from "next/image";
+import Link from "next/link";
 
 import {
     useContext,
     useEffect,
+    useState,
 } from "react";
 
 import {
@@ -17,19 +18,68 @@ import {
     FaEnvelope,
     FaUser,
 } from "react-icons/fa";
-import Link from "next/link";
+
+import { updateProfile } from "firebase/auth";
 
 const ProfilePage = () => {
 
+    const { user } = useContext(AuthContext);
+
+    const [name, setName] = useState("");
+    const [photo, setPhoto] = useState("");
+
     useEffect(() => {
 
-        document.title =
-            "Profile | MediQueue";
+        document.title = "Profile | MediQueue";
 
-    }, []);
+        if (user) {
+            // eslint-disable-next-line react-hooks/set-state-in-effect
+            setName(user?.displayName || "");
+            setPhoto(user?.photoURL || "");
+        }
 
-    const { user } =
-        useContext(AuthContext);
+    }, [user]);
+
+    const handleUpdateProfile = async (e) => {
+
+        e.preventDefault();
+
+        try {
+
+            // UPDATE FIREBASE PROFILE
+            await updateProfile(user, {
+                displayName: name,
+                photoURL: photo,
+            });
+
+            // UPDATE DATABASE
+            await fetch(
+                `${process.env.NEXT_PUBLIC_API_URL}/users/${user.email}`,
+                {
+                    method: "PUT",
+                    headers: {
+                        "content-type": "application/json",
+                        authorization: `Bearer ${localStorage.getItem("token")}`,
+                    },
+                    body: JSON.stringify({
+                        name,
+                        photoURL: photo,
+                        email: user.email,
+                    }),
+                }
+            );
+
+            document.getElementById("edit_modal").close();
+
+            window.location.reload();
+
+        } catch (error) {
+
+            console.log(error);
+
+        }
+
+    };
 
     return (
 
@@ -151,15 +201,18 @@ const ProfilePage = () => {
                         {/* BUTTONS */}
                         <div className="mt-10 flex flex-col sm:flex-row justify-center gap-4">
 
-                            <button className="btn btn-primary px-8">
-
+                            <button
+                                onClick={() =>
+                                    document.getElementById("edit_modal").showModal()
+                                }
+                                className="btn btn-primary px-8"
+                            >
                                 Edit Profile
-
                             </button>
 
                             <button className="btn btn-outline px-8">
 
-                                <Link href={'/my-tutors'}>
+                                <Link href={"/my-tutors"}>
                                     View My Tutors
                                 </Link>
 
@@ -173,7 +226,69 @@ const ProfilePage = () => {
 
             </div>
 
+            {/* MODAL */}
+            <dialog id="edit_modal" className="modal">
+
+                <div className="modal-box">
+
+                    <h3 className="font-bold text-2xl mb-6">
+
+                        Edit Profile
+
+                    </h3>
+
+                    <form
+                        onSubmit={handleUpdateProfile}
+                        className="space-y-4"
+                    >
+
+                        <input
+                            type="text"
+                            placeholder="Your Name"
+                            className="input input-bordered w-full"
+                            value={name}
+                            onChange={(e) => setName(e.target.value)}
+                            required
+                        />
+
+                        <input
+                            type="text"
+                            placeholder="Photo URL"
+                            className="input input-bordered w-full"
+                            value={photo}
+                            onChange={(e) => setPhoto(e.target.value)}
+                            required
+                        />
+
+                        <div className="flex justify-end gap-3 pt-4">
+
+                            <button
+                                type="button"
+                                className="btn"
+                                onClick={() =>
+                                    document.getElementById("edit_modal").close()
+                                }
+                            >
+                                Cancel
+                            </button>
+
+                            <button
+                                type="submit"
+                                className="btn btn-primary"
+                            >
+                                Save Changes
+                            </button>
+
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </dialog>
+
         </PrivateRoute>
+
     );
 };
 
