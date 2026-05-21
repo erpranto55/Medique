@@ -44,26 +44,60 @@ const MyBookingsPage = () => {
 
         if (!user?.email) return;
 
-        fetch(
-            `http://localhost:5000/bookings?email=${user.email}`
-        )
-            .then((res) => res.json())
+        const fetchBookings =
+            async () => {
 
-            .then((data) => {
+                try {
 
-                setBookings(data);
+                    const token =
+                        localStorage.getItem(
+                            "access-token"
+                        );
 
-                setLoading(false);
+                    const res =
+                        await fetch(
+                            `http://localhost:5000/bookings?email=${user.email}`,
+                            {
+                                headers: {
+                                    authorization:
+                                        `Bearer ${token}`,
+                                },
+                            }
+                        );
 
-            })
+                    // UNAUTHORIZED
+                    if (
+                        res.status === 401 ||
+                        res.status === 403
+                    ) {
 
-            .catch((error) => {
+                        toast.error(
+                            "Unauthorized Access"
+                        );
 
-                console.log(error);
+                        return;
+                    }
 
-                setLoading(false);
+                    const data =
+                        await res.json();
 
-            });
+                    setBookings(data);
+
+                    setLoading(false);
+
+                } catch (error) {
+
+                    console.log(error);
+
+                    toast.error(
+                        "Failed To Fetch Bookings"
+                    );
+
+                    setLoading(false);
+                }
+            };
+
+        fetchBookings();
 
     }, [user]);
 

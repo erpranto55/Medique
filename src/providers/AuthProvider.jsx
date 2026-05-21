@@ -89,6 +89,11 @@ const AuthProvider = ({ children }) => {
 
         setLoading(true);
 
+        // REMOVE JWT TOKEN
+        localStorage.removeItem(
+            "access-token"
+        );
+
         return signOut(auth);
     };
 
