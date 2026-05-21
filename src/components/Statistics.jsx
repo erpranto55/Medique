@@ -34,19 +34,19 @@ const Statistics = () => {
                     // TUTORS
                     const tutorsRes =
                         await axios.get(
-                            "http://localhost:5000/tutors"
+                            `${process.env.NEXT_PUBLIC_API_URL}tutors`
                         );
 
                     // BOOKINGS
                     const bookingsRes =
                         await axios.get(
-                            "http://localhost:5000/bookings"
+                            `${process.env.NEXT_PUBLIC_API_URL}/bookings`
                         );
 
                     // USERS
                     const usersRes =
                         await axios.get(
-                            "http://localhost:5000/users"
+                            `${process.env.NEXT_PUBLIC_API_URL}/users`
                         );
 
                     setStats({
