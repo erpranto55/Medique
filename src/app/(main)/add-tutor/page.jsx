@@ -48,6 +48,7 @@ const AddTutorPage = () => {
     const {
         register,
         handleSubmit,
+        reset,
     } = useForm();
 
     // SUBMIT
@@ -67,8 +68,21 @@ const AddTutorPage = () => {
             console.log(res.data);
 
             if (res.data.insertedId) {
-                alert("Tutor Added Successfully");
+
+                toast.success(
+                    "Tutor Added Successfully!",
+                    {
+                        position: "top-center",
+                        autoClose: 2000,
+                    }
+                );
+
                 reset();
+
+                // AUTO RELOAD AFTER 2 SECOND
+                setTimeout(() => {
+                    window.location.reload();
+                }, 2000);
             }
 
         } catch (error) {
