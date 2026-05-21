@@ -17,6 +17,7 @@ import {
     FaEnvelope,
     FaUser,
 } from "react-icons/fa";
+import Link from "next/link";
 
 const ProfilePage = () => {
 
@@ -158,7 +159,9 @@ const ProfilePage = () => {
 
                             <button className="btn btn-outline px-8">
 
-                                View My Tutors
+                                <Link href={'/my-tutors'}>
+                                    View My Tutors
+                                </Link>
 
                             </button>
 
