@@ -96,18 +96,7 @@ const Navbar = () => {
                 user && (
                     <>
 
-                        <li>
 
-                            <Link
-                                href="/profile"
-                                className={activeClass("/profile")}
-                            >
-
-                                Profile
-
-                            </Link>
-
-                        </li>
 
                         <li>
 
@@ -232,8 +221,19 @@ const Navbar = () => {
                                 user ? (
 
                                     <>
-
                                         <li className="mt-2">
+
+                                            <Link
+                                                href="/profile"
+                                                className={activeClass("/profile")}
+                                            >
+
+                                                Profile
+
+                                            </Link>
+
+                                        </li>
+                                        <li >
 
                                             <button
                                                 onClick={handleLogout}
