@@ -1,6 +1,10 @@
 "use client";
 
-import { use, useEffect, useState } from "react";
+import {
+    use,
+    useEffect,
+    useState,
+} from "react";
 
 import {
     Button,
@@ -16,6 +20,14 @@ import {
 } from "react-toastify";
 
 import "react-toastify/dist/ReactToastify.css";
+
+import {
+    AuthContext,
+} from "@/providers/AuthProvider";
+
+import {
+    useContext,
+} from "react";
 
 const subjects = [
     "Mathematics",
@@ -34,53 +46,92 @@ const teachingModes = [
 
 const UpdateTutorPage = ({ params }) => {
 
-    const { id } = use(params);
+    const { id } =
+        use(params);
 
-    const [loading, setLoading] = useState(true);
+    const { user } =
+        useContext(
+            AuthContext
+        );
 
-    const [formData, setFormData] = useState({
-        name: "",
-        photo: "",
-        subject: "",
-        availableDays: "",
-        timeSlot: "",
-        fee: "",
-        totalSlot: "",
-        sessionStartDate: "",
-        experience: "",
-        location: "",
-        mode: "",
-        description: "",
-    });
+    const [loading, setLoading] =
+        useState(true);
+
+    const [formData, setFormData] =
+        useState({
+            name: "",
+            photo: "",
+            subject: "",
+            availableDays: "",
+            timeSlot: "",
+            fee: "",
+            totalSlot: "",
+            sessionStartDate: "",
+            experience: "",
+            location: "",
+            mode: "",
+            description: "",
+        });
 
     // FETCH SINGLE TUTOR
     useEffect(() => {
 
-        fetch(`${process.env.NEXT_PUBLIC_API_URL}/tutors/${id}`)
-            .then((res) => res.json())
+        fetch(
+            `${process.env.NEXT_PUBLIC_API_URL}/tutors/${id}`
+        )
+            .then((res) =>
+                res.json()
+            )
             .then((data) => {
 
                 setFormData({
-                    name: data?.name || "",
-                    photo: data?.photo || "",
-                    subject: data?.subject || "",
+                    name:
+                        data?.name ||
+                        "",
+
+                    photo:
+                        data?.photo ||
+                        "",
+
+                    subject:
+                        data?.subject ||
+                        "",
+
                     availableDays:
-                        data?.availableDays || "",
+                        data?.availableDays ||
+                        "",
+
                     timeSlot:
-                        data?.timeSlot || "",
-                    fee: data?.fee || "",
+                        data?.timeSlot ||
+                        "",
+
+                    fee:
+                        data?.fee ||
+                        "",
+
                     totalSlot:
-                        data?.totalSlot || "",
+                        data?.totalSlot ||
+                        "",
+
                     sessionStartDate:
-                        data?.sessionStartDate || "",
+                        data?.sessionStartDate ||
+                        "",
+
                     experience:
-                        data?.experience || "",
+                        data?.experience ||
+                        "",
+
                     location:
-                        data?.location || "",
+                        data?.location ||
+                        "",
+
                     mode:
-                        data?.mode || "",
+                        data?.mode ||
+                        "",
+
                     description:
-                        data?.description || "",
+                        data?.description ||
+                        "",
                 });
 
                 setLoading(false);
@@ -91,7 +142,10 @@ const UpdateTutorPage = ({ params }) => {
     // HANDLE CHANGE
     const handleChange = (e) => {
 
-        const { name, value } = e.target;
+        const {
+            name,
+            value,
+        } = e.target;
 
         setFormData({
             ...formData,
@@ -100,69 +154,112 @@ const UpdateTutorPage = ({ params }) => {
     };
 
     // UPDATE TUTOR
-    const handleUpdateTutor = async (e) => {
+    const handleUpdateTutor =
+        async (e) => {
 
-        e.preventDefault();
+            e.preventDefault();
 
-        try {
+            try {
 
-            const updatedTutor = {
-                ...formData,
-                fee: parseInt(formData.fee),
-                totalSlot: parseInt(formData.totalSlot),
-            };
+                const token =
+                    localStorage.getItem(
+                        "access-token"
+                    );
 
-            const res = await fetch(
-                `${process.env.NEXT_PUBLIC_API_URL}/tutors/${id}`,
+                const updatedTutor =
                 {
-                    method: "PUT",
-                    headers: {
-                        "content-type": "application/json",
-                    },
-                    body: JSON.stringify(updatedTutor),
+
+                    ...formData,
+
+                    email:
+                        user?.email,
+
+                    fee: parseInt(
+                        formData.fee
+                    ),
+
+                    totalSlot:
+                        parseInt(
+                            formData.totalSlot
+                        ),
+                };
+
+                const res =
+                    await fetch(
+                        `${process.env.NEXT_PUBLIC_API_URL}/tutors/${id}`,
+                        {
+                            method:
+                                "PUT",
+
+                            headers: {
+
+                                "content-type":
+                                    "application/json",
+
+                                authorization:
+                                    `Bearer ${token}`,
+                            },
+
+                            body: JSON.stringify(
+                                updatedTutor
+                            ),
+                        }
+                    );
+
+                const data =
+                    await res.json();
+
+                if (
+                    data.modifiedCount >
+                    0
+                ) {
+
+                    toast.success(
+                        "Tutor Updated Successfully",
+                        {
+                            position:
+                                "top-center",
+
+                            autoClose:
+                                2000,
+                        }
+                    );
+
+                    // REDIRECT
+                    setTimeout(
+                        () => {
+
+                            window.location.href =
+                                "/my-tutors";
+
+                        },
+                        2000
+                    );
+
+                } else {
+
+                    toast.error(
+                        "No Changes Made"
+                    );
                 }
-            );
 
-            const data = await res.json();
+            } catch (error) {
 
-            if (
-                data.modifiedCount > 0 ||
-                data.matchedCount > 0
-            ) {
-
-                toast.success(
-                    "Tutor Updated Successfully"
+                console.log(
+                    error
                 );
-
-                // REDIRECT
-                setTimeout(() => {
-
-                    window.location.href =
-                        "/my-tutors";
-
-                }, 1500);
-
-            } else {
 
                 toast.error(
-                    "No Changes Made"
+                    "Failed To Update Tutor"
                 );
             }
-
-        } catch (error) {
-
-            console.log(error);
-
-            toast.error(
-                "Failed To Update Tutor"
-            );
-        }
-    };
+        };
 
     // LOADING
     if (loading) {
 
         return (
+
             <div className="min-h-screen flex items-center justify-center">
 
                 <span className="loading loading-spinner loading-lg"></span>
@@ -172,6 +269,7 @@ const UpdateTutorPage = ({ params }) => {
     }
 
     return (
+
         <div className="container mx-auto px-4 py-16">
 
             <div className="max-w-5xl mx-auto bg-base-100 shadow-2xl rounded-3xl p-8 md:p-12 border border-base-300">
@@ -180,11 +278,15 @@ const UpdateTutorPage = ({ params }) => {
                 <div className="text-center mb-12">
 
                     <h1 className="text-4xl md:text-6xl font-bold">
+
                         Update Tutor
+
                     </h1>
 
                     <p className="text-base-content/70 mt-4 text-lg">
+
                         Update your tutoring information easily.
+
                     </p>
 
                 </div>
@@ -199,7 +301,9 @@ const UpdateTutorPage = ({ params }) => {
                     <div className="w-full">
 
                         <Label className="mb-2">
+
                             Tutor Name
+
                         </Label>
 
                         <Input
@@ -216,7 +320,9 @@ const UpdateTutorPage = ({ params }) => {
                     <div className="w-full">
 
                         <Label className="mb-2">
+
                             Photo URL
+
                         </Label>
 
                         <Input
@@ -233,7 +339,9 @@ const UpdateTutorPage = ({ params }) => {
                     <div className="w-full">
 
                         <Label className="mb-2">
+
                             Subject
+
                         </Label>
 
                         <select
@@ -244,14 +352,24 @@ const UpdateTutorPage = ({ params }) => {
                         >
 
                             {
-                                subjects.map((subject) => (
-                                    <option
-                                        key={subject}
-                                        value={subject}
-                                    >
-                                        {subject}
-                                    </option>
-                                ))
+                                subjects.map(
+                                    (
+                                        subject
+                                    ) => (
+                                        <option
+                                            key={
+                                                subject
+                                            }
+                                            value={
+                                                subject
+                                            }
+                                        >
+                                            {
+                                                subject
+                                            }
+                                        </option>
+                                    )
+                                )
                             }
 
                         </select>
@@ -262,7 +380,9 @@ const UpdateTutorPage = ({ params }) => {
                     <div className="w-full">
 
                         <Label className="mb-2">
+
                             Available Days
+
                         </Label>
 
                         <Input
@@ -279,7 +399,9 @@ const UpdateTutorPage = ({ params }) => {
                     <div className="w-full">
 
                         <Label className="mb-2">
+
                             Time Slot
+
                         </Label>
 
                         <Input
@@ -296,7 +418,9 @@ const UpdateTutorPage = ({ params }) => {
                     <div className="w-full">
 
                         <Label className="mb-2">
+
                             Hourly Fee
+
                         </Label>
 
                         <Input
@@ -314,7 +438,9 @@ const UpdateTutorPage = ({ params }) => {
                     <div className="w-full">
 
                         <Label className="mb-2">
+
                             Total Slot
+
                         </Label>
 
                         <Input
@@ -332,7 +458,9 @@ const UpdateTutorPage = ({ params }) => {
                     <div className="w-full">
 
                         <Label className="mb-2">
+
                             Session Date
+
                         </Label>
 
                         <Input
@@ -349,7 +477,9 @@ const UpdateTutorPage = ({ params }) => {
                     <div className="w-full">
 
                         <Label className="mb-2">
+
                             Experience
+
                         </Label>
 
                         <Input
@@ -366,7 +496,9 @@ const UpdateTutorPage = ({ params }) => {
                     <div className="w-full">
 
                         <Label className="mb-2">
+
                             Location
+
                         </Label>
 
                         <Input
@@ -383,7 +515,9 @@ const UpdateTutorPage = ({ params }) => {
                     <div className="w-full">
 
                         <Label className="mb-2">
+
                             Teaching Mode
+
                         </Label>
 
                         <select
@@ -394,14 +528,24 @@ const UpdateTutorPage = ({ params }) => {
                         >
 
                             {
-                                teachingModes.map((mode) => (
-                                    <option
-                                        key={mode}
-                                        value={mode}
-                                    >
-                                        {mode}
-                                    </option>
-                                ))
+                                teachingModes.map(
+                                    (
+                                        mode
+                                    ) => (
+                                        <option
+                                            key={
+                                                mode
+                                            }
+                                            value={
+                                                mode
+                                            }
+                                        >
+                                            {
+                                                mode
+                                            }
+                                        </option>
+                                    )
+                                )
                             }
 
                         </select>
@@ -412,7 +556,9 @@ const UpdateTutorPage = ({ params }) => {
                     <div className="md:col-span-2 w-full">
 
                         <Label className="mb-2">
+
                             Description
+
                         </Label>
 
                         <TextArea
@@ -432,7 +578,9 @@ const UpdateTutorPage = ({ params }) => {
                             type="submit"
                             className="w-full btn btn-primary text-white text-lg"
                         >
+
                             Update Tutor
+
                         </Button>
 
                     </div>
