@@ -25,9 +25,17 @@ import {
 
 import { auth } from "@/firebase/firebase.config";
 
+import {
+    ToastContainer,
+    toast,
+} from "react-toastify";
+
+import "react-toastify/dist/ReactToastify.css";
+
 const ProfilePage = () => {
 
     const { user } = useContext(AuthContext);
+
     const [name, setName] = useState("");
     const [photo, setPhoto] = useState("");
 
@@ -57,55 +65,72 @@ const ProfilePage = () => {
                 photoURL: photo,
             });
 
-            // // UPDATE LOCAL USER STATE
-            // setUser({
-            //     ...user,
-            //     displayName: name,
-            //     photoURL: photo,
-            // });
-
             // GET JWT TOKEN
-            const token = localStorage.getItem("access-token");
+            const token =
+                localStorage.getItem("access-token");
 
             if (!token) {
 
-                alert("No token found. Please login again.");
-                return;
+                toast.error(
+                    "Please login again"
+                );
 
+                return;
             }
 
             // UPDATE DATABASE
-            const response = await fetch(
-                `${process.env.NEXT_PUBLIC_API_URL}/users/${user.email}`,
-                {
-                    method: "PUT",
-                    headers: {
-                        "content-type": "application/json",
-                        authorization: `Bearer ${token}`,
-                    },
-                    body: JSON.stringify({
-                        name,
-                        photoURL: photo,
-                        email: user.email,
-                    }),
-                }
-            );
+            const response =
+                await fetch(
+                    `${process.env.NEXT_PUBLIC_API_URL}/users/${user.email}`,
+                    {
+                        method: "PUT",
 
-            const data = await response.json();
+                        headers: {
+                            "content-type":
+                                "application/json",
+
+                            authorization:
+                                `Bearer ${token}`,
+                        },
+
+                        body: JSON.stringify({
+                            name,
+                            photoURL: photo,
+                            email: user.email,
+                        }),
+                    }
+                );
+
+            const data =
+                await response.json();
 
             console.log(data);
 
-            if (response.ok && data.success) {
+            if (
+                response.ok &&
+                data.success
+            ) {
 
-                alert("Profile Updated Successfully");
+                toast.success(
+                    "Profile Updated Successfully"
+                );
 
                 document
                     .getElementById("edit_modal")
                     .close();
 
+                setTimeout(() => {
+
+                    window.location.reload();
+
+                }, 1200);
+
             } else {
 
-                alert(data.message || "Update failed");
+                toast.error(
+                    data.message ||
+                    "Update failed"
+                );
 
             }
 
@@ -113,7 +138,9 @@ const ProfilePage = () => {
 
             console.log(error);
 
-            alert("Something went wrong");
+            toast.error(
+                "Something went wrong"
+            );
 
         }
 
@@ -141,9 +168,13 @@ const ProfilePage = () => {
                                             ? user.photoURL
                                             : "/avatar.png"
                                     }
+
                                     alt="Profile"
+
                                     width={150}
+
                                     height={150}
+
                                     className="object-cover w-full h-full"
                                 />
 
@@ -156,6 +187,7 @@ const ProfilePage = () => {
                     {/* CONTENT */}
                     <div className="pt-24 pb-12 px-6 md:px-12 text-center">
 
+                        {/* NAME */}
                         <h1 className="text-4xl font-bold mb-3">
 
                             {
@@ -171,6 +203,7 @@ const ProfilePage = () => {
 
                         </p>
 
+                        {/* INFO CARDS */}
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
 
                             {/* EMAIL */}
@@ -185,12 +218,16 @@ const ProfilePage = () => {
                                 <div className="text-left">
 
                                     <h2 className="font-bold text-lg">
+
                                         Email Address
+
                                     </h2>
 
                                     <p className="text-base-content/70 break-all">
 
-                                        {user?.email}
+                                        {
+                                            user?.email
+                                        }
 
                                     </p>
 
@@ -210,7 +247,9 @@ const ProfilePage = () => {
                                 <div className="text-left">
 
                                     <h2 className="font-bold text-lg">
+
                                         Display Name
+
                                     </h2>
 
                                     <p className="text-base-content/70">
@@ -233,18 +272,26 @@ const ProfilePage = () => {
 
                             <button
                                 onClick={() =>
-                                    document.getElementById("edit_modal").showModal()
+                                    document
+                                        .getElementById("edit_modal")
+                                        .showModal()
                                 }
+
                                 className="btn btn-primary px-8"
                             >
+
                                 Edit Profile
+
                             </button>
 
                             <Link
                                 href={"/my-tutors"}
+
                                 className="btn btn-outline px-8"
                             >
+
                                 View My Tutors
+
                             </Link>
 
                         </div>
@@ -256,56 +303,112 @@ const ProfilePage = () => {
             </div>
 
             {/* MODAL */}
-            <dialog id="edit_modal" className="modal">
+            <dialog
+                id="edit_modal"
+                className="modal"
+            >
 
-                <div className="modal-box">
+                <div className="modal-box rounded-3xl">
 
-                    <h3 className="font-bold text-2xl mb-6">
+                    <h3 className="font-bold text-3xl mb-2">
 
                         Edit Profile
 
                     </h3>
 
+                    <p className="text-base-content/60 mb-6">
+
+                        Update your personal information
+
+                    </p>
+
                     <form
                         onSubmit={handleUpdateProfile}
-                        className="space-y-4"
+
+                        className="space-y-5"
                     >
 
-                        <input
-                            type="text"
-                            placeholder="Your Name"
-                            className="input input-bordered w-full"
-                            value={name}
-                            onChange={(e) => setName(e.target.value)}
-                            required
-                        />
+                        {/* NAME */}
+                        <div>
 
-                        <input
-                            type="text"
-                            placeholder="Photo URL"
-                            className="input input-bordered w-full"
-                            value={photo}
-                            onChange={(e) => setPhoto(e.target.value)}
-                            required
-                        />
+                            <label className="label font-semibold">
 
+                                Full Name
+
+                            </label>
+
+                            <input
+                                type="text"
+
+                                placeholder="Enter your full name"
+
+                                className="input input-bordered w-full"
+
+                                value={name}
+
+                                onChange={(e) =>
+                                    setName(e.target.value)
+                                }
+
+                                required
+                            />
+
+                        </div>
+
+                        {/* PHOTO URL */}
+                        <div>
+
+                            <label className="label font-semibold">
+
+                                Profile Image URL
+
+                            </label>
+
+                            <input
+                                type="text"
+
+                                placeholder="Paste your image URL"
+
+                                className="input input-bordered w-full"
+
+                                value={photo}
+
+                                onChange={(e) =>
+                                    setPhoto(e.target.value)
+                                }
+
+                                required
+                            />
+
+                        </div>
+
+                        {/* BUTTONS */}
                         <div className="flex justify-end gap-3 pt-4">
 
                             <button
                                 type="button"
-                                className="btn"
+
+                                className="btn btn-outline"
+
                                 onClick={() =>
-                                    document.getElementById("edit_modal").close()
+                                    document
+                                        .getElementById("edit_modal")
+                                        .close()
                                 }
                             >
+
                                 Cancel
+
                             </button>
 
                             <button
                                 type="submit"
+
                                 className="btn btn-primary"
                             >
+
                                 Save Changes
+
                             </button>
 
                         </div>
@@ -315,6 +418,9 @@ const ProfilePage = () => {
                 </div>
 
             </dialog>
+
+            {/* TOAST */}
+            <ToastContainer position="top-center" />
 
         </PrivateRoute>
 
