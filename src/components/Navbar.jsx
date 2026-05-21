@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-
 import Image from "next/image";
 
 import {
@@ -36,8 +35,7 @@ const Navbar = () => {
     const activeClass =
         (path) => {
 
-            return pathname ===
-                path
+            return pathname === path
                 ? "text-primary font-bold bg-primary/10 rounded-lg"
                 : "";
         };
@@ -64,7 +62,7 @@ const Navbar = () => {
             }
         };
 
-    // NAV LINKS
+    // MOBILE + DESKTOP NAV LINKS
     const navLinks = (
         <>
 
@@ -72,9 +70,7 @@ const Navbar = () => {
 
                 <Link
                     href="/"
-                    className={activeClass(
-                        "/"
-                    )}
+                    className={activeClass("/")}
                 >
 
                     Home
@@ -87,9 +83,7 @@ const Navbar = () => {
 
                 <Link
                     href="/tutors"
-                    className={activeClass(
-                        "/tutors"
-                    )}
+                    className={activeClass("/tutors")}
                 >
 
                     Tutors
@@ -105,10 +99,21 @@ const Navbar = () => {
                         <li>
 
                             <Link
+                                href="/profile"
+                                className={activeClass("/profile")}
+                            >
+
+                                Profile
+
+                            </Link>
+
+                        </li>
+
+                        <li>
+
+                            <Link
                                 href="/add-tutor"
-                                className={activeClass(
-                                    "/add-tutor"
-                                )}
+                                className={activeClass("/add-tutor")}
                             >
 
                                 Add Tutor
@@ -121,9 +126,7 @@ const Navbar = () => {
 
                             <Link
                                 href="/my-tutors"
-                                className={activeClass(
-                                    "/my-tutors"
-                                )}
+                                className={activeClass("/my-tutors")}
                             >
 
                                 My Tutors
@@ -136,9 +139,7 @@ const Navbar = () => {
 
                             <Link
                                 href="/my-bookings"
-                                className={activeClass(
-                                    "/my-bookings"
-                                )}
+                                className={activeClass("/my-bookings")}
                             >
 
                                 My Bookings
@@ -156,56 +157,17 @@ const Navbar = () => {
 
     return (
 
-        <div className="bg-base-100 shadow-sm px-4 md:px-8 sticky top-0 z-50">
+        <div className="bg-base-100 shadow-sm px-3 md:px-8 sticky top-0 z-50">
 
             <div className="container mx-auto navbar">
 
-                {/* START */}
+                {/* LEFT */}
                 <div className="navbar-start">
-
-                    {/* MOBILE MENU */}
-                    <div className="dropdown">
-
-                        <div
-                            tabIndex={0}
-                            role="button"
-                            className="btn btn-ghost lg:hidden"
-                        >
-
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                className="h-5 w-5"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                stroke="currentColor"
-                            >
-
-                                <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeWidth="2"
-                                    d="M4 6h16M4 12h8m-8 6h16"
-                                />
-
-                            </svg>
-
-                        </div>
-
-                        <ul
-                            tabIndex={0}
-                            className="menu menu-sm dropdown-content bg-base-100 rounded-box z-100 mt-3 w-52 p-2 shadow border border-base-300"
-                        >
-
-                            {navLinks}
-
-                        </ul>
-
-                    </div>
 
                     {/* LOGO */}
                     <Link
                         href="/"
-                        className="text-3xl font-bold text-primary"
+                        className="text-xl md:text-3xl font-bold text-primary"
                     >
 
                         MediQueue
@@ -214,8 +176,8 @@ const Navbar = () => {
 
                 </div>
 
-                {/* CENTER */}
-                <div className="navbar-center hidden lg:flex">
+                {/* CENTER DESKTOP */}
+                <div className="navbar-center hidden md:flex">
 
                     <ul className="menu menu-horizontal px-1 gap-2">
 
@@ -225,16 +187,111 @@ const Navbar = () => {
 
                 </div>
 
-                {/* END */}
-                <div className="navbar-end gap-3">
+                {/* RIGHT */}
+                <div className="navbar-end gap-2">
 
                     {/* THEME TOGGLE */}
                     <ThemeToggle />
 
+                    {/* MOBILE MENU */}
+                    <div className="dropdown dropdown-end md:hidden">
+
+                        <div
+                            tabIndex={0}
+                            role="button"
+                            className="btn btn-ghost btn-circle"
+                        >
+
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                className="h-6 w-6"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke="currentColor"
+                            >
+
+                                <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth="2"
+                                    d="M4 6h16M4 12h16M4 18h16"
+                                />
+
+                            </svg>
+
+                        </div>
+
+                        <ul
+                            tabIndex={0}
+                            className="menu menu-sm dropdown-content mt-3 right-0 z-100 p-3 shadow bg-base-100 rounded-2xl w-64 border border-base-300"
+                        >
+
+                            {navLinks}
+
+                            {
+                                user ? (
+
+                                    <>
+
+                                        <li className="mt-2">
+
+                                            <button
+                                                onClick={handleLogout}
+                                                className="text-error font-semibold"
+                                            >
+
+                                                Logout
+
+                                            </button>
+
+                                        </li>
+
+                                    </>
+
+                                ) : (
+
+                                    <>
+
+                                        <li className="mt-3">
+
+                                            <Link
+                                                href="/login"
+                                                className="btn btn-primary btn-sm w-full"
+                                            >
+
+                                                Login
+
+                                            </Link>
+
+                                        </li>
+
+                                        <li>
+
+                                            <Link
+                                                href="/register"
+                                                className="btn btn-outline btn-sm w-full"
+                                            >
+
+                                                Register
+
+                                            </Link>
+
+                                        </li>
+
+                                    </>
+
+                                )
+                            }
+
+                        </ul>
+
+                    </div>
+
+                    {/* DESKTOP USER */}
                     {
                         user ? (
 
-                            <div className="dropdown dropdown-end">
+                            <div className="dropdown dropdown-end hidden md:block">
 
                                 {/* PROFILE BUTTON */}
                                 <div
@@ -289,8 +346,6 @@ const Navbar = () => {
 
                                     </div>
 
-                                    {/* MENU ITEMS */}
-
                                     <li>
 
                                         <Link href="/profile">
@@ -300,44 +355,11 @@ const Navbar = () => {
                                         </Link>
 
                                     </li>
-                                    
-                                    <li>
 
-                                        <Link href="/my-tutors">
-
-                                            My Tutors
-
-                                        </Link>
-
-                                    </li>
-
-                                    <li>
-
-                                        <Link href="/my-bookings">
-
-                                            My Bookings
-
-                                        </Link>
-
-                                    </li>
-
-                                    <li>
-
-                                        <Link href="/add-tutor">
-
-                                            Add Tutor
-
-                                        </Link>
-
-                                    </li>
-
-                                    {/* LOGOUT */}
                                     <li className="mt-2">
 
                                         <button
-                                            onClick={
-                                                handleLogout
-                                            }
+                                            onClick={handleLogout}
                                             className="text-error font-semibold"
                                         >
 
@@ -352,7 +374,8 @@ const Navbar = () => {
                             </div>
 
                         ) : (
-                            <>
+
+                            <div className="hidden md:flex items-center gap-2">
 
                                 <Link
                                     href="/login"
@@ -372,7 +395,8 @@ const Navbar = () => {
 
                                 </Link>
 
-                            </>
+                            </div>
+
                         )
                     }
 
@@ -381,6 +405,7 @@ const Navbar = () => {
             </div>
 
         </div>
+
     );
 };
 
