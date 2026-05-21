@@ -290,6 +290,17 @@ const Navbar = () => {
                                     </div>
 
                                     {/* MENU ITEMS */}
+
+                                    <li>
+
+                                        <Link href="/profile">
+
+                                            Profile
+
+                                        </Link>
+
+                                    </li>
+                                    
                                     <li>
 
                                         <Link href="/my-tutors">
