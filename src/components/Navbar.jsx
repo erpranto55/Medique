@@ -1,11 +1,16 @@
 "use client";
 
 import Link from "next/link";
+
 import Image from "next/image";
 
 import {
     useContext,
 } from "react";
+
+import {
+    usePathname,
+} from "next/navigation";
 
 import {
     AuthContext,
@@ -23,6 +28,19 @@ const Navbar = () => {
         user,
         logoutUser,
     } = useContext(AuthContext);
+
+    const pathname =
+        usePathname();
+
+    // ACTIVE CLASS
+    const activeClass =
+        (path) => {
+
+            return pathname ===
+                path
+                ? "text-primary font-bold bg-primary/10 rounded-lg"
+                : "";
+        };
 
     // LOGOUT
     const handleLogout =
@@ -51,37 +69,84 @@ const Navbar = () => {
         <>
 
             <li>
-                <Link href="/">
+
+                <Link
+                    href="/"
+                    className={activeClass(
+                        "/"
+                    )}
+                >
+
                     Home
+
                 </Link>
+
             </li>
 
             <li>
-                <Link href="/tutors">
+
+                <Link
+                    href="/tutors"
+                    className={activeClass(
+                        "/tutors"
+                    )}
+                >
+
                     Tutors
+
                 </Link>
+
             </li>
 
             {
                 user && (
                     <>
+
                         <li>
-                            <Link href="/add-tutor">
+
+                            <Link
+                                href="/add-tutor"
+                                className={activeClass(
+                                    "/add-tutor"
+                                )}
+                            >
+
                                 Add Tutor
+
                             </Link>
+
                         </li>
 
                         <li>
-                            <Link href="/my-tutors">
+
+                            <Link
+                                href="/my-tutors"
+                                className={activeClass(
+                                    "/my-tutors"
+                                )}
+                            >
+
                                 My Tutors
+
                             </Link>
+
                         </li>
 
                         <li>
-                            <Link href="/my-bookings">
+
+                            <Link
+                                href="/my-bookings"
+                                className={activeClass(
+                                    "/my-bookings"
+                                )}
+                            >
+
                                 My Bookings
+
                             </Link>
+
                         </li>
+
                     </>
                 )
             }
@@ -91,7 +156,7 @@ const Navbar = () => {
 
     return (
 
-        <div className=" bg-base-100 shadow-sm px-4 md:px-8">
+        <div className="bg-base-100 shadow-sm px-4 md:px-8 sticky top-0 z-50">
 
             <div className="container mx-auto navbar">
 
@@ -142,7 +207,9 @@ const Navbar = () => {
                         href="/"
                         className="text-3xl font-bold text-primary"
                     >
+
                         MediQueue
+
                     </Link>
 
                 </div>
@@ -150,7 +217,7 @@ const Navbar = () => {
                 {/* CENTER */}
                 <div className="navbar-center hidden lg:flex">
 
-                    <ul className="menu menu-horizontal px-1">
+                    <ul className="menu menu-horizontal px-1 gap-2">
 
                         {navLinks}
 
@@ -161,7 +228,7 @@ const Navbar = () => {
                 {/* END */}
                 <div className="navbar-end gap-3">
 
-                    {/* THEME TOGGLE */}
+                    {/* THEME */}
                     <ThemeToggle />
 
                     {
@@ -192,7 +259,9 @@ const Navbar = () => {
                                     }
                                     className="btn btn-error btn-sm text-white"
                                 >
+
                                     Logout
+
                                 </button>
 
                             </>
@@ -203,14 +272,18 @@ const Navbar = () => {
                                     href="/login"
                                     className="btn btn-primary btn-sm"
                                 >
+
                                     Login
+
                                 </Link>
 
                                 <Link
                                     href="/register"
                                     className="btn btn-outline btn-sm"
                                 >
+
                                     Register
+
                                 </Link>
 
                             </>
