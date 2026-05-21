@@ -128,7 +128,7 @@ const ProfilePage = () => {
                 <div className="max-w-4xl mx-auto bg-base-100 rounded-3xl shadow-2xl overflow-hidden border border-base-300">
 
                     {/* COVER */}
-                    <div className="h-52 bg-gradient-to-r from-primary to-secondary relative">
+                    <div className="h-52 bg-linear-to-r from-primary to-secondary relative">
 
                         {/* PROFILE IMAGE */}
                         <div className="absolute left-1/2 -bottom-16 transform -translate-x-1/2">
