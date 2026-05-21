@@ -1,6 +1,9 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React, {
+    useEffect,
+    useContext,
+} from "react";
 
 import {
     Button,
@@ -19,9 +22,14 @@ import {
 import "react-toastify/dist/ReactToastify.css";
 
 import { useForm } from "react-hook-form";
+
 import axios from "axios";
-import axiosSecure from "@/lib/axiosSecure";
+
 import PrivateRoute from "@/routes/PrivateRoute";
+
+import {
+    AuthContext,
+} from "@/providers/AuthProvider";
 
 const subjects = [
     "Mathematics",
@@ -41,9 +49,14 @@ const teachingModes = [
 const AddTutorPage = () => {
 
     useEffect(() => {
+
         document.title =
             "Add Tutor | MediQueue";
+
     }, []);
+
+    const { user } =
+        useContext(AuthContext);
 
     const {
         register,
@@ -52,46 +65,69 @@ const AddTutorPage = () => {
     } = useForm();
 
     // SUBMIT
-    const handleAddTutor = async (data) => {
-        try {
+    const handleAddTutor =
+        async (data) => {
 
-            const tutorInfo = {
-                ...data,
-                createdAt: new Date(),
-            };
+            try {
 
-            const res = await axios.post(
-                `${process.env.NEXT_PUBLIC_API_URL}/tutors`,
-                tutorInfo
-            );
+                const tutorInfo = {
 
-            console.log(res.data);
+                    ...data,
 
-            if (res.data.insertedId) {
+                    email:
+                        user?.email,
 
-                toast.success(
-                    "Tutor Added Successfully!",
-                    {
-                        position: "top-center",
-                        autoClose: 2000,
-                    }
+                    createdAt:
+                        new Date(),
+                };
+
+                const res =
+                    await axios.post(
+                        `${process.env.NEXT_PUBLIC_API_URL}/tutors`,
+                        tutorInfo
+                    );
+
+                if (
+                    res.data
+                        .insertedId
+                ) {
+
+                    toast.success(
+                        "Tutor Added Successfully!",
+                        {
+                            position:
+                                "top-center",
+
+                            autoClose:
+                                2000,
+                        }
+                    );
+
+                    reset();
+
+                    // REDIRECT
+                    setTimeout(() => {
+
+                        window.location.href =
+                            "/my-tutors";
+
+                    }, 2000);
+                }
+
+            } catch (error) {
+
+                console.log(error);
+
+                toast.error(
+                    "Failed To Add Tutor"
                 );
-
-                reset();
-
-                // MOVE TO MY TUTORS PAGE
-                setTimeout(() => {
-                    window.location.href = "/my-tutors";
-                }, 2000);
             }
-
-        } catch (error) {
-            console.log(error);
-        }
-    };
+        };
 
     return (
+
         <PrivateRoute>
+
             <div className="container mx-auto px-4 py-16">
 
                 <div className="max-w-5xl mx-auto bg-base-100 shadow-2xl rounded-3xl p-8 md:p-12 border border-base-300">
@@ -100,12 +136,16 @@ const AddTutorPage = () => {
                     <div className="text-center mb-12">
 
                         <h1 className="text-4xl md:text-6xl font-bold">
+
                             Add Tutor
+
                         </h1>
 
                         <p className="text-base-content/70 mt-4 text-lg">
+
                             Add your tutoring service and connect
                             with students easily through MediQueue.
+
                         </p>
 
                     </div>
@@ -164,7 +204,9 @@ const AddTutorPage = () => {
                         <div className="w-full">
 
                             <Label className="mb-2 block">
+
                                 Subject
+
                             </Label>
 
                             <select
@@ -351,7 +393,9 @@ const AddTutorPage = () => {
                         <div className="w-full">
 
                             <Label className="mb-2 block">
+
                                 Teaching Mode
+
                             </Label>
 
                             <select
@@ -382,7 +426,9 @@ const AddTutorPage = () => {
                         <div className="md:col-span-2 w-full">
 
                             <Label className="mb-2 block">
+
                                 Description
+
                             </Label>
 
                             <TextArea
@@ -400,19 +446,21 @@ const AddTutorPage = () => {
                                 type="submit"
                                 className="w-full btn btn-primary text-white text-lg"
                             >
+
                                 Add Tutor
+
                             </Button>
 
                         </div>
 
                     </Form>
+
                 </div>
 
-                {/* Toast */}
-                <ToastContainer
-                    position="top-center"
-                />
+                <ToastContainer position="top-center" />
+
             </div>
+
         </PrivateRoute>
     );
 };
