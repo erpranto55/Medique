@@ -149,6 +149,11 @@ const MyBookingsPage = () => {
                         "Booking Cancelled Successfully"
                     );
 
+                    // AUTO RELOAD AFTER 1 SECOND
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 100);
+
                     const updatedBookings =
                         bookings.map(
                             (
