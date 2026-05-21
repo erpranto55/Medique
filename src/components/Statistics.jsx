@@ -24,6 +24,9 @@ const Statistics = () => {
             sessions: 120,
         });
 
+    const [loading, setLoading] =
+        useState(true);
+
     useEffect(() => {
 
         const fetchStats =
@@ -34,13 +37,7 @@ const Statistics = () => {
                     // TUTORS
                     const tutorsRes =
                         await axios.get(
-                            `${process.env.NEXT_PUBLIC_API_URL}tutors`
-                        );
-
-                    // BOOKINGS
-                    const bookingsRes =
-                        await axios.get(
-                            `${process.env.NEXT_PUBLIC_API_URL}/bookings`
+                            `${process.env.NEXT_PUBLIC_API_URL}/tutors`
                         );
 
                     // USERS
@@ -49,13 +46,42 @@ const Statistics = () => {
                             `${process.env.NEXT_PUBLIC_API_URL}/users`
                         );
 
+                    // BOOKINGS
+                    let bookingsCount = 0;
+
+                    try {
+
+                        const token =
+                            localStorage.getItem(
+                                "access-token"
+                            );
+
+                        const bookingsRes =
+                            await axios.get(
+                                `${process.env.NEXT_PUBLIC_API_URL}/bookings?email=test@gmail.com`,
+                                {
+                                    headers: {
+                                        authorization:
+                                            `Bearer ${token}`,
+                                    },
+                                }
+                            );
+
+                        bookingsCount =
+                            bookingsRes.data.length;
+
+                    } catch (error) {
+
+                        bookingsCount = 0;
+                    }
+
                     setStats({
 
                         tutors:
                             tutorsRes.data.length,
 
                         bookings:
-                            bookingsRes.data.length,
+                            bookingsCount,
 
                         users:
                             usersRes.data.length,
@@ -63,9 +89,13 @@ const Statistics = () => {
                         sessions: 120,
                     });
 
+                    setLoading(false);
+
                 } catch (error) {
 
                     console.log(error);
+
+                    setLoading(false);
                 }
             };
 
@@ -104,6 +134,19 @@ const Statistics = () => {
         },
     ];
 
+    // LOADING
+    if (loading) {
+
+        return (
+
+            <div className="py-20 flex justify-center">
+
+                <span className="loading loading-spinner loading-lg"></span>
+
+            </div>
+        );
+    }
+
     return (
 
         <section className="py-20 bg-base-200">
@@ -114,13 +157,17 @@ const Statistics = () => {
                 <div className="text-center mb-14">
 
                     <h2 className="text-4xl font-bold mb-4">
+
                         Platform Statistics
+
                     </h2>
 
                     <p className="max-w-2xl mx-auto text-base-content/70">
+
                         Trusted by students and tutors
                         across Bangladesh for smart
                         learning and booking solutions.
+
                     </p>
 
                 </div>
