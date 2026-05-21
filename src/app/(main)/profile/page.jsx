@@ -46,14 +46,14 @@ const ProfilePage = () => {
 
         try {
 
-            // UPDATE FIREBASE PROFILE
+            // UPDATE FIREBASE
             await updateProfile(user, {
                 displayName: name,
                 photoURL: photo,
             });
 
             // UPDATE DATABASE
-            await fetch(
+            const response = await fetch(
                 `${process.env.NEXT_PUBLIC_API_URL}/users/${user.email}`,
                 {
                     method: "PUT",
@@ -69,9 +69,21 @@ const ProfilePage = () => {
                 }
             );
 
-            document.getElementById("edit_modal").close();
+            const data = await response.json();
 
-            window.location.reload();
+            console.log(data);
+
+            if (data.success) {
+
+                alert("Profile Updated Successfully");
+
+                document
+                    .getElementById("edit_modal")
+                    .close();
+
+                window.location.reload();
+
+            }
 
         } catch (error) {
 
