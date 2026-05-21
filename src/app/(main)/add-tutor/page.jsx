@@ -79,9 +79,9 @@ const AddTutorPage = () => {
 
                 reset();
 
-                // AUTO RELOAD AFTER 2 SECOND
+                // MOVE TO MY TUTORS PAGE
                 setTimeout(() => {
-                    window.location.reload();
+                    window.location.href = "/my-tutors";
                 }, 2000);
             }
 
