@@ -1,6 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { CiLight } from "react-icons/ci";
+import { IoMoonSharp } from "react-icons/io5";
 
 const ThemeToggle = () => {
 
@@ -39,12 +41,12 @@ const ThemeToggle = () => {
     return (
         <button
             onClick={toggleTheme}
-            className="btn btn-sm btn-outline"
+            className="btn btn-sm btn-outline rounded-full"
         >
             {
                 theme === "light"
-                    ? "🌙"
-                    : "☀️"
+                    ? <IoMoonSharp />
+                    : <CiLight />
             }
         </button>
     );
