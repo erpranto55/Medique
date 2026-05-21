@@ -193,7 +193,7 @@ const Navbar = () => {
 
                         <ul
                             tabIndex={0}
-                            className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow"
+                            className="menu menu-sm dropdown-content bg-base-100 rounded-box z-100 mt-3 w-52 p-2 shadow border border-base-300"
                         >
 
                             {navLinks}
@@ -228,43 +228,118 @@ const Navbar = () => {
                 {/* END */}
                 <div className="navbar-end gap-3">
 
-                    {/* THEME */}
+                    {/* THEME TOGGLE */}
                     <ThemeToggle />
 
                     {
                         user ? (
-                            <>
 
-                                {/* USER IMAGE */}
-                                <div>
+                            <div className="dropdown dropdown-end">
 
-                                    <Image
-                                        src={
-                                            user?.photoURL
-                                                ? user.photoURL
-                                                : "/avatar.png"
-                                        }
-                                        alt="User Profile"
-                                        width={40}
-                                        height={40}
-                                        className="rounded-full object-cover cursor-pointer"
-                                    />
+                                {/* PROFILE BUTTON */}
+                                <div
+                                    tabIndex={0}
+                                    role="button"
+                                    className="btn btn-ghost btn-circle avatar"
+                                >
+
+                                    <div className="w-10 rounded-full border-2 border-primary">
+
+                                        <Image
+                                            src={
+                                                user?.photoURL
+                                                    ? user.photoURL
+                                                    : "/avatar.png"
+                                            }
+                                            alt="User Profile"
+                                            width={40}
+                                            height={40}
+                                            className="rounded-full object-cover"
+                                        />
+
+                                    </div>
 
                                 </div>
 
-                                {/* LOGOUT */}
-                                <button
-                                    onClick={
-                                        handleLogout
-                                    }
-                                    className="btn btn-error btn-sm text-white"
+                                {/* DROPDOWN */}
+                                <ul
+                                    tabIndex={0}
+                                    className="menu menu-sm dropdown-content mt-3 z-100 p-3 shadow bg-base-100 rounded-2xl w-64 border border-base-300"
                                 >
 
-                                    Logout
+                                    {/* USER INFO */}
+                                    <div className="pb-3 border-b border-base-300 mb-2">
 
-                                </button>
+                                        <h2 className="font-bold text-lg">
 
-                            </>
+                                            {
+                                                user?.displayName ||
+                                                "User"
+                                            }
+
+                                        </h2>
+
+                                        <p className="text-sm text-base-content/70 break-all">
+
+                                            {
+                                                user?.email
+                                            }
+
+                                        </p>
+
+                                    </div>
+
+                                    {/* MENU ITEMS */}
+                                    <li>
+
+                                        <Link href="/my-tutors">
+
+                                            My Tutors
+
+                                        </Link>
+
+                                    </li>
+
+                                    <li>
+
+                                        <Link href="/my-bookings">
+
+                                            My Bookings
+
+                                        </Link>
+
+                                    </li>
+
+                                    <li>
+
+                                        <Link href="/add-tutor">
+
+                                            Add Tutor
+
+                                        </Link>
+
+                                    </li>
+
+                                    {/* LOGOUT */}
+                                    <li className="mt-2">
+
+                                        <button
+                                            onClick={
+                                                handleLogout
+                                            }
+                                            className="text-error font-semibold"
+                                        >
+
+                                            Logout
+
+                                        </button>
+
+                                    </li>
+
+                                </ul>
+
+                            </div>
+
                         ) : (
                             <>
 
