@@ -75,7 +75,7 @@ const RegisterPage = () => {
                 photoURL: data.photo,
             });
 
-            // SAVE USER TO DATABASE
+            // USER DATA
             const userData = {
 
                 name: data.name,
@@ -89,6 +89,7 @@ const RegisterPage = () => {
                 createdAt: new Date(),
             };
 
+            // SAVE USER TO DATABASE
             await fetch(
                 `${process.env.NEXT_PUBLIC_API_URL}/users`,
                 {
@@ -103,6 +104,20 @@ const RegisterPage = () => {
                         userData
                     ),
                 }
+            );
+
+            // JWT TOKEN
+            const jwtRes = await axios.post(
+                `${process.env.NEXT_PUBLIC_API_URL}/jwt`,
+                {
+                    email: data.email,
+                }
+            );
+
+            // SAVE TOKEN
+            localStorage.setItem(
+                "access-token",
+                jwtRes.data.token
             );
 
             console.log(result.user);
@@ -139,31 +154,25 @@ const RegisterPage = () => {
                 const user =
                     result.user;
 
-                // SAVE GOOGLE USER
-                await fetch(
-                    `${process.env.NEXT_PUBLIC_API_URL}/users`,
-                    {
-                        method: "POST",
-                        headers: {
-                            "content-type": "application/json",
-                        },
-                        body: JSON.stringify(userData),
-                    }
-                );
+                // USER DATA
+                const userData = {
 
-                // JWT TOKEN
-                const jwtRes = await axios.post(
-                    `${process.env.NEXT_PUBLIC_API_URL}/jwt`,
-                    {
-                        email: user.email,
-                    }
-                );
+                    name:
+                        user.displayName,
 
-                localStorage.setItem(
-                    "access-token",
-                    jwtRes.data.token
-                );
+                    email:
+                        user.email,
 
+                    photo:
+                        user.photoURL,
+
+                    role: "student",
+
+                    createdAt:
+                        new Date(),
+                };
+
+                // SAVE USER TO DATABASE
                 await fetch(
                     `${process.env.NEXT_PUBLIC_API_URL}/users`,
                     {
@@ -178,6 +187,20 @@ const RegisterPage = () => {
                             userData
                         ),
                     }
+                );
+
+                // JWT TOKEN
+                const jwtRes = await axios.post(
+                    `${process.env.NEXT_PUBLIC_API_URL}/jwt`,
+                    {
+                        email: user.email,
+                    }
+                );
+
+                // SAVE TOKEN
+                localStorage.setItem(
+                    "access-token",
+                    jwtRes.data.token
                 );
 
                 toast.success(
