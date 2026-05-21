@@ -1,6 +1,6 @@
 # MediQueue – Tutor Booking System
 
-MediQueue is a modern Tutor Booking Platform where students can easily browse tutors, book learning sessions, and manage their booked classes efficiently.  <br>
+MediQueue is a modern Tutor Booking Platform where students can easily browse tutors, book learning sessions, and manage their booked classes efficiently. <br>
 The platform simplifies tutor scheduling with secure authentication, smart booking management, and responsive modern UI.<br>
 
 ---
@@ -29,6 +29,7 @@ The platform simplifies tutor scheduling with secure authentication, smart booki
 ## Technologies Used
 
 ### Frontend
+
 <br>
 - Next.js<br>
 - React.js<br>
@@ -142,10 +143,10 @@ nodemon index.js
 
 ### ER Pranto
 
+Frontend & Backend Developer
+
 [Portfolio](https://erpranto.vercel.app/)<br>
 [LinkedIn](https://www.linkedin.com/in/erpranto55/)<br>
-
-Frontend & Backend Developer
 
 ---
 
