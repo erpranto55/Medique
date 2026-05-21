@@ -30,7 +30,7 @@ const TutorDetailsPage = ({ params }) => {
             tutorName: tutor.name,
             subject: tutor.subject,
             fee: tutor.fee,
-            image: tutor.photo,
+            photo: tutor.photo,
             studentName: user?.displayName,
             studentEmail: user?.email,
             bookedAt: new Date(),
@@ -51,7 +51,7 @@ const TutorDetailsPage = ({ params }) => {
 
             const data = await res.json();
 
-            if (data.insertedId) {
+            if (data.success) {
 
                 toast.success(
                     "Booking Successful!",
