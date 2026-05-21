@@ -38,36 +38,34 @@ const TutorsPage = () => {
         useState(true);
 
     // FETCH TUTORS
-    const fetchTutors =
-        async () => {
-
-            try {
-
-                setLoading(true);
-
-                const res =
-                    await axios.get(
-                        `http://localhost:5000/tutors?search=${search}`
-                    );
-
-                setTutors(
-                    res.data
-                );
-
-            } catch (error) {
-
-                console.log(error);
-
-            } finally {
-
-                setLoading(false);
-            }
-        };
-
-    // INITIAL LOAD
     useEffect(() => {
 
-        // eslint-disable-next-line react-hooks/set-state-in-effect
+        const fetchTutors =
+            async () => {
+
+                try {
+
+                    setLoading(true);
+
+                    const res =
+                        await axios.get(
+                            `http://localhost:5000/tutors?search=${search}`
+                        );
+
+                    setTutors(
+                        res.data
+                    );
+
+                } catch (error) {
+
+                    console.log(error);
+
+                } finally {
+
+                    setLoading(false);
+                }
+            };
+
         fetchTutors();
 
     }, [search]);
