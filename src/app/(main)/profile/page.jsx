@@ -7,6 +7,7 @@ import Image from "next/image";
 import {
     useContext,
     useEffect,
+    useState,
 } from "react";
 
 import {
@@ -14,9 +15,25 @@ import {
 } from "@/providers/AuthProvider";
 
 import {
+    updateProfile,
+} from "firebase/auth";
+
+import {
+    auth,
+} from "@/firebase/firebase.config";
+
+import {
     FaEnvelope,
     FaUser,
+    FaCamera,
 } from "react-icons/fa";
+
+import {
+    toast,
+    ToastContainer,
+} from "react-toastify";
+
+import "react-toastify/dist/ReactToastify.css";
 
 const ProfilePage = () => {
 
@@ -29,6 +46,82 @@ const ProfilePage = () => {
 
     const { user } =
         useContext(AuthContext);
+
+    const [loading, setLoading] =
+        useState(false);
+
+    const [isEditing, setIsEditing] =
+        useState(false);
+
+    const [formData, setFormData] =
+        useState({
+            name:
+                user?.displayName || "",
+
+            photo:
+                user?.photoURL || "",
+        });
+
+    // HANDLE CHANGE
+    const handleChange = (e) => {
+
+        const {
+            name,
+            value,
+        } = e.target;
+
+        setFormData({
+            ...formData,
+            [name]: value,
+        });
+    };
+
+    // UPDATE PROFILE
+    const handleUpdateProfile =
+        async (e) => {
+
+            e.preventDefault();
+
+            try {
+
+                setLoading(true);
+
+                await updateProfile(
+                    auth.currentUser,
+                    {
+                        displayName:
+                            formData.name,
+
+                        photoURL:
+                            formData.photo,
+                    }
+                );
+
+                toast.success(
+                    "Profile Updated Successfully"
+                );
+
+                setIsEditing(false);
+
+                setTimeout(() => {
+
+                    window.location.reload();
+
+                }, 1500);
+
+            } catch (error) {
+
+                console.log(error);
+
+                toast.error(
+                    "Failed To Update Profile"
+                );
+
+            } finally {
+
+                setLoading(false);
+            }
+        };
 
     return (
 
@@ -44,12 +137,12 @@ const ProfilePage = () => {
                         {/* PROFILE IMAGE */}
                         <div className="absolute left-1/2 -bottom-16 transform -translate-x-1/2">
 
-                            <div className="w-36 h-36 rounded-full border-4 border-base-100 overflow-hidden shadow-xl bg-base-100">
+                            <div className="w-36 h-36 rounded-full border-4 border-base-100 overflow-hidden shadow-xl bg-base-100 relative">
 
                                 <Image
                                     src={
-                                        user?.photoURL
-                                            ? user.photoURL
+                                        formData.photo
+                                            ? formData.photo
                                             : "/avatar.png"
                                     }
                                     alt="Profile"
@@ -57,6 +150,12 @@ const ProfilePage = () => {
                                     height={150}
                                     className="object-cover w-full h-full"
                                 />
+
+                                <div className="absolute bottom-2 right-2 bg-primary text-white p-2 rounded-full shadow-lg">
+
+                                    <FaCamera />
+
+                                </div>
 
                             </div>
 
@@ -67,106 +166,208 @@ const ProfilePage = () => {
                     {/* CONTENT */}
                     <div className="pt-24 pb-12 px-6 md:px-12 text-center">
 
-                        {/* NAME */}
-                        <h1 className="text-4xl font-bold mb-3">
+                        {
+                            isEditing ? (
 
-                            {
-                                user?.displayName ||
-                                "User Name"
-                            }
+                                <form
+                                    onSubmit={handleUpdateProfile}
+                                    className="max-w-2xl mx-auto"
+                                >
 
-                        </h1>
+                                    {/* NAME */}
+                                    <div className="mb-6 text-left">
 
-                        <p className="text-base-content/70 text-lg mb-8">
+                                        <label className="font-semibold block mb-2">
 
-                            Welcome to your MediQueue profile dashboard.
+                                            Full Name
 
-                        </p>
+                                        </label>
 
-                        {/* INFO CARDS */}
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                        <input
+                                            type="text"
+                                            name="name"
+                                            value={formData.name}
+                                            onChange={handleChange}
+                                            className="input input-bordered w-full"
+                                            placeholder="Your Name"
+                                            required
+                                        />
 
-                            {/* EMAIL */}
-                            <div className="bg-base-200 rounded-2xl p-6 flex items-center gap-4 shadow-md">
+                                    </div>
 
-                                <div className="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center text-primary text-2xl">
+                                    {/* PHOTO */}
+                                    <div className="mb-6 text-left">
 
-                                    <FaEnvelope />
+                                        <label className="font-semibold block mb-2">
 
-                                </div>
+                                            Photo URL
 
-                                <div className="text-left">
+                                        </label>
 
-                                    <h2 className="font-bold text-lg">
+                                        <input
+                                            type="text"
+                                            name="photo"
+                                            value={formData.photo}
+                                            onChange={handleChange}
+                                            className="input input-bordered w-full"
+                                            placeholder="Photo URL"
+                                            required
+                                        />
 
-                                        Email Address
+                                    </div>
 
-                                    </h2>
+                                    {/* BUTTONS */}
+                                    <div className="flex flex-col sm:flex-row justify-center gap-4 mt-8">
 
-                                    <p className="text-base-content/70 break-all">
+                                        <button
+                                            type="submit"
+                                            className="btn btn-primary px-8"
+                                            disabled={loading}
+                                        >
 
-                                        {
-                                            user?.email
-                                        }
+                                            {
+                                                loading
+                                                    ? "Updating..."
+                                                    : "Save Changes"
+                                            }
 
-                                    </p>
+                                        </button>
 
-                                </div>
+                                        <button
+                                            type="button"
+                                            onClick={() =>
+                                                setIsEditing(false)
+                                            }
+                                            className="btn btn-outline px-8"
+                                        >
 
-                            </div>
+                                            Cancel
 
-                            {/* USER */}
-                            <div className="bg-base-200 rounded-2xl p-6 flex items-center gap-4 shadow-md">
+                                        </button>
 
-                                <div className="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center text-primary text-2xl">
+                                    </div>
 
-                                    <FaUser />
+                                </form>
 
-                                </div>
+                            ) : (
 
-                                <div className="text-left">
-
-                                    <h2 className="font-bold text-lg">
-
-                                        Display Name
-
-                                    </h2>
-
-                                    <p className="text-base-content/70">
+                                <>
+                                    {/* NAME */}
+                                    <h1 className="text-4xl font-bold mb-3">
 
                                         {
                                             user?.displayName ||
-                                            "No Name"
+                                            "User Name"
                                         }
+
+                                    </h1>
+
+                                    <p className="text-base-content/70 text-lg mb-8">
+
+                                        Welcome to your MediQueue profile dashboard.
 
                                     </p>
 
-                                </div>
+                                    {/* INFO CARDS */}
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
 
-                            </div>
+                                        {/* EMAIL */}
+                                        <div className="bg-base-200 rounded-2xl p-6 flex items-center gap-4 shadow-md">
 
-                        </div>
+                                            <div className="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center text-primary text-2xl">
 
-                        {/* BUTTONS */}
-                        <div className="mt-10 flex flex-col sm:flex-row justify-center gap-4">
+                                                <FaEnvelope />
 
-                            <button className="btn btn-primary px-8">
+                                            </div>
 
-                                Edit Profile
+                                            <div className="text-left">
 
-                            </button>
+                                                <h2 className="font-bold text-lg">
 
-                            <button className="btn btn-outline px-8">
+                                                    Email Address
 
-                                View My Tutors
+                                                </h2>
 
-                            </button>
+                                                <p className="text-base-content/70 break-all">
 
-                        </div>
+                                                    {
+                                                        user?.email
+                                                    }
+
+                                                </p>
+
+                                            </div>
+
+                                        </div>
+
+                                        {/* USER */}
+                                        <div className="bg-base-200 rounded-2xl p-6 flex items-center gap-4 shadow-md">
+
+                                            <div className="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center text-primary text-2xl">
+
+                                                <FaUser />
+
+                                            </div>
+
+                                            <div className="text-left">
+
+                                                <h2 className="font-bold text-lg">
+
+                                                    Display Name
+
+                                                </h2>
+
+                                                <p className="text-base-content/70">
+
+                                                    {
+                                                        user?.displayName ||
+                                                        "No Name"
+                                                    }
+
+                                                </p>
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                    {/* BUTTONS */}
+                                    <div className="mt-10 flex flex-col sm:flex-row justify-center gap-4">
+
+                                        <button
+                                            onClick={() =>
+                                                setIsEditing(true)
+                                            }
+                                            className="btn btn-primary px-8"
+                                        >
+
+                                            Edit Profile
+
+                                        </button>
+
+                                        <button
+                                            onClick={() =>
+                                                window.location.href =
+                                                "/my-tutors"
+                                            }
+                                            className="btn btn-outline px-8"
+                                        >
+
+                                            View My Tutors
+
+                                        </button>
+
+                                    </div>
+                                </>
+                            )
+                        }
 
                     </div>
 
                 </div>
+
+                <ToastContainer position="top-center" />
 
             </div>
 
