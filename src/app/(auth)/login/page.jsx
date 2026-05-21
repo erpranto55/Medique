@@ -266,6 +266,20 @@ const LoginPage = () => {
                             )
                         }
 
+                        {/* FORGOT PASSWORD */}
+                        <div className="text-right mt-2">
+
+                            <Link
+                                href="#"
+                                className="text-primary text-sm hover:underline"
+                            >
+
+                                Forgot Password?
+
+                            </Link>
+
+                        </div>
+
                     </div>
 
                     {/* SUBMIT */}
