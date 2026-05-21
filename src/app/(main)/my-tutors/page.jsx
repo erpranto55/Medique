@@ -21,13 +21,61 @@ const MyTutorsPage = () => {
 
     const [tutors, setTutors] = useState([]);
 
+    // FETCH MY TUTORS
     useEffect(() => {
 
-        fetch(
-            `http://localhost:5000/my-tutors?email=${user?.email}`
-        )
-            .then((res) => res.json())
-            .then((data) => setTutors(data));
+        if (!user?.email) return;
+
+        const fetchTutors =
+            async () => {
+
+                try {
+
+                    const token =
+                        localStorage.getItem(
+                            "access-token"
+                        );
+
+                    const res =
+                        await fetch(
+                            `http://localhost:5000/my-tutors?email=${user.email}`,
+                            {
+                                headers: {
+                                    authorization:
+                                        `Bearer ${token}`,
+                                },
+                            }
+                        );
+
+                    // UNAUTHORIZED
+                    if (
+                        res.status === 401 ||
+                        res.status === 403
+                    ) {
+
+                        toast.error(
+                            "Unauthorized Access"
+                        );
+
+                        return;
+                    }
+
+                    const data =
+                        await res.json();
+
+                    setTutors(data);
+
+                } catch (error) {
+
+                    console.log(error);
+
+                    toast.error(
+                        "Failed To Fetch Tutors"
+                    );
+                }
+            };
+
+        fetchTutors();
 
     }, [user]);
 

@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import axios from "axios";
 
 import {
     useContext,
@@ -66,9 +67,29 @@ const LoginPage = () => {
 
         try {
 
-            await signInUser(
-                data.email,
-                data.password
+            // LOGIN USER
+            const result =
+                await signInUser(
+                    data.email,
+                    data.password
+                );
+
+            // JWT TOKEN
+            const userInfo = {
+
+                email:
+                    result.user.email,
+            };
+
+            const jwtRes =
+                await axios.post(
+                    "http://localhost:5000/jwt",
+                    userInfo
+                );
+
+            localStorage.setItem(
+                "access-token",
+                jwtRes.data.token
             );
 
             toast.success(
@@ -97,7 +118,27 @@ const LoginPage = () => {
 
             try {
 
-                await googleLogin();
+                // GOOGLE LOGIN
+                const result =
+                    await googleLogin();
+
+                // JWT TOKEN
+                const userInfo = {
+
+                    email:
+                        result.user.email,
+                };
+
+                const jwtRes =
+                    await axios.post(
+                        "http://localhost:5000/jwt",
+                        userInfo
+                    );
+
+                localStorage.setItem(
+                    "access-token",
+                    jwtRes.data.token
+                );
 
                 toast.success(
                     "Login Successful"

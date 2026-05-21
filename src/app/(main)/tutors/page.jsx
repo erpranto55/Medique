@@ -34,6 +34,12 @@ const TutorsPage = () => {
     const [search, setSearch] =
         useState("");
 
+    const [startDate, setStartDate] =
+        useState("");
+
+    const [endDate, setEndDate] =
+        useState("");
+
     const [loading, setLoading] =
         useState(true);
 
@@ -49,7 +55,7 @@ const TutorsPage = () => {
 
                     const res =
                         await axios.get(
-                            `http://localhost:5000/tutors?search=${search}`
+                            `http://localhost:5000/tutors?search=${search}&startDate=${startDate}&endDate=${endDate}`
                         );
 
                     setTutors(
@@ -68,7 +74,7 @@ const TutorsPage = () => {
 
         fetchTutors();
 
-    }, [search]);
+    }, [search, startDate, endDate]);
 
     // HANDLE SEARCH
     const handleSearch = (
@@ -120,14 +126,15 @@ const TutorsPage = () => {
 
                 </div>
 
-                {/* SEARCH */}
+                {/* SEARCH + FILTER */}
                 <form
                     onSubmit={
                         handleSearch
                     }
-                    className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-10"
+                    className="flex flex-col lg:flex-row gap-4 justify-center items-center mb-10"
                 >
 
+                    {/* SEARCH */}
                     <input
                         type="text"
                         placeholder="Search tutors by name..."
@@ -139,9 +146,38 @@ const TutorsPage = () => {
                                 e.target.value
                             )
                         }
-                        className="input input-bordered w-full max-w-xl"
+                        className="input input-bordered w-full lg:max-w-sm"
                     />
 
+                    {/* START DATE */}
+                    <input
+                        type="date"
+                        value={
+                            startDate
+                        }
+                        onChange={(e) =>
+                            setStartDate(
+                                e.target.value
+                            )
+                        }
+                        className="input input-bordered"
+                    />
+
+                    {/* END DATE */}
+                    <input
+                        type="date"
+                        value={
+                            endDate
+                        }
+                        onChange={(e) =>
+                            setEndDate(
+                                e.target.value
+                            )
+                        }
+                        className="input input-bordered"
+                    />
+
+                    {/* SEARCH BUTTON */}
                     <button
                         type="submit"
                         className="btn btn-primary"
@@ -193,7 +229,7 @@ const TutorsPage = () => {
 
                             <p className="text-base-content/70">
 
-                                Try searching with another tutor name.
+                                Try another search or date range.
 
                             </p>
 
