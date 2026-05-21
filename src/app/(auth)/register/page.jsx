@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import axios from "axios";
 
 import {
     useContext,
@@ -139,22 +140,29 @@ const RegisterPage = () => {
                     result.user;
 
                 // SAVE GOOGLE USER
-                const userData = {
+                await fetch(
+                    `${process.env.NEXT_PUBLIC_API_URL}/users`,
+                    {
+                        method: "POST",
+                        headers: {
+                            "content-type": "application/json",
+                        },
+                        body: JSON.stringify(userData),
+                    }
+                );
 
-                    name:
-                        user.displayName,
+                // JWT TOKEN
+                const jwtRes = await axios.post(
+                    `${process.env.NEXT_PUBLIC_API_URL}/jwt`,
+                    {
+                        email: user.email,
+                    }
+                );
 
-                    email:
-                        user.email,
-
-                    photo:
-                        user.photoURL,
-
-                    role: "student",
-
-                    createdAt:
-                        new Date(),
-                };
+                localStorage.setItem(
+                    "access-token",
+                    jwtRes.data.token
+                );
 
                 await fetch(
                     `${process.env.NEXT_PUBLIC_API_URL}/users`,

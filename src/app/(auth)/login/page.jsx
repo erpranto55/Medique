@@ -113,53 +113,52 @@ const LoginPage = () => {
     };
 
     // GOOGLE LOGIN
-    const handleGoogleLogin =
-        async () => {
+    const handleGoogleLogin = async () => {
+        try {
 
-            try {
+            // GOOGLE LOGIN
+            const result = await googleLogin();
 
-                // GOOGLE LOGIN
-                const result =
-                    await googleLogin();
+            // SAVE USER TO DATABASE
+            await axios.post(
+                `${process.env.NEXT_PUBLIC_API_URL}/users`,
+                {
+                    name: result.user.displayName,
+                    email: result.user.email,
+                    photo: result.user.photoURL,
+                    createdAt: new Date(),
+                }
+            );
 
-                // JWT TOKEN
-                const userInfo = {
+            // JWT TOKEN
+            const userInfo = {
+                email: result.user.email,
+            };
 
-                    email:
-                        result.user.email,
-                };
+            const jwtRes = await axios.post(
+                `${process.env.NEXT_PUBLIC_API_URL}/jwt`,
+                userInfo
+            );
 
-                const jwtRes =
-                    await axios.post(
-                        `${process.env.NEXT_PUBLIC_API_URL}/jwt`,
-                        userInfo
-                    );
+            localStorage.setItem(
+                "access-token",
+                jwtRes.data.token
+            );
 
-                localStorage.setItem(
-                    "access-token",
-                    jwtRes.data.token
-                );
+            toast.success("Login Successful");
 
-                toast.success(
-                    "Login Successful"
-                );
+            setTimeout(() => {
+                router.push(from);
+            }, 1500);
 
-                setTimeout(() => {
+        } catch (error) {
 
-                    router.push(from);
+            console.log(error.message);
 
-                }, 1500);
-
-            } catch (error) {
-
-                console.log(error.message);
-
-                toast.error(
-                    error.message
-                );
-            }
-        };
-
+            toast.error(error.message);
+        }
+    };
+    
     return (
         <div className="min-h-screen flex items-center justify-center px-4 py-16">
 
