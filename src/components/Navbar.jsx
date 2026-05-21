@@ -167,23 +167,18 @@ const Navbar = () => {
                         <>
 
                             {/* USER IMAGE */}
-                            <div
-                                className="tooltip tooltip-bottom"
-                                data-tip={
-                                    user?.displayName ||
-                                    "User"
-                                }
-                            >
+                            <div>
 
                                 <Image
                                     src={
-                                        user?.photoURL ||
-                                        "/avatar.png"
+                                        user?.photoURL
+                                            ? user.photoURL
+                                            : "/avatar.png"
                                     }
                                     alt="User Profile"
-                                    width={50}
-                                    height={50}
-                                    className="w-10 h-10 rounded-full object-cover border"
+                                    width={40}
+                                    height={40}
+                                    className="rounded-full object-cover cursor-pointer"
                                 />
 
                             </div>
