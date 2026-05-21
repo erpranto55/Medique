@@ -1,7 +1,7 @@
 "use client";
 
 import PrivateRoute from "@/routes/PrivateRoute";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 
 import {
     ToastContainer,
@@ -10,8 +10,12 @@ import {
 
 import "react-toastify/dist/ReactToastify.css";
 import Swal from "sweetalert2";
+import {
+    AuthContext,
+} from "@/providers/AuthProvider";
 
 const MyBookingsPage = () => {
+    const { user } = useContext(AuthContext);
 
     const [bookings, setBookings] = useState([]);
 
@@ -20,7 +24,9 @@ const MyBookingsPage = () => {
     // FETCH BOOKINGS
     useEffect(() => {
 
-        fetch("http://localhost:5000/bookings")
+        fetch(
+            `http://localhost:5000/bookings?email=${user?.email}`
+        )
             .then((res) => res.json())
             .then((data) => {
 
@@ -29,7 +35,7 @@ const MyBookingsPage = () => {
                 setLoading(false);
             });
 
-    }, []);
+    }, [user]);
 
     // DELETE BOOKING
     // DELETE BOOKING
