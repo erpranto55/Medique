@@ -8,6 +8,14 @@ import { toast } from "react-toastify";
 import { AuthContext } from "@/providers/AuthProvider";
 
 const TutorDetailsPage = ({ params }) => {
+
+    // PAGE TITLE
+    useEffect(() => {
+
+        document.title =
+            "Tutor Details | MediQueue";
+
+    }, []);
     const { user } = useContext(AuthContext);
 
     const { id } = use(params);
