@@ -16,7 +16,7 @@ const TutorDetailsPage = ({ params }) => {
 
     useEffect(() => {
 
-        fetch(`http://localhost:5000/tutors/${id}`)
+        fetch(`${process.env.NEXT_PUBLIC_API_URL}/tutors/${id}`)
             .then((res) => res.json())
             .then((data) => setTutor(data));
 
@@ -38,8 +38,7 @@ const TutorDetailsPage = ({ params }) => {
 
         try {
 
-            const res = await fetch(
-                "http://localhost:5000/bookings",
+            const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/bookings`,
                 {
                     method: "POST",
                     headers: {

@@ -56,7 +56,7 @@ const UpdateTutorPage = ({ params }) => {
     // FETCH SINGLE TUTOR
     useEffect(() => {
 
-        fetch(`http://localhost:5000/tutors/${id}`)
+        fetch(`${process.env.NEXT_PUBLIC_API_URL}/tutors/${id}`)
             .then((res) => res.json())
             .then((data) => {
 
@@ -100,7 +100,6 @@ const UpdateTutorPage = ({ params }) => {
     };
 
     // UPDATE TUTOR
-    // UPDATE TUTOR
     const handleUpdateTutor = async (e) => {
 
         e.preventDefault();
@@ -114,7 +113,7 @@ const UpdateTutorPage = ({ params }) => {
             };
 
             const res = await fetch(
-                `http://localhost:5000/tutors/${id}`,
+                `${process.env.NEXT_PUBLIC_API_URL}/tutors/${id}`,
                 {
                     method: "PUT",
                     headers: {

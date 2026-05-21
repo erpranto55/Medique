@@ -60,7 +60,7 @@ const AddTutorPage = () => {
             };
 
             const res = await axios.post(
-                "http://localhost:5000/tutors",
+                `${process.env.NEXT_PUBLIC_API_URL}/tutors`,
                 tutorInfo
             );
 

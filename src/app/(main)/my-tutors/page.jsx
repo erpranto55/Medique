@@ -38,7 +38,7 @@ const MyTutorsPage = () => {
 
                     const res =
                         await fetch(
-                            `http://localhost:5000/my-tutors?email=${user.email}`,
+                            `${process.env.NEXT_PUBLIC_API_URL}/my-tutors?email=${user.email}`,
                             {
                                 headers: {
                                     authorization:
@@ -97,7 +97,7 @@ const MyTutorsPage = () => {
         try {
 
             const res = await fetch(
-                `http://localhost:5000/tutors/${id}`,
+                `${process.env.NEXT_PUBLIC_API_URL}/tutors/${id}`,
                 {
                     method: "DELETE",
                 }

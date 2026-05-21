@@ -83,7 +83,7 @@ const LoginPage = () => {
 
             const jwtRes =
                 await axios.post(
-                    "http://localhost:5000/jwt",
+                    `${process.env.NEXT_PUBLIC_API_URL}/jwt`,
                     userInfo
                 );
 
@@ -131,7 +131,7 @@ const LoginPage = () => {
 
                 const jwtRes =
                     await axios.post(
-                        "http://localhost:5000/jwt",
+                        `${process.env.NEXT_PUBLIC_API_URL}/jwt`,
                         userInfo
                     );
 

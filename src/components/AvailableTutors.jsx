@@ -29,7 +29,7 @@ const AvailableTutors = () => {
 
                     const res =
                         await axios.get(
-                            "http://localhost:5000/tutors"
+                            `${process.env.NEXT_PUBLIC_API_URL}/tutors`
                         );
 
                     setTutors(

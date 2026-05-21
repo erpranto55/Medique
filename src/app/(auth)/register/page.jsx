@@ -89,7 +89,7 @@ const RegisterPage = () => {
             };
 
             await fetch(
-                "http://localhost:5000/users",
+                `${process.env.NEXT_PUBLIC_API_URL}/users`,
                 {
                     method: "POST",
 
@@ -157,7 +157,7 @@ const RegisterPage = () => {
                 };
 
                 await fetch(
-                    "http://localhost:5000/users",
+                    `${process.env.NEXT_PUBLIC_API_URL}/users`,
                     {
                         method: "POST",
 

@@ -56,7 +56,7 @@ const MyBookingsPage = () => {
 
                     const res =
                         await fetch(
-                            `http://localhost:5000/bookings?email=${user.email}`,
+                            `${process.env.NEXT_PUBLIC_API_URL}/bookings?email=${user.email}`,
                             {
                                 headers: {
                                     authorization:
@@ -133,7 +133,7 @@ const MyBookingsPage = () => {
 
                 const res =
                     await fetch(
-                        `http://localhost:5000/bookings/${id}`,
+                        `${process.env.NEXT_PUBLIC_API_URL}/bookings/${id}`,
                         {
                             method:
                                 "PATCH",

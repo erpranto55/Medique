@@ -55,7 +55,7 @@ const TutorsPage = () => {
 
                     const res =
                         await axios.get(
-                            `http://localhost:5000/tutors?search=${search}&startDate=${startDate}&endDate=${endDate}`
+                            `${process.env.NEXT_PUBLIC_API_URL}/tutors?search=${search}&startDate=${startDate}&endDate=${endDate}`
                         );
 
                     setTutors(
