@@ -11,6 +11,7 @@ const TutorCard = ({ tutor }) => {
     experience,
     fee,
     location,
+    mode,
   } = tutor;
 
   return (
@@ -72,6 +73,12 @@ const TutorCard = ({ tutor }) => {
               Hourly Fee:
             </span>{" "}
             {fee} BDT
+          </p>
+          <p>
+            <span className="font-bold">
+              Available Slots:
+            </span>{" "}
+            {tutor.totalSlot}
           </p>
 
         </div>

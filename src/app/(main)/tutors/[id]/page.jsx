@@ -3,10 +3,12 @@
 import PrivateRoute from "@/routes/PrivateRoute";
 import Image from "next/image";
 import Link from "next/link";
-import { use, useEffect, useState } from "react";
+import { use, useEffect, useState, useContext } from "react";
 import { toast } from "react-toastify";
+import { AuthContext } from "@/providers/AuthProvider";
 
 const TutorDetailsPage = ({ params }) => {
+    const { user } = useContext(AuthContext);
 
     const { id } = use(params);
 
@@ -23,11 +25,14 @@ const TutorDetailsPage = ({ params }) => {
     const handleBooking = async () => {
 
         const bookingData = {
+
             tutorId: tutor._id,
             tutorName: tutor.name,
             subject: tutor.subject,
             fee: tutor.fee,
             image: tutor.photo,
+            studentName: user?.displayName,
+            studentEmail: user?.email,
             bookedAt: new Date(),
         };
 
@@ -100,7 +105,7 @@ const TutorDetailsPage = ({ params }) => {
                 <div className="grid lg:grid-cols-2 gap-12 items-center">
 
                     {/* IMAGE */}
-                    <div className="relative w-full h-162.5 bg-base-200 rounded-3xl overflow-hidden shadow-xl">
+                    <div className="relative w-100 h-100 bg-base-200 rounded-3xl overflow-hidden shadow-xl md:ml-40">
 
                         <Image
                             src={
@@ -175,7 +180,7 @@ const TutorDetailsPage = ({ params }) => {
                                 <span className="font-bold">
                                     Teaching Mode:
                                 </span>{" "}
-                                {tutor.teachingMode}
+                                {tutor.mode}
                             </p>
 
                         </div>
@@ -183,16 +188,32 @@ const TutorDetailsPage = ({ params }) => {
                         {/* BUTTON */}
                         <div className="pt-4">
 
-                            <button
-                                className="btn btn-primary btn-lg"
-                                onClick={() =>
-                                    document
-                                        .getElementById("book_modal")
-                                        .showModal()
-                                }
-                            >
-                                Book Session
-                            </button>
+                            {
+                                tutor.totalSlot > 0 ? (
+
+                                    <button
+                                        onClick={() =>
+                                            document
+                                                .getElementById(
+                                                    "book_modal"
+                                                )
+                                                .showModal()
+                                        }
+                                        className="btn btn-primary btn-lg"
+                                    >
+                                        Book Session
+                                    </button>
+
+                                ) : (
+
+                                    <button
+                                        disabled
+                                        className="btn btn-error btn-lg"
+                                    >
+                                        Fully Booked
+                                    </button>
+                                )
+                            }
 
                         </div>
 
@@ -264,7 +285,8 @@ const TutorDetailsPage = ({ params }) => {
 
                                 <input
                                     type="text"
-                                    placeholder="Enter your name"
+                                    value={user?.displayName || ""}
+                                    readOnly
                                     className="input input-bordered w-full"
                                 />
 
@@ -278,7 +300,8 @@ const TutorDetailsPage = ({ params }) => {
 
                                 <input
                                     type="email"
-                                    placeholder="Enter your email"
+                                    value={user?.email || ""}
+                                    readOnly
                                     className="input input-bordered w-full"
                                 />
 
