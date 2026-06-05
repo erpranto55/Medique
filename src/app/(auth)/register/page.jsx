@@ -224,22 +224,72 @@ const RegisterPage = () => {
         };
 
     return (
-        <div className="min-h-screen flex items-center justify-center px-4 py-16">
+        <div className="relative min-h-screen flex items-center justify-center px-4 py-16 overflow-hidden">
 
-            <div className="w-full max-w-xl bg-base-100 shadow-2xl rounded-3xl p-8 md:p-12 border border-base-300">
+            <div className="absolute top-20 left-10 w-96 h-96 bg-primary/10 blur-3xl rounded-full" />
+
+            <div className="absolute bottom-20 right-10 w-96 h-96 bg-secondary/10 blur-3xl rounded-full" />
+
+            <div
+                className="
+                    relative
+                    z-10
+                    w-full
+                    max-w-xl
+                    bg-base-100/80
+                    backdrop-blur-xl
+                    shadow-2xl
+                    rounded-[36px]
+                    p-8
+                    md:p-12
+                    border
+                    border-base-300/30
+                "
+            >
 
                 {/* HEADING */}
                 <div className="text-center mb-10">
 
-                    <h1 className="text-4xl font-bold">
+                    <div
+                        className="
+                            inline-flex
+                            items-center
+                            gap-2
+                            px-5
+                            py-2
+                            rounded-full
+                            bg-primary/10
+                            text-primary
+                            font-semibold
+                            mb-5
+                        "
+                    >
+                        Join MediQueue
+                    </div>
+
+                    <h1 className="text-5xl font-black mb-3">
                         Create Account
                     </h1>
 
-                    <p className="text-base-content/70 mt-3">
-                        Register and start your
-                        tutoring journey with
-                        MediQueue.
+                    <p className="text-base-content/70 text-lg">
+                        Register and start your tutoring journey today.
                     </p>
+
+                </div>
+
+                <div className="flex flex-wrap justify-center gap-3 mb-8">
+
+                    <div className="badge badge-primary badge-lg">
+                        Secure Account
+                    </div>
+
+                    <div className="badge badge-secondary badge-lg">
+                        Free Registration
+                    </div>
+
+                    <div className="badge badge-accent badge-lg">
+                        Start Learning
+                    </div>
 
                 </div>
 
@@ -259,7 +309,15 @@ const RegisterPage = () => {
                         <input
                             type="text"
                             placeholder="Your Name"
-                            className="input input-bordered w-full"
+                            className="
+                                input
+                                input-bordered
+                                w-full
+                                h-14
+                                rounded-2xl
+                                border-base-300/40
+                                focus:border-primary
+                            "
                             {...register("name", {
                                 required:
                                     "Name is required",
@@ -286,7 +344,15 @@ const RegisterPage = () => {
                         <input
                             type="text"
                             placeholder="Photo URL"
-                            className="input input-bordered w-full"
+                            className="
+                                input
+                                input-bordered
+                                w-full
+                                h-14
+                                rounded-2xl
+                                border-base-300/40
+                                focus:border-primary
+                            "
                             {...register("photo", {
                                 required:
                                     "Photo URL is required",
@@ -313,7 +379,15 @@ const RegisterPage = () => {
                         <input
                             type="email"
                             placeholder="Email Address"
-                            className="input input-bordered w-full"
+                            className="
+                                input
+                                input-bordered
+                                w-full
+                                h-14
+                                rounded-2xl
+                                border-base-300/40
+                                focus:border-primary
+                            "
                             {...register("email", {
                                 required:
                                     "Email is required",
@@ -346,7 +420,15 @@ const RegisterPage = () => {
                                         : "password"
                                 }
                                 placeholder="Password"
-                                className="input input-bordered w-full"
+                                className="
+                                    input
+                                    input-bordered
+                                    w-full
+                                    h-14
+                                    rounded-2xl
+                                    border-base-300/40
+                                    focus:border-primary
+                                "
                                 {...register(
                                     "password",
                                     {
@@ -383,6 +465,7 @@ const RegisterPage = () => {
                                     }
                                 )}
                             />
+                            
 
                             <button
                                 type="button"
@@ -391,7 +474,15 @@ const RegisterPage = () => {
                                         !showPassword
                                     )
                                 }
-                                className="absolute top-1/2 right-4 -translate-y-1/2"
+                                className="
+                                    absolute
+                                    top-1/2
+                                    right-4
+                                    -translate-y-1/2
+                                    text-base-content/60
+                                    hover:text-primary
+                                    transition-colors
+                                "
                             >
 
                                 {
@@ -403,6 +494,7 @@ const RegisterPage = () => {
                             </button>
 
                         </div>
+                        
 
                         {
                             errors.password && (
@@ -417,7 +509,23 @@ const RegisterPage = () => {
                     {/* SUBMIT */}
                     <button
                         type="submit"
-                        className="btn btn-primary w-full"
+                        className="
+                            btn
+                            w-full
+                            h-14
+                            rounded-2xl
+                            border-0
+                            bg-linear-to-r
+                            from-primary
+                            to-secondary
+                            text-white
+                            font-semibold
+                            shadow-lg
+                            hover:shadow-xl
+                            hover:scale-[1.01]
+                            transition-all
+                            duration-300
+                        "
                     >
                         Register
                     </button>
@@ -425,14 +533,23 @@ const RegisterPage = () => {
                 </form>
 
                 {/* DIVIDER */}
-                <div className="divider my-8">
+                <div className="divider text-base-content/50 my-8">
                     OR
                 </div>
 
                 {/* GOOGLE */}
                 <button
                     onClick={handleGoogleLogin}
-                    className="btn btn-outline w-full"
+                    className="
+                        btn
+                        btn-outline
+                        w-full
+                        h-14
+                        rounded-2xl
+                        hover:border-primary
+                        hover:text-primary
+                        transition-all
+                    "
                 >
 
                     <FcGoogle className="text-2xl" />
@@ -442,13 +559,17 @@ const RegisterPage = () => {
                 </button>
 
                 {/* LOGIN */}
-                <p className="text-center mt-8 text-base-content/70">
+                <p className="text-center mt-8 text-base-content/70 text-base">
 
                     Already have an account?{" "}
 
                     <Link
                         href="/login"
-                        className="text-primary font-semibold"
+                        className="
+                            text-primary
+                            font-semibold
+                            hover:underline
+                        "
                     >
                         Login
                     </Link>

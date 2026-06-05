@@ -1,11 +1,19 @@
 "use client";
 
-import PrivateRoute from "@/routes/PrivateRoute";
 import Image from "next/image";
-import Link from "next/link";
 import { use, useEffect, useState, useContext } from "react";
 import { toast } from "react-toastify";
 import { AuthContext } from "@/providers/AuthProvider";
+import PrivateRoute from "@/routes/PrivateRoute";
+
+import {
+    FaMapMarkerAlt,
+    FaMoneyBillWave,
+    FaClock,
+    FaCalendarAlt,
+    FaGraduationCap,
+    FaLaptop,
+} from "react-icons/fa";
 
 const TutorDetailsPage = ({ params }) => {
 
@@ -106,242 +114,284 @@ const TutorDetailsPage = ({ params }) => {
     }
 
     return (
-        <PrivateRoute>
-            <div className="container mx-auto px-4 py-10">
+    <PrivateRoute>
+        <section className="relative min-h-screen py-12 overflow-hidden">
 
-                <div className="grid lg:grid-cols-2 gap-12 items-center">
+            {/* Background Effects */}
+            <div className="absolute top-20 left-10 w-96 h-96 bg-primary/10 blur-3xl rounded-full" />
+            <div className="absolute bottom-20 right-10 w-96 h-96 bg-secondary/10 blur-3xl rounded-full" />
 
-                    {/* IMAGE */}
-                    <div className="relative w-100 h-100 bg-base-200 rounded-3xl overflow-hidden shadow-xl md:ml-40">
+            <div className="container mx-auto px-4 relative z-10">
 
-                        <Image
-                            src={
-                                tutor?.photo &&
-                                    tutor.photo.startsWith("http")
-                                    ? tutor.photo
-                                    : "/avatar.png"
-                            }
-                            alt={tutor?.name || "Tutor Image"}
-                            fill
-                            sizes="100vw"
-                            priority
-                            className="object-cover"
-                        />
+                <div
+                    className="
+                    rounded-[36px]
+                    border
+                    border-base-300/30
+                    bg-base-100/70
+                    backdrop-blur-xl
+                    shadow-2xl
+                    overflow-hidden
+                "
+                >
+                    <div className="grid lg:grid-cols-2 gap-0">
 
-                    </div>
+                        {/* IMAGE */}
+                        <div className="relative h-125 lg:h-full">
 
-                    {/* CONTENT */}
-                    <div className="space-y-6">
+                            <Image
+                                src={
+                                    tutor?.photo?.startsWith("http")
+                                        ? tutor.photo
+                                        : "/avatar.png"
+                                }
+                                alt={tutor?.name}
+                                fill
+                                priority
+                                className="object-cover"
+                            />
 
-                        <div className="badge badge-primary badge-lg">
-                            {tutor.subject}
-                        </div>
+                            <div className="absolute inset-0 bg-linear-to-t from-black/70 via-black/20 to-transparent" />
 
-                        <h1 className="text-5xl font-bold">
-                            {tutor.name}
-                        </h1>
+                            <div className="absolute bottom-8 left-8">
 
-                        <p className="text-lg text-base-content/70 leading-8">
-                            {tutor.description}
-                        </p>
+                                <div className="badge badge-primary badge-lg mb-4">
+                                    {tutor.subject}
+                                </div>
 
-                        {/* INFO */}
-                        <div className="space-y-4 text-lg">
+                                <h1 className="text-4xl md:text-5xl font-black text-white">
+                                    {tutor.name}
+                                </h1>
 
-                            <p>
-                                <span className="font-bold">
-                                    Experience:
-                                </span>{" "}
-                                {tutor.experience}
-                            </p>
-
-                            <p>
-                                <span className="font-bold">
-                                    Location:
-                                </span>{" "}
-                                {tutor.location}
-                            </p>
-
-                            <p>
-                                <span className="font-bold">
-                                    Hourly Fee:
-                                </span>{" "}
-                                {tutor.fee} BDT
-                            </p>
-
-                            <p>
-                                <span className="font-bold">
-                                    Available Days:
-                                </span>{" "}
-                                {tutor.availableDays}
-                            </p>
-
-                            <p>
-                                <span className="font-bold">
-                                    Time Slot:
-                                </span>{" "}
-                                {tutor.timeSlot}
-                            </p>
-
-                            <p>
-                                <span className="font-bold">
-                                    Teaching Mode:
-                                </span>{" "}
-                                {tutor.mode}
-                            </p>
+                            </div>
 
                         </div>
 
-                        {/* BUTTON */}
-                        <div className="pt-4">
+                        {/* CONTENT */}
+                        <div className="p-8 lg:p-12">
 
-                            {
-                                tutor.totalSlot > 0 ? (
+                            <p className="text-lg text-base-content/70 leading-8 mb-8">
+                                {tutor.description}
+                            </p>
 
+                            {/* INFO GRID */}
+                            <div className="grid sm:grid-cols-2 gap-5">
+
+                                <div className="rounded-2xl bg-base-200/60 p-5">
+                                    <div className="flex items-center gap-3 mb-2">
+                                        <FaGraduationCap className="text-primary" />
+                                        <span className="font-semibold">
+                                            Experience
+                                        </span>
+                                    </div>
+
+                                    <p>{tutor.experience}</p>
+                                </div>
+
+                                <div className="rounded-2xl bg-base-200/60 p-5">
+                                    <div className="flex items-center gap-3 mb-2">
+                                        <FaMapMarkerAlt className="text-primary" />
+                                        <span className="font-semibold">
+                                            Location
+                                        </span>
+                                    </div>
+
+                                    <p>{tutor.location}</p>
+                                </div>
+
+                                <div className="rounded-2xl bg-base-200/60 p-5">
+                                    <div className="flex items-center gap-3 mb-2">
+                                        <FaMoneyBillWave className="text-primary" />
+                                        <span className="font-semibold">
+                                            Hourly Fee
+                                        </span>
+                                    </div>
+
+                                    <p>৳ {tutor.fee}</p>
+                                </div>
+
+                                <div className="rounded-2xl bg-base-200/60 p-5">
+                                    <div className="flex items-center gap-3 mb-2">
+                                        <FaCalendarAlt className="text-primary" />
+                                        <span className="font-semibold">
+                                            Available Days
+                                        </span>
+                                    </div>
+
+                                    <p>{tutor.availableDays}</p>
+                                </div>
+
+                                <div className="rounded-2xl bg-base-200/60 p-5">
+                                    <div className="flex items-center gap-3 mb-2">
+                                        <FaClock className="text-primary" />
+                                        <span className="font-semibold">
+                                            Time Slot
+                                        </span>
+                                    </div>
+
+                                    <p>{tutor.timeSlot}</p>
+                                </div>
+
+                                <div className="rounded-2xl bg-base-200/60 p-5">
+                                    <div className="flex items-center gap-3 mb-2">
+                                        <FaLaptop className="text-primary" />
+                                        <span className="font-semibold">
+                                            Teaching Mode
+                                        </span>
+                                    </div>
+
+                                    <p>{tutor.mode}</p>
+                                </div>
+
+                            </div>
+
+                            {/* SLOT INFO */}
+                            <div
+                                className="
+                                mt-8
+                                p-5
+                                rounded-2xl
+                                bg-primary/10
+                                border
+                                border-primary/20
+                            "
+                            >
+                                <h3 className="font-bold text-lg mb-2">
+                                    Available Slots
+                                </h3>
+
+                                <p className="text-3xl font-black text-primary">
+                                    {tutor.totalSlot}
+                                </p>
+                            </div>
+
+                            {/* CTA */}
+                            <div className="mt-8">
+
+                                {tutor.totalSlot > 0 ? (
                                     <button
                                         onClick={() =>
                                             document
-                                                .getElementById(
-                                                    "book_modal"
-                                                )
+                                                .getElementById("book_modal")
                                                 .showModal()
                                         }
-                                        className="btn btn-primary btn-lg"
+                                        className="
+                                        btn
+                                        btn-lg
+                                        border-0
+                                        rounded-2xl
+                                        bg-linear-to-r
+                                        from-primary
+                                        to-secondary
+                                        text-white
+                                        shadow-lg
+                                        w-full
+                                    "
                                     >
                                         Book Session
                                     </button>
-
                                 ) : (
-
                                     <button
                                         disabled
-                                        className="btn btn-error btn-lg"
+                                        className="
+                                        btn
+                                        btn-error
+                                        btn-lg
+                                        rounded-2xl
+                                        w-full
+                                    "
                                     >
                                         Fully Booked
                                     </button>
-                                )
-                            }
+                                )}
+
+                            </div>
 
                         </div>
-
                     </div>
-
                 </div>
 
                 {/* MODAL */}
                 <dialog id="book_modal" className="modal">
 
-                    <div className="modal-box">
-
-                        <h3 className="font-bold text-2xl mb-6">
-                            Book Tutor Session
+                    <div
+                        className="
+                        modal-box
+                        max-w-xl
+                        rounded-[32px]
+                        bg-base-100
+                    "
+                    >
+                        <h3 className="font-black text-3xl mb-6">
+                            Confirm Booking
                         </h3>
 
                         <div className="space-y-4">
 
-                            <div>
+                            <input
+                                value={tutor.name}
+                                readOnly
+                                className="input input-bordered w-full rounded-xl"
+                            />
 
-                                <label className="label">
-                                    Tutor Name
-                                </label>
+                            <input
+                                value={tutor.subject}
+                                readOnly
+                                className="input input-bordered w-full rounded-xl"
+                            />
 
-                                <input
-                                    type="text"
-                                    value={tutor.name}
-                                    readOnly
-                                    className="input input-bordered w-full"
-                                />
+                            <input
+                                value={`৳ ${tutor.fee}`}
+                                readOnly
+                                className="input input-bordered w-full rounded-xl"
+                            />
 
-                            </div>
+                            <input
+                                value={user?.displayName || ""}
+                                readOnly
+                                className="input input-bordered w-full rounded-xl"
+                            />
 
-                            <div>
-
-                                <label className="label">
-                                    Subject
-                                </label>
-
-                                <input
-                                    type="text"
-                                    value={tutor.subject}
-                                    readOnly
-                                    className="input input-bordered w-full"
-                                />
-
-                            </div>
-
-                            <div>
-
-                                <label className="label">
-                                    Hourly Fee
-                                </label>
-
-                                <input
-                                    type="text"
-                                    value={`${tutor.fee} BDT`}
-                                    readOnly
-                                    className="input input-bordered w-full"
-                                />
-
-                            </div>
-
-                            <div>
-
-                                <label className="label">
-                                    Student Name
-                                </label>
-
-                                <input
-                                    type="text"
-                                    value={user?.displayName || ""}
-                                    readOnly
-                                    className="input input-bordered w-full"
-                                />
-
-                            </div>
-
-                            <div>
-
-                                <label className="label">
-                                    Email
-                                </label>
-
-                                <input
-                                    type="email"
-                                    value={user?.email || ""}
-                                    readOnly
-                                    className="input input-bordered w-full"
-                                />
-
-                            </div>
+                            <input
+                                value={user?.email || ""}
+                                readOnly
+                                className="input input-bordered w-full rounded-xl"
+                            />
 
                         </div>
 
                         <div className="modal-action">
 
                             <form method="dialog">
-
-                                <button className="btn">
+                                <button className="btn rounded-xl">
                                     Cancel
                                 </button>
-
                             </form>
 
                             <button
                                 onClick={handleBooking}
-                                className="btn btn-primary"
+                                className="
+                                btn
+                                rounded-xl
+                                border-0
+                                bg-linear-to-r
+                                from-primary
+                                to-secondary
+                                text-white
+                            "
                             >
                                 Confirm Booking
                             </button>
 
                         </div>
-
                     </div>
 
                 </dialog>
 
             </div>
-        </PrivateRoute>
-    );
+        </section>
+    </PrivateRoute>
+);
 };
 
 export default TutorDetailsPage;

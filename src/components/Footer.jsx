@@ -1,157 +1,303 @@
+"use client";
+
 import Link from "next/link";
 import {
     FaFacebookF,
     FaGithub,
     FaLinkedinIn,
+    FaPhoneAlt,
 } from "react-icons/fa";
 
 import { FaXTwitter } from "react-icons/fa6";
-import { MdCopyright } from "react-icons/md";
-import { MdEmail } from "react-icons/md";
-import { FaPhoneAlt } from "react-icons/fa";
+import { MdEmail, MdCopyright } from "react-icons/md";
 
 const Footer = () => {
     return (
-        <footer className="bg-base-200 mt-20">
+        <footer className="relative mt-24 overflow-hidden">
 
-            <div className="container mx-auto px-4 py-12">
+            {/* Background Glow */}
+            <div className="absolute top-0 left-0 w-96 h-96 bg-primary/10 blur-3xl rounded-full" />
+            <div className="absolute bottom-0 right-0 w-96 h-96 bg-secondary/10 blur-3xl rounded-full" />
+
+            <div className="container mx-auto px-4 relative z-10">
+
+
 
                 {/* Main Footer */}
-                <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-4 text-center md:text-left">
+                <div
+                    className="
+                    rounded-[32px]
+                    border
+                    border-base-300/30
+                    bg-base-100/70
+                    backdrop-blur-xl
+                    shadow-xl
+                    p-10
+                "
+                >
+                    <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-4">
 
-                    {/* Logo */}
-                    <div className="flex flex-col items-center md:items-start">
+                        {/* Brand */}
+                        <div>
 
-                        <h2 className="text-3xl font-bold text-primary mb-4">
-                            MediQueue
-                        </h2>
+                            <div className="flex items-center gap-3 mb-5">
 
-                        <p className="text-sm leading-7 text-base-content/80">
-                            MediQueue is a modern tutor booking platform where
-                            students can discover tutors, schedule sessions,
-                            and manage learning efficiently.
-                        </p>
-                    </div>
+                                <div
+                                    className="
+                                    w-12
+                                    h-12
+                                    rounded-2xl
+                                    bg-linear-to-br
+                                    from-primary
+                                    via-secondary
+                                    to-accent
+                                    flex
+                                    items-center
+                                    justify-center
+                                    text-white
+                                    font-black
+                                    text-xl
+                                    shadow-lg
+                                "
+                                >
+                                    M
+                                </div>
 
-                    {/* Quick Links */}
-                    <div className="flex flex-col items-center md:items-start">
+                                <div>
+                                    <h2 className="text-2xl font-black">
+                                        MediQueue
+                                    </h2>
 
-                        <h3 className="footer-title">
-                            Quick Links
-                        </h3>
+                                    <p className="text-xs text-base-content/60">
+                                        Smart Tutor Platform
+                                    </p>
+                                </div>
 
-                        <div className="flex flex-col gap-2">
+                            </div>
 
-                            <Link href="/">
-                                Home
-                            </Link>
-
-                            <Link href="/tutors">
-                                Tutors
-                            </Link>
-
-                            <Link href="/add-tutor">
-                                Add Tutor
-                            </Link>
-
-                            <Link href="/my-bookings">
-                                My Booked Sessions
-                            </Link>
-
-                        </div>
-                    </div>
-
-                    {/* Services */}
-                    <div className="flex flex-col items-center md:items-start">
-
-                        <h3 className="footer-title">
-                            Learning Services
-                        </h3>
-
-                        <div className="flex flex-col gap-2 text-sm">
-
-                            <p>Online Classes</p>
-                            <p>Offline Coaching</p>
-                            <p>Academic Mentorship</p>
-                            <p>Skill Development</p>
-
-                        </div>
-                    </div>
-
-                    {/* Contact & Social */}
-                    <div className="flex flex-col items-center md:items-start">
-
-                        <h3 className="footer-title">
-                            Contact Us
-                        </h3>
-
-                        <div className="space-y-3 text-sm">
-
-                            <p className="flex items-center gap-2">
-                                <MdEmail />
-                                support@mediqueue.com
-                            </p>
-
-                            <p className="flex items-center gap-2">
-                                <FaPhoneAlt />
-                                +880 1234-567890
+                            <p className="text-base-content/70 leading-7">
+                                MediQueue helps students discover expert
+                                tutors, book sessions, and manage learning
+                                efficiently through a modern and seamless
+                                platform.
                             </p>
 
                         </div>
 
-                        {/* Social */}
-                        <div className="flex items-center gap-3 mt-5">
+                        {/* Quick Links */}
+                        <div>
 
-                            <Link
-                                href="https://facebook.com"
-                                target="_blank"
-                                className="btn btn-circle btn-outline btn-sm"
-                            >
-                                <FaFacebookF />
-                            </Link>
+                            <h3 className="font-bold text-lg mb-5">
+                                Quick Links
+                            </h3>
 
-                            <Link
-                                href="https://github.com"
-                                target="_blank"
-                                className="btn btn-circle btn-outline btn-sm"
-                            >
-                                <FaGithub />
-                            </Link>
+                            <div className="flex flex-col gap-3 text-base-content/70">
 
-                            <Link
-                                href="https://linkedin.com"
-                                target="_blank"
-                                className="btn btn-circle btn-outline btn-sm"
-                            >
-                                <FaLinkedinIn />
-                            </Link>
+                                <Link
+                                    href="/"
+                                    className="hover:text-primary transition"
+                                >
+                                    Home
+                                </Link>
 
-                            <Link
-                                href="https://x.com"
-                                target="_blank"
-                                className="btn btn-circle btn-outline btn-sm"
-                            >
-                                <FaXTwitter />
-                            </Link>
+                                <Link
+                                    href="/tutors"
+                                    className="hover:text-primary transition"
+                                >
+                                    Tutors
+                                </Link>
+
+                                <Link
+                                    href="/add-tutor"
+                                    className="hover:text-primary transition"
+                                >
+                                    Add Tutor
+                                </Link>
+
+                                <Link
+                                    href="/my-bookings"
+                                    className="hover:text-primary transition"
+                                >
+                                    My Bookings
+                                </Link>
+
+                            </div>
+
+                        </div>
+
+                        {/* Services */}
+                        <div>
+
+                            <h3 className="font-bold text-lg mb-5">
+                                Learning Services
+                            </h3>
+
+                            <div className="space-y-3 text-base-content/70">
+
+                                <p>Online Tutoring</p>
+                                <p>Offline Coaching</p>
+                                <p>Academic Mentorship</p>
+                                <p>Skill Development</p>
+                                <p>Exam Preparation</p>
+
+                            </div>
+
+                        </div>
+
+                        {/* Contact */}
+                        <div>
+
+                            <h3 className="font-bold text-lg mb-5">
+                                Contact Us
+                            </h3>
+
+                            <div className="space-y-4 text-base-content/70">
+
+                                <div className="flex items-center gap-3">
+                                    <MdEmail className="text-primary text-lg" />
+                                    <span>
+                                        support@mediqueue.com
+                                    </span>
+                                </div>
+
+                                <div className="flex items-center gap-3">
+                                    <FaPhoneAlt className="text-primary text-lg" />
+                                    <span>
+                                        +880 1234-567890
+                                    </span>
+                                </div>
+
+                            </div>
+
+                            {/* Social */}
+                            <div className="flex gap-3 mt-6">
+
+                                <Link
+                                    href="https://facebook.com"
+                                    target="_blank"
+                                    className="
+                                    w-11
+                                    h-11
+                                    rounded-full
+                                    bg-base-200
+                                    flex
+                                    items-center
+                                    justify-center
+                                    hover:bg-primary
+                                    hover:text-white
+                                    transition-all
+                                    duration-300
+                                "
+                                >
+                                    <FaFacebookF />
+                                </Link>
+
+                                <Link
+                                    href="https://github.com"
+                                    target="_blank"
+                                    className="
+                                    w-11
+                                    h-11
+                                    rounded-full
+                                    bg-base-200
+                                    flex
+                                    items-center
+                                    justify-center
+                                    hover:bg-primary
+                                    hover:text-white
+                                    transition-all
+                                    duration-300
+                                "
+                                >
+                                    <FaGithub />
+                                </Link>
+
+                                <Link
+                                    href="https://linkedin.com"
+                                    target="_blank"
+                                    className="
+                                    w-11
+                                    h-11
+                                    rounded-full
+                                    bg-base-200
+                                    flex
+                                    items-center
+                                    justify-center
+                                    hover:bg-primary
+                                    hover:text-white
+                                    transition-all
+                                    duration-300
+                                "
+                                >
+                                    <FaLinkedinIn />
+                                </Link>
+
+                                <Link
+                                    href="https://x.com"
+                                    target="_blank"
+                                    className="
+                                    w-11
+                                    h-11
+                                    rounded-full
+                                    bg-base-200
+                                    flex
+                                    items-center
+                                    justify-center
+                                    hover:bg-primary
+                                    hover:text-white
+                                    transition-all
+                                    duration-300
+                                "
+                                >
+                                    <FaXTwitter />
+                                </Link>
+
+                            </div>
 
                         </div>
                     </div>
-                </div>
 
-                {/* Bottom */}
-                <div className="border-t border-base-300 mt-10 pt-6">
+                    {/* Bottom */}
+                    <div className="border-t border-base-300/30 mt-10 pt-6">
 
-                    <div className="flex items-center justify-center gap-2 text-sm text-center">
+                        <div
+                            className="
+                            flex
+                            flex-col
+                            md:flex-row
+                            items-center
+                            justify-between
+                            gap-4
+                            text-sm
+                            text-base-content/60
+                        "
+                        >
+                            <div className="flex items-center gap-2">
+                                <MdCopyright />
+                                <span>
+                                    {new Date().getFullYear()} MediQueue.
+                                    All rights reserved.
+                                </span>
+                            </div>
 
-                        <MdCopyright className="text-lg" />
+                            <div className="flex gap-6">
+                                <Link href="#">
+                                    Privacy Policy
+                                </Link>
 
-                        <p>
-                            {new Date().getFullYear()} MediQueue.
-                            All rights reserved.
-                        </p>
+                                <Link href="#">
+                                    Terms of Service
+                                </Link>
+
+                                <Link href="#">
+                                    Support
+                                </Link>
+                            </div>
+                        </div>
 
                     </div>
                 </div>
+
             </div>
         </footer>
     );

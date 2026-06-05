@@ -207,217 +207,274 @@ const MyBookingsPage = () => {
     }
 
     return (
+    <PrivateRoute>
+        <div className="relative min-h-screen py-12 overflow-hidden">
 
-        <PrivateRoute>
+            {/* Background Glow */}
+            <div className="absolute top-20 left-10 w-96 h-96 bg-primary/10 blur-3xl rounded-full" />
+            <div className="absolute bottom-20 right-10 w-96 h-96 bg-secondary/10 blur-3xl rounded-full" />
 
-            <div className="container mx-auto px-4 py-10">
+            <div className="container mx-auto px-4 relative z-10">
 
-                {/* HEADING */}
-                <div className="text-center mb-10">
+                {/* Hero */}
+                <div className="text-center mb-12">
 
-                    <h1 className="text-5xl font-bold mb-4">
+                    <div
+                        className="
+                        inline-flex
+                        items-center
+                        gap-2
+                        px-5
+                        py-2
+                        rounded-full
+                        bg-primary/10
+                        text-primary
+                        font-semibold
+                        mb-5
+                    "
+                    >
+                         Student Dashboard
+                    </div>
 
+                    <h1 className="text-5xl md:text-6xl font-black mb-4">
                         My Booked Sessions
-
                     </h1>
 
-                    <p className="text-base-content/70">
-
-                        Manage all your booked tutoring sessions.
-
+                    <p className="text-lg text-base-content/70 max-w-2xl mx-auto">
+                        View, manage and track all your tutoring
+                        sessions from one place.
                     </p>
 
                 </div>
 
-                {
-                    bookings.length ===
-                        0 ? (
+                {/* Stats */}
+                {bookings.length > 0 && (
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
 
-                        <div className="text-center py-20">
+                        <div className="bg-base-100/80 backdrop-blur-xl rounded-3xl p-6 shadow-xl border border-base-300/30">
+                            <h3 className="text-base-content/60 text-sm">
+                                Total Bookings
+                            </h3>
 
-                            <h2 className="text-3xl font-bold">
-
-                                No Bookings Found
-
-                            </h2>
-
+                            <p className="text-4xl font-black mt-2">
+                                {bookings.length}
+                            </p>
                         </div>
 
-                    ) : (
+                        <div className="bg-base-100/80 backdrop-blur-xl rounded-3xl p-6 shadow-xl border border-base-300/30">
+                            <h3 className="text-base-content/60 text-sm">
+                                Active Sessions
+                            </h3>
 
-                        <div className="overflow-x-auto rounded-2xl border border-base-300">
+                            <p className="text-4xl font-black mt-2 text-success">
+                                {
+                                    bookings.filter(
+                                        (b) =>
+                                            b.status !==
+                                            "cancelled"
+                                    ).length
+                                }
+                            </p>
+                        </div>
 
-                            <table className="table">
+                        <div className="bg-base-100/80 backdrop-blur-xl rounded-3xl p-6 shadow-xl border border-base-300/30">
+                            <h3 className="text-base-content/60 text-sm">
+                                Cancelled
+                            </h3>
 
-                                {/* HEAD */}
+                            <p className="text-4xl font-black mt-2 text-error">
+                                {
+                                    bookings.filter(
+                                        (b) =>
+                                            b.status ===
+                                            "cancelled"
+                                    ).length
+                                }
+                            </p>
+                        </div>
+
+                    </div>
+                )}
+
+                {bookings.length === 0 ? (
+
+                    <div
+                        className="
+                        rounded-[36px]
+                        bg-base-100/80
+                        backdrop-blur-xl
+                        border
+                        border-base-300/30
+                        shadow-xl
+                        py-24
+                        text-center
+                    "
+                    >
+                        <div className="text-7xl mb-5">
+                            📖
+                        </div>
+
+                        <h2 className="text-3xl font-bold mb-3">
+                            No Bookings Found
+                        </h2>
+
+                        <p className="text-base-content/70">
+                            Your booked sessions will appear here.
+                        </p>
+                    </div>
+
+                ) : (
+
+                    <div
+                        className="
+                        bg-base-100/80
+                        backdrop-blur-xl
+                        border
+                        border-base-300/30
+                        rounded-[36px]
+                        shadow-2xl
+                        overflow-hidden
+                    "
+                    >
+
+                        <div className="overflow-x-auto">
+
+                            <table className="table table-zebra">
+
                                 <thead className="bg-base-200">
 
                                     <tr>
-
                                         <th>#</th>
-
                                         <th>Tutor</th>
-
                                         <th>Subject</th>
-
                                         <th>Fee</th>
-
                                         <th>Student</th>
-
                                         <th>Email</th>
-
                                         <th>Status</th>
-
                                         <th className="text-end">
-
-                                            Actions
-
+                                            Action
                                         </th>
-
                                     </tr>
 
                                 </thead>
 
                                 <tbody>
 
-                                    {
-                                        bookings.map(
-                                            (
-                                                booking,
-                                                index
-                                            ) => (
+                                    {bookings.map(
+                                        (
+                                            booking,
+                                            index
+                                        ) => (
 
-                                                <tr
-                                                    key={
-                                                        booking._id
+                                            <tr
+                                                key={
+                                                    booking._id
+                                                }
+                                            >
+
+                                                <td>
+                                                    {index + 1}
+                                                </td>
+
+                                                <td className="font-semibold">
+                                                    {
+                                                        booking.tutorName
                                                     }
-                                                >
+                                                </td>
 
-                                                    <td>
-
-                                                        {index + 1}
-
-                                                    </td>
-
-                                                    <td>
-
-                                                        {
-                                                            booking.tutorName
-                                                        }
-
-                                                    </td>
-
-                                                    <td>
-
+                                                <td>
+                                                    <span className="badge badge-primary">
                                                         {
                                                             booking.subject
                                                         }
+                                                    </span>
+                                                </td>
 
-                                                    </td>
+                                                <td>
+                                                    ৳
+                                                    {
+                                                        booking.fee
+                                                    }
+                                                </td>
 
-                                                    <td>
+                                                <td>
+                                                    {
+                                                        booking.studentName
+                                                    }
+                                                </td>
 
-                                                        {
-                                                            booking.fee
-                                                        }{" "}
+                                                <td>
+                                                    {
+                                                        booking.studentEmail
+                                                    }
+                                                </td>
 
-                                                        BDT
+                                                <td>
 
-                                                    </td>
+                                                    {booking.status ===
+                                                    "cancelled" ? (
+                                                        <span className="badge badge-error badge-lg">
+                                                            Cancelled
+                                                        </span>
+                                                    ) : (
+                                                        <span className="badge badge-success badge-lg">
+                                                            Active
+                                                        </span>
+                                                    )}
 
-                                                    <td>
+                                                </td>
 
-                                                        {
-                                                            booking.studentName
-                                                        }
+                                                <td className="text-end">
 
-                                                    </td>
+                                                    {booking.status ===
+                                                    "cancelled" ? (
+                                                        <button
+                                                            disabled
+                                                            className="btn btn-error btn-sm"
+                                                        >
+                                                            Cancelled
+                                                        </button>
+                                                    ) : (
+                                                        <button
+                                                            onClick={() =>
+                                                                handleCancelBooking(
+                                                                    booking._id
+                                                                )
+                                                            }
+                                                            className="
+                                                            btn
+                                                            btn-warning
+                                                            btn-sm
+                                                            rounded-xl
+                                                        "
+                                                        >
+                                                            Cancel
+                                                        </button>
+                                                    )}
 
-                                                    <td>
+                                                </td>
 
-                                                        {
-                                                            booking.studentEmail
-                                                        }
-
-                                                    </td>
-
-                                                    <td>
-
-                                                        {
-                                                            booking.status ===
-                                                                "cancelled" ? (
-
-                                                                <span className="badge badge-error">
-
-                                                                    Cancelled
-
-                                                                </span>
-
-                                                            ) : (
-
-                                                                <span className="badge badge-success">
-
-                                                                    Booked
-
-                                                                </span>
-                                                            )
-                                                        }
-
-                                                    </td>
-
-                                                    <td className="text-end">
-
-                                                        {
-                                                            booking.status ===
-                                                                "cancelled" ? (
-
-                                                                <button
-                                                                    disabled
-                                                                    className="btn btn-sm btn-error text-white"
-                                                                >
-
-                                                                    Cancelled
-
-                                                                </button>
-
-                                                            ) : (
-
-                                                                <button
-                                                                    onClick={() =>
-                                                                        handleCancelBooking(
-                                                                            booking._id
-                                                                        )
-                                                                    }
-                                                                    className="btn btn-warning btn-sm text-black"
-                                                                >
-
-                                                                    Cancel
-
-                                                                </button>
-                                                            )
-                                                        }
-
-                                                    </td>
-
-                                                </tr>
-                                            )
+                                            </tr>
                                         )
-                                    }
+                                    )}
 
                                 </tbody>
 
                             </table>
 
                         </div>
-                    )
-                }
+
+                    </div>
+
+                )}
 
                 <ToastContainer position="top-center" />
 
             </div>
 
-        </PrivateRoute>
-    );
+        </div>
+    </PrivateRoute>
+);
 };
 
 export default MyBookingsPage;

@@ -270,31 +270,68 @@ const UpdateTutorPage = ({ params }) => {
 
     return (
 
-        <div className="container mx-auto px-4 py-16">
+        <div className="relative min-h-screen py-12 overflow-hidden">
 
-            <div className="max-w-5xl mx-auto bg-base-100 shadow-2xl rounded-3xl p-8 md:p-12 border border-base-300">
+    {/* Background Glow */}
+    <div className="absolute top-20 left-10 w-96 h-96 bg-primary/10 blur-3xl rounded-full" />
+    <div className="absolute bottom-20 right-10 w-96 h-96 bg-secondary/10 blur-3xl rounded-full" />
+
+    <div className="container mx-auto px-4 relative z-10">
+
+            <div className="
+                    max-w-6xl
+                    mx-auto
+                    rounded-[36px]
+                    border
+                    border-base-300/30
+                    bg-base-100/80
+                    backdrop-blur-xl
+                    shadow-[0_20px_60px_rgba(0,0,0,0.15)]
+                    p-8
+                    md:p-12
+                    ">
 
                 {/* HEADING */}
-                <div className="text-center mb-12">
+                <div className="text-center mb-14">
 
-                    <h1 className="text-4xl md:text-6xl font-bold">
+    <div
+        className="
+        inline-flex
+        items-center
+        gap-2
+        px-5
+        py-2
+        rounded-full
+        bg-primary/10
+        text-primary
+        font-semibold
+        mb-5
+    "
+    >
+         Edit Tutor Profile
+    </div>
 
-                        Update Tutor
+    <h1 className="text-5xl md:text-6xl font-black mb-4">
+        Update Tutor
+    </h1>
 
-                    </h1>
+    <p className="max-w-2xl mx-auto text-lg text-base-content/70">
+        Keep your tutor profile up to date and attract
+        more students with accurate information.
+    </p>
 
-                    <p className="text-base-content/70 mt-4 text-lg">
-
-                        Update your tutoring information easily.
-
-                    </p>
-
-                </div>
+</div>
 
                 {/* FORM */}
                 <Form
                     onSubmit={handleUpdateTutor}
-                    className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full"
+                    className="
+                        grid
+                        grid-cols-1
+                        md:grid-cols-2
+                        gap-7
+                        w-full
+                        "
                 >
 
                     {/* NAME */}
@@ -348,7 +385,21 @@ const UpdateTutorPage = ({ params }) => {
                             name="subject"
                             value={formData.subject}
                             onChange={handleChange}
-                            className="w-full h-14 px-4 rounded-xl border border-base-300 bg-base-100"
+                            className="
+                                w-full
+                                h-14
+                                px-5
+                                rounded-2xl
+                                border
+                                border-base-300/40
+                                bg-base-100
+                                focus:outline-none
+                                focus:ring-2
+                                focus:ring-primary
+                                transition-all
+                                duration-300
+                                hover:border-primary/40
+                                "
                         >
 
                             {
@@ -524,7 +575,21 @@ const UpdateTutorPage = ({ params }) => {
                             name="mode"
                             value={formData.mode}
                             onChange={handleChange}
-                            className="w-full h-14 px-4 rounded-xl border border-base-300 bg-base-100"
+                            className="
+                                w-full
+                                h-14
+                                px-5
+                                rounded-2xl
+                                border
+                                border-base-300/40
+                                bg-base-100
+                                focus:outline-none
+                                focus:ring-2
+                                focus:ring-primary
+                                transition-all
+                                duration-300
+                                hover:border-primary/40
+                                "
                         >
 
                             {
@@ -576,7 +641,23 @@ const UpdateTutorPage = ({ params }) => {
 
                         <Button
                             type="submit"
-                            className="w-full btn btn-primary text-white text-lg"
+                            className="
+                                w-full
+                                h-14
+                                rounded-2xl
+                                border-0
+                                bg-linear-to-r
+                                from-primary
+                                to-secondary
+                                text-white
+                                text-lg
+                                font-semibold
+                                shadow-lg
+                                hover:shadow-xl
+                                hover:scale-[1.01]
+                                transition-all
+                                duration-300
+                                "
                         >
 
                             Update Tutor
@@ -587,6 +668,7 @@ const UpdateTutorPage = ({ params }) => {
 
                 </Form>
 
+            </div>
             </div>
 
             {/* TOAST */}

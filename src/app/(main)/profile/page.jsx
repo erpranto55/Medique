@@ -150,17 +150,55 @@ const ProfilePage = () => {
 
         <PrivateRoute>
 
-            <div className="min-h-screen bg-base-200 py-16 px-4">
+            <div className="relative min-h-screen py-16 px-4 overflow-hidden">
 
-                <div className="max-w-4xl mx-auto bg-base-100 rounded-3xl shadow-2xl overflow-hidden border border-base-300">
+                <div className="absolute top-20 left-10 w-96 h-96 bg-primary/10 blur-3xl rounded-full" />
+
+                <div className="absolute bottom-20 right-10 w-96 h-96 bg-secondary/10 blur-3xl rounded-full" />
+
+                <div
+                    className="
+                        max-w-5xl
+                        mx-auto
+                        bg-base-100/80
+                        backdrop-blur-xl
+                        rounded-[36px]
+                        shadow-2xl
+                        overflow-hidden
+                        border
+                        border-base-300/30
+                    "
+                >
 
                     {/* COVER */}
-                    <div className="h-52 bg-linear-to-r from-primary to-secondary relative">
+                    <div
+                        className="
+                            h-64
+                            bg-linear-to-r
+                            from-primary
+                            via-secondary
+                            to-primary
+                            relative
+                        "
+                    >
 
                         {/* PROFILE IMAGE */}
                         <div className="absolute left-1/2 -bottom-16 transform -translate-x-1/2">
 
-                            <div className="w-36 h-36 rounded-full border-4 border-base-100 overflow-hidden shadow-xl bg-base-100">
+                            <div
+                                className="
+                                    w-40
+                                    h-40
+                                    rounded-full
+                                    border-[6px]
+                                    border-base-100
+                                    overflow-hidden
+                                    shadow-2xl
+                                    bg-base-100
+                                    ring-4
+                                    ring-primary/20
+                                "
+                            >
 
                                 <Image
                                     src={
@@ -197,17 +235,60 @@ const ProfilePage = () => {
 
                         </h1>
 
-                        <p className="text-base-content/70 text-lg mb-8">
+                        <p className="text-base-content/70 text-lg mb-10 max-w-xl mx-auto">
 
                             Welcome to your MediQueue profile dashboard.
 
                         </p>
+                        <div className="grid md:grid-cols-3 gap-5 mb-10">
+
+                            <div className="bg-base-200/60 rounded-2xl p-5">
+                                <h3 className="text-sm text-base-content/60">
+                                    Account Status
+                                </h3>
+
+                                <p className="text-2xl font-bold text-success mt-2">
+                                    Active
+                                </p>
+                            </div>
+
+                            <div className="bg-base-200/60 rounded-2xl p-5">
+                                <h3 className="text-sm text-base-content/60">
+                                    Profile Completion
+                                </h3>
+
+                                <p className="text-2xl font-bold mt-2">
+                                    100%
+                                </p>
+                            </div>
+
+                            <div className="bg-base-200/60 rounded-2xl p-5">
+                                <h3 className="text-sm text-base-content/60">
+                                    Account Type
+                                </h3>
+
+                                <p className="text-2xl font-bold mt-2">
+                                    User
+                                </p>
+                            </div>
+
+                        </div>
 
                         {/* INFO CARDS */}
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
 
                             {/* EMAIL */}
-                            <div className="bg-base-200 rounded-2xl p-6 flex items-center gap-4 shadow-md">
+                            <div className="
+                                    bg-base-200/60
+                                    rounded-3xl
+                                    p-6
+                                    flex
+                                    items-center
+                                    gap-4
+                                    shadow-lg
+                                    border
+                                    border-base-300/20
+                                    ">
 
                                 <div className="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center text-primary text-2xl">
 
@@ -236,7 +317,17 @@ const ProfilePage = () => {
                             </div>
 
                             {/* USER */}
-                            <div className="bg-base-200 rounded-2xl p-6 flex items-center gap-4 shadow-md">
+                            <div className="
+                                    bg-base-200/60
+                                    rounded-3xl
+                                    p-6
+                                    flex
+                                    items-center
+                                    gap-4
+                                    shadow-lg
+                                    border
+                                    border-base-300/20
+                                    ">
 
                                 <div className="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center text-primary text-2xl">
 
@@ -277,7 +368,17 @@ const ProfilePage = () => {
                                         .showModal()
                                 }
 
-                                className="btn btn-primary px-8"
+                                className="
+                                    btn
+                                    border-0
+                                    px-8
+                                    rounded-2xl
+                                    bg-linear-to-r
+                                    from-primary
+                                    to-secondary
+                                    text-white
+                                    shadow-lg
+                                    "
                             >
 
                                 Edit Profile
@@ -287,7 +388,12 @@ const ProfilePage = () => {
                             <Link
                                 href={"/my-tutors"}
 
-                                className="btn btn-outline px-8"
+                                className="
+                                    btn
+                                    btn-outline
+                                    rounded-2xl
+                                    px-8
+                                    "
                             >
 
                                 View My Tutors
@@ -308,7 +414,13 @@ const ProfilePage = () => {
                 className="modal"
             >
 
-                <div className="modal-box rounded-3xl">
+                <div className="
+                        modal-box
+                        max-w-xl
+                        rounded-[32px]
+                        bg-base-100
+                        shadow-2xl
+                        ">
 
                     <h3 className="font-bold text-3xl mb-2">
 
@@ -342,7 +454,12 @@ const ProfilePage = () => {
 
                                 placeholder="Enter your full name"
 
-                                className="input input-bordered w-full"
+                                className="
+                                    input
+                                    input-bordered
+                                    w-full
+                                    rounded-2xl
+                                    "
 
                                 value={name}
 
@@ -369,7 +486,12 @@ const ProfilePage = () => {
 
                                 placeholder="Paste your image URL"
 
-                                className="input input-bordered w-full"
+                                className="
+                                    input
+                                    input-bordered
+                                    w-full
+                                    rounded-2xl
+                                    "
 
                                 value={photo}
 
@@ -404,7 +526,15 @@ const ProfilePage = () => {
                             <button
                                 type="submit"
 
-                                className="btn btn-primary"
+                                className="
+                                    btn
+                                    border-0
+                                    rounded-xl
+                                    bg-linear-to-r
+                                    from-primary
+                                    to-secondary
+                                    text-white
+                                    "
                             >
 
                                 Save Changes

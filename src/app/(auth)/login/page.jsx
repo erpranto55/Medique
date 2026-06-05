@@ -158,23 +158,72 @@ const LoginPage = () => {
             toast.error(error.message);
         }
     };
-    
-    return (
-        <div className="min-h-screen flex items-center justify-center px-4 py-16">
 
-            <div className="w-full max-w-xl bg-base-100 shadow-2xl rounded-3xl p-8 md:p-12 border border-base-300">
+    return (
+        <div className="relative min-h-screen flex items-center justify-center px-4 py-16 overflow-hidden">
+
+            <div className="absolute top-20 left-10 w-96 h-96 bg-primary/10 blur-3xl rounded-full" />
+            <div className="absolute bottom-20 right-10 w-96 h-96 bg-secondary/10 blur-3xl rounded-full" />
+
+            <div
+                className="
+                    relative
+                    z-10
+                    w-full
+                    max-w-xl
+                    bg-base-100/80
+                    backdrop-blur-xl
+                    shadow-2xl
+                    rounded-[36px]
+                    p-8
+                    md:p-12
+                    border
+                    border-base-300/30
+                "
+            >
 
                 {/* HEADING */}
                 <div className="text-center mb-10">
 
-                    <h1 className="text-4xl font-bold">
+                    <div
+                        className="
+                            inline-flex
+                            items-center
+                            px-5
+                            py-2
+                            rounded-full
+                            bg-primary/10
+                            text-primary
+                            font-semibold
+                            mb-5
+                        "
+                    >
                         Welcome Back
+                    </div>
+
+                    <h1 className="text-5xl font-black mb-3">
+                        Login
                     </h1>
 
-                    <p className="text-base-content/70 mt-3">
-                        Login to continue using
-                        MediQueue.
+                    <p className="text-base-content/70 text-lg">
+                        Sign in to continue your learning journey.
                     </p>
+
+                </div>
+
+                <div className="flex flex-wrap justify-center gap-3 mb-8">
+
+                    <div className="badge badge-primary badge-lg">
+                        Secure Login
+                    </div>
+
+                    <div className="badge badge-secondary badge-lg">
+                        Fast Access
+                    </div>
+
+                    <div className="badge badge-accent badge-lg">
+                        Tutor Dashboard
+                    </div>
 
                 </div>
 
@@ -194,7 +243,15 @@ const LoginPage = () => {
                         <input
                             type="email"
                             placeholder="Email Address"
-                            className="input input-bordered w-full"
+                            className="
+                                input
+                                input-bordered
+                                w-full
+                                h-14
+                                rounded-2xl
+                                border-base-300/40
+                                focus:border-primary
+                            "
                             {...register("email", {
                                 required:
                                     "Email is required",
@@ -227,7 +284,15 @@ const LoginPage = () => {
                                         : "password"
                                 }
                                 placeholder="Password"
-                                className="input input-bordered w-full"
+                                className="
+                                    input
+                                    input-bordered
+                                    w-full
+                                    h-14
+                                    rounded-2xl
+                                    border-base-300/40
+                                    focus:border-primary
+                                "
                                 {...register(
                                     "password",
                                     {
@@ -244,7 +309,15 @@ const LoginPage = () => {
                                         !showPassword
                                     )
                                 }
-                                className="absolute top-1/2 right-4 -translate-y-1/2"
+                                className="
+                                    absolute
+                                    top-1/2
+                                    right-4
+                                    -transform-y-1/2
+                                    text-base-content/60
+                                    hover:text-primary
+                                    transition-colors
+                                "
                             >
 
                                 {
@@ -284,7 +357,23 @@ const LoginPage = () => {
                     {/* SUBMIT */}
                     <button
                         type="submit"
-                        className="btn btn-primary w-full"
+                        className="
+                            btn
+                            w-full
+                            h-14
+                            rounded-2xl
+                            border-0
+                            bg-linear-to-r
+                            from-primary
+                            to-secondary
+                            text-white
+                            font-semibold
+                            shadow-lg
+                            hover:shadow-xl
+                            hover:scale-[1.01]
+                            transition-all
+                            duration-300
+                        "
                     >
                         Login
                     </button>
@@ -292,14 +381,23 @@ const LoginPage = () => {
                 </form>
 
                 {/* DIVIDER */}
-                <div className="divider my-8">
+                <div className="divider text-base-content/50 my-8">
                     OR
                 </div>
 
                 {/* GOOGLE */}
                 <button
                     onClick={handleGoogleLogin}
-                    className="btn btn-outline w-full"
+                    className="
+                        btn
+                        btn-outline
+                        w-full
+                        h-14
+                        rounded-2xl
+                        hover:border-primary
+                        hover:text-primary
+                        transition-all
+                    "
                 >
 
                     <FcGoogle className="text-2xl" />
@@ -309,13 +407,17 @@ const LoginPage = () => {
                 </button>
 
                 {/* REGISTER */}
-                <p className="text-center mt-8 text-base-content/70">
+                <p className="text-center mt-8 text-base-content/70 text-base">
 
                     Don&apos;t have an account?{" "}
 
                     <Link
                         href="/register"
-                        className="text-primary font-semibold"
+                        className="
+                            text-primary
+                            font-semibold
+                            hover:underline
+                        "
                     >
                         Register
                     </Link>

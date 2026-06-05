@@ -214,22 +214,93 @@ const MyTutorsPage = () => {
 
         <PrivateRoute>
 
-            <div className="container mx-auto px-4 py-10">
+            <div className="relative min-h-screen py-10 overflow-hidden">
 
-                {/* HEADING */}
-                <div className="text-center mb-12">
+                <div className="absolute top-20 left-10 w-96 h-96 bg-primary/10 blur-3xl rounded-full" />
+                <div className="absolute bottom-20 right-10 w-96 h-96 bg-secondary/10 blur-3xl rounded-full" />
 
-                    <h1 className="text-4xl md:text-5xl font-bold mb-4">
+                <div className="container mx-auto px-4 relative z-10">
 
-                        My Tutors
+                    {/* HEADING */}
+                    <div className="text-center mb-14">
 
-                    </h1>
+                        <div
+                            className="
+        inline-flex
+        items-center
+        gap-2
+        px-5
+        py-2
+        rounded-full
+        bg-primary/10
+        text-primary
+        font-semibold
+        mb-5
+    "
+                        >
+                            Tutor Dashboard
+                        </div>
 
-                    <p className="text-base-content/70 text-lg">
+                        <h1 className="text-5xl md:text-6xl font-black mb-4">
+                            My Tutors
+                        </h1>
 
-                        Manage your added tutors easily.
+                        <p className="text-lg text-base-content/70 max-w-2xl mx-auto">
+                            Manage, update and organize all your tutor profiles
+                            from one beautiful dashboard.
+                        </p>
 
-                    </p>
+                    </div>
+                    {tutors.length > 0 && (
+                        <div className="grid md:grid-cols-3 gap-6 mb-10">
+
+                            <div className="bg-base-100 rounded-3xl p-6 shadow-xl border border-base-300/30">
+                                <h3 className="text-base-content/60 text-sm">
+                                    Total Tutors
+                                </h3>
+
+                                <p className="text-4xl font-black mt-2">
+                                    {tutors.length}
+                                </p>
+                            </div>
+
+                            <div className="bg-base-100 rounded-3xl p-6 shadow-xl border border-base-300/30">
+                                <h3 className="text-base-content/60 text-sm">
+                                    Average Fee
+                                </h3>
+
+                                <p className="text-4xl font-black mt-2 text-primary">
+                                    ৳
+                                    {Math.round(
+                                        tutors.reduce(
+                                            (sum, tutor) =>
+                                                sum +
+                                                Number(tutor.fee),
+                                            0
+                                        ) / tutors.length
+                                    )}
+                                </p>
+                            </div>
+
+                            <div className="bg-base-100 rounded-3xl p-6 shadow-xl border border-base-300/30">
+                                <h3 className="text-base-content/60 text-sm">
+                                    Available Slots
+                                </h3>
+
+                                <p className="text-4xl font-black mt-2 text-success">
+                                    {tutors.reduce(
+                                        (sum, tutor) =>
+                                            sum +
+                                            Number(
+                                                tutor.totalSlot || 0
+                                            ),
+                                        0
+                                    )}
+                                </p>
+                            </div>
+
+                        </div>
+                    )}
 
                 </div>
 
@@ -238,7 +309,16 @@ const MyTutorsPage = () => {
                     tutors.length ===
                         0 ? (
 
-                        <div className="bg-base-100 rounded-3xl shadow-xl border border-base-300 p-16 text-center">
+                        <div className="
+bg-base-100/80
+backdrop-blur-xl
+rounded-[36px]
+shadow-2xl
+border
+border-base-300/30
+p-20
+text-center
+">
 
                             <h2 className="text-3xl font-bold mb-3">
 
@@ -258,31 +338,33 @@ const MyTutorsPage = () => {
 
                         <>
                             {/* DESKTOP TABLE */}
-                            <div className="hidden lg:block overflow-x-auto rounded-3xl shadow-2xl border border-base-300 bg-base-100">
+                            <div className="
+hidden
+lg:block
+overflow-hidden
+rounded-[36px]
+shadow-2xl
+border
+border-base-300/30
+bg-base-100/80
+backdrop-blur-xl
+">
 
                                 <table className="table table-zebra">
 
                                     {/* HEAD */}
-                                    <thead>
+                                    <thead className="bg-base-200">
 
                                         <tr className="text-base">
 
-                                            <th>
-                                                Tutor
-                                            </th>
+                                            <th>Tutor</th>
 
-                                            <th>
-                                                Subject
-                                            </th>
+                                            <th>Subject</th>
 
-                                            <th>
-                                                Fee
-                                            </th>
+                                            <th>Fee</th>
 
                                             <th className="text-right pr-10">
-
                                                 Actions
-
                                             </th>
 
                                         </tr>
@@ -312,7 +394,7 @@ const MyTutorsPage = () => {
 
                                                                 <div className="avatar">
 
-                                                                    <div className="w-16 h-16 rounded-2xl overflow-hidden">
+                                                                    <div className="w-16 h-16 rounded-2xl overflow-hidden ring-2 ring-primary/20">
 
                                                                         <Image
                                                                             src={
@@ -394,7 +476,14 @@ const MyTutorsPage = () => {
 
                                                                 <Link
                                                                     href={`/update-tutor/${tutor._id}`}
-                                                                    className="btn btn-primary btn-sm"
+                                                                    className="
+btn
+btn-primary
+btn-sm
+rounded-xl
+px-5
+shadow-md
+"
                                                                 >
 
                                                                     Update
@@ -407,7 +496,14 @@ const MyTutorsPage = () => {
                                                                             tutor._id
                                                                         )
                                                                     }
-                                                                    className="btn btn-error btn-sm"
+                                                                    className="
+btn
+btn-error
+btn-sm
+rounded-xl
+px-5
+shadow-md
+"
                                                                 >
 
                                                                     Delete
@@ -442,7 +538,18 @@ const MyTutorsPage = () => {
                                                 key={
                                                     tutor._id
                                                 }
-                                                className="bg-base-100 rounded-3xl shadow-xl border border-base-300 p-5"
+                                                className="
+bg-base-100/80
+backdrop-blur-xl
+rounded-[30px]
+shadow-xl
+border
+border-base-300/30
+p-6
+hover:shadow-2xl
+transition-all
+duration-300
+"
                                             >
 
                                                 <div className="flex items-center gap-4">
@@ -561,7 +668,7 @@ const MyTutorsPage = () => {
 
             </div>
 
-        </PrivateRoute>
+        </PrivateRoute >
     );
 };
 
