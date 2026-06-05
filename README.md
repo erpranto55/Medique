@@ -11,6 +11,53 @@ The platform simplifies tutor scheduling with secure authentication, smart booki
 
 ---
 
+## Screenshots
+
+<table>
+  <tr>
+    <td align="center">
+      <img src="public/screenshots/home.png" alt="Home" width="100%" />
+      <br /><b>Home</b>
+    </td>
+    <td align="center">
+      <img src="public/screenshots/available-tutors.png" alt="Available Tutors" width="100%" />
+      <br /><b>Available Tutors</b>
+    </td>
+  </tr>
+  <tr>
+    <td align="center">
+      <img src="public/screenshots/login.png" alt="Login" width="100%" />
+      <br /><b>Login</b>
+    </td>
+    <td align="center">
+      <img src="public/screenshots/signup.png" alt="Sign Up" width="100%" />
+      <br /><b>Sign Up</b>
+    </td>
+  </tr>
+  <tr>
+    <td align="center">
+      <img src="public/screenshots/my-bookings.png" alt="My Bookings" width="100%" />
+      <br /><b>My Bookings</b>
+    </td>
+    <td align="center">
+      <img src="public/screenshots/my-tutors.png" alt="My Tutors" width="100%" />
+      <br /><b>My Tutors</b>
+    </td>
+  </tr>
+  <tr>
+    <td align="center">
+      <img src="public/screenshots/add-tutors.png" alt="Add Tutors" width="100%" />
+      <br /><b>Add Tutors</b>
+    </td>
+    <td align="center">
+      <img src="public/screenshots/profile.png" alt="Profile" width="100%" />
+      <br /><b>Profile</b>
+    </td>
+  </tr>
+</table>
+
+---
+
 ## Features
 
 - JWT Authentication with Firebase Login & Google Login<br>
@@ -144,7 +191,6 @@ nodemon index.js
 ### ER Pranto
 
 Frontend & Backend Developer
-
 [Portfolio](https://erpranto.vercel.app/)<br>
 [LinkedIn](https://www.linkedin.com/in/erpranto55/)<br>
 
